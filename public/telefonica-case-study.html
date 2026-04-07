@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Pay as a payment method · Telefónica | Kanishka Balaji</title>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --tf-blue:#0066cc;
+  --tf-blue-soft:#e8f1fb;
+  --ink:#111827;
+  --ink2:#374151;
+  --muted:#6b7280;
+  --muted2:#9ca3af;
+  --border:#e5e7eb;
+  --border-hair:#ececec;
+  --bg:#fafafa;
+  --surface-soft:#f5f5f5;
+  --white:#fff;
+  --sidebar-w:260px;
+  --font:'General Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --nav-scroll-gap:20px;
+}
+html{
+  scroll-behavior:smooth;
+  font-family:var(--font);
+  scroll-padding-top:var(--nav-scroll-gap);
+}
+@media(max-width:960px){
+  html{scroll-padding-top:72px}
+}
+body{font-family:var(--font);font-weight:400;background:var(--bg);color:var(--ink);line-height:1.6;margin-left:var(--sidebar-w)}
+button{font-family:var(--font)}
+b,strong{font-weight:600;font-family:var(--font)}
+main section[id]{scroll-margin-top:var(--nav-scroll-gap)}
+@media(max-width:960px){
+  main section[id]{scroll-margin-top:72px}
+}
+/* Sidebar nav (aligned with SafeYelli case study) */
+.sidebar{
+  position:fixed;
+  top:0;left:0;
+  width:var(--sidebar-w);
+  height:100vh;
+  padding:28px 20px 32px;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  background:var(--white);
+  z-index:100;
+  overflow-y:auto;
+}
+.sidebar-back{
+  flex-shrink:0;
+  align-self:flex-start;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-family:var(--font);
+  font-size:14px;
+  font-weight:400;
+  color:var(--muted2);
+  text-decoration:none;
+  padding:6px 0;
+  margin-bottom:8px;
+  transition:color .15s;
+  letter-spacing:.01em;
+}
+.sidebar-back:hover{color:var(--ink)}
+.sidebar-nav-links{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:stretch;
+  gap:6px;
+  width:100%;
+  min-height:0;
+  padding:12px 0;
+}
+.sidebar-nav-links a{
+  font-family:var(--font);
+  font-size:16px;
+  font-weight:400;
+  color:#aaa;
+  text-decoration:none;
+  padding:8px 0;
+  display:block;
+  width:100%;
+  text-align:left;
+  letter-spacing:0;
+  transition:color .15s;
+  line-height:1.35;
+}
+.sidebar-nav-links a:hover{color:var(--ink)}
+.sidebar-nav-links a.active{color:var(--ink);font-weight:600}
+
+main{max-width:1100px;margin:0 auto;padding:48px 40px 120px}
+
+.section-eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px}
+.story-section{margin-top:56px;padding-top:48px;border-top:1px solid var(--border-hair)}
+.story-section:first-of-type{margin-top:0;padding-top:0;border-top:none}
+.story-head{max-width:720px;margin-bottom:24px}
+.story-title{font-size:clamp(22px,3vw,28px);font-weight:600;letter-spacing:-.03em;color:var(--ink);line-height:1.15;margin-bottom:12px}
+.story-lead{font-size:15px;font-weight:600;color:var(--ink2);line-height:1.55;max-width:42rem}
+.story-prose{font-size:16px;color:#525252;line-height:1.75;max-width:720px}
+.story-prose p{margin-bottom:1rem}
+.story-prose p:last-child{margin-bottom:0}
+.story-prose strong{font-weight:600;color:var(--ink)}
+.story-prose h3{font-size:15px;font-weight:600;color:var(--ink);margin:28px 0 10px;letter-spacing:-.02em}
+.story-prose ul{margin:0 0 1rem;padding:0;list-style:none;max-width:720px}
+.story-prose ul:last-child{margin-bottom:0}
+.story-prose li{position:relative;padding:8px 0 8px 1.15rem;font-size:15px;color:#525252;line-height:1.55;border-bottom:1px solid var(--border-hair)}
+.story-prose li:last-child{border-bottom:none}
+.story-prose li::before{content:'';position:absolute;left:0;top:1.05em;width:5px;height:5px;border-radius:50%;background:var(--tf-blue);opacity:.85}
+
+/* Problem section: larger type; lead reads as body weight, not a subhead block */
+#problem .story-lead{font-size:18px;line-height:1.62;font-weight:400;color:#525252}
+#problem .story-prose{font-size:19px;line-height:1.72}
+#problem .story-lead strong{font-weight:600;color:var(--ink)}
+
+/* Approach: larger type; lead is body weight (not full-paragraph bold from .story-lead) */
+#approach .story-lead{font-size:18px;line-height:1.62;font-weight:400;color:#525252}
+#approach .story-prose{font-size:18px;line-height:1.72}
+#approach .story-prose li{font-size:17px;line-height:1.6}
+
+/* Flows: larger type; lead is body weight (not full-paragraph bold from .story-lead) */
+#flows .story-lead{font-size:18px;line-height:1.62;font-weight:400;color:#525252}
+#flows .story-prose{font-size:18px;line-height:1.72}
+.tf-gate-inner .flow-figma-title{font-size:clamp(18px,2.35vw,22px)}
+.tf-gate-inner .flow-figma-lead{font-size:15px;line-height:1.58}
+.tf-gate-inner .flow-figma-foot{font-size:14px}
+
+/* Solution: larger type; lead is body weight */
+#solution .story-lead{font-size:18px;line-height:1.62;font-weight:400;color:#525252}
+#solution .story-prose{font-size:18px;line-height:1.72}
+#solution .story-prose h3{font-size:17px;margin:28px 0 10px}
+#solution .story-prose h3:first-of-type{margin-top:0}
+#solution .wire-video-label{font-size:clamp(18px,2.35vw,22px);margin-top:36px}
+#solution .solution-video-lead{font-size:16px;color:var(--muted);line-height:1.65;max-width:720px;margin:0 0 12px}
+
+/* Outcome / reflection: larger type; lead is body weight */
+#reflection .story-lead{font-size:18px;line-height:1.62;font-weight:400;color:#525252}
+#reflection .story-prose{font-size:18px;line-height:1.72}
+#reflection .story-prose li{font-size:17px;line-height:1.6}
+
+/* Intro — hero video: contain = full UI visible (no crop); 16:10 reads closer to laptop recordings */
+.intro-hero-wrap{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/10;
+  min-height:280px;
+  max-height:min(82vh, 720px);
+  margin-bottom:40px;
+  border-radius:16px;
+  overflow:hidden;
+  background:var(--tf-blue-soft);
+  line-height:0;
+}
+.intro-hero-video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center center;
+  border:0;
+  outline:none;
+  display:block;
+  background:var(--tf-blue-soft);
+}
+@media(max-width:640px){
+  .intro-hero-wrap{
+    aspect-ratio:16/10;
+    min-height:220px;
+    max-height:min(70vh, 520px);
+  }
+}
+.intro-eyebrow{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px}
+.intro h1{font-size:clamp(30px,4vw,42px);font-weight:600;letter-spacing:-.03em;color:var(--ink);line-height:1.08;margin-bottom:20px;max-width:18ch}
+.intro-deck{font-size:clamp(18px,1.5vw,21px);color:#525252;line-height:1.65;max-width:36rem;margin-bottom:28px}
+.intro-deck strong{font-weight:600;color:#111827}
+
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px}
+.pill-row span{font-size:12px;font-weight:600;color:var(--ink2);padding:8px 14px;border-radius:999px;background:var(--surface-soft)}
+
+.outcome-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 16px;margin-bottom:40px}
+@media(max-width:720px){.outcome-tiles{grid-template-columns:1fr}}
+.outcome-tile{background:var(--surface-soft);border-radius:14px;padding:22px 24px}
+.outcome-tile strong{display:block;font-size:clamp(18px,2.2vw,22px);font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.2;margin-bottom:8px}
+.outcome-tile span{font-size:14px;color:#737373;line-height:1.5}
+
+.intro-foot{display:grid;grid-template-columns:1fr 1fr;gap:40px 56px;padding-top:36px;border-top:1px solid var(--border-hair)}
+@media(max-width:640px){.intro-foot{grid-template-columns:1fr}}
+.intro-foot h2{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;margin-bottom:12px}
+.intro-foot p{font-size:18px;color:#525252;line-height:1.65;max-width:36ch}
+.intro-foot p strong{font-weight:600;color:#111827}
+.intro-foot ul{list-style:none;padding:0;margin:0}
+.intro-foot li{font-size:17px;color:#525252;line-height:1.6;padding:6px 0;border-bottom:1px solid var(--border-hair)}
+.intro-foot li:last-child{border-bottom:none}
+.intro-foot .ctx-k{color:#9ca3af;font-weight:400}
+
+.insight-callout{margin:28px 0;padding:24px 26px;border-left:4px solid var(--tf-blue);background:var(--tf-blue-soft);border-radius:0 14px 14px 0;max-width:720px}
+.insight-callout p{font-size:17px;font-weight:600;color:var(--ink);line-height:1.5;margin:0;letter-spacing:-.01em}
+
+/* Scope grid */
+.brief-section-head{margin-bottom:28px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px}
+.brief-title{font-size:clamp(24px,3.2vw,31px);font-weight:600;letter-spacing:-.03em;color:var(--ink);line-height:1.15}
+.brief-title .brief-accent{color:var(--tf-blue)}
+.brief-body{max-width:720px}
+.brief-block{margin-bottom:36px}
+.brief-block h3{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;margin-bottom:14px}
+.brief-list{list-style:none;padding:0;margin:0;max-width:52ch}
+.brief-list li{position:relative;padding:10px 0 10px 1.15rem;font-size:17px;color:#525252;line-height:1.55;border-bottom:1px solid var(--border-hair)}
+.brief-list li:last-child{border-bottom:none}
+.brief-list li::before{content:'';position:absolute;left:0;top:1.15em;width:5px;height:5px;border-radius:50%;background:var(--tf-blue);opacity:.85}
+.brief-list--lane li::before{background:#94a3b8;opacity:.7}
+.brief-quad-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;align-items:start;margin-bottom:0}
+@media(max-width:720px){.brief-quad-grid{grid-template-columns:1fr}}
+.brief-quad-grid .brief-block{margin-bottom:0}
+@media(min-width:721px){
+  .brief-quad-grid .scope-card{margin-left:clamp(12px,3.5vw,28px)}
+}
+.scope-card{border-radius:14px;padding:22px 24px;border:none}
+.scope-card h3{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.scope-in{background:var(--tf-blue-soft)}
+.scope-in h3{color:#1e40af}
+.scope-in .brief-list li::before{background:var(--tf-blue)}
+.scope-out{background:var(--surface-soft)}
+.scope-out h3{color:#737373}
+.scope-out .brief-list li{border-color:rgba(0,0,0,.06)}
+
+/* Flows — Figma + video */
+.flow-figma-block{margin-top:8px;margin-bottom:40px}
+.flow-figma-title{font-size:clamp(17px,2.2vw,20px);font-weight:600;letter-spacing:-.02em;color:var(--ink);line-height:1.25;margin-bottom:8px}
+.flow-figma-lead{font-size:14px;color:var(--muted);line-height:1.55;max-width:720px;margin-bottom:16px}
+.flow-figma-wrap{border-radius:14px;overflow:hidden;background:var(--surface-soft);border:1px solid var(--border-hair);line-height:0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.flow-figma-wrap iframe{display:block;width:100%;height:min(85vh,1500px);min-height:560px;border:none;vertical-align:top}
+.flow-figma-foot{margin-top:12px;font-size:13px;color:var(--muted)}
+.flow-figma-foot a{color:var(--tf-blue);text-decoration:none;font-weight:600}
+.flow-figma-foot a:hover{text-decoration:underline}
+
+.wire-video-toolbar{display:flex;justify-content:center;margin-top:20px;margin-bottom:4px}
+.wire-toggle{width:100%;max-width:300px}
+.wire-toggle-track{position:relative;display:flex;width:100%;padding:4px;border-radius:999px;background:#e8e8e8;box-sizing:border-box}
+.wire-toggle-thumb{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px) / 2);border-radius:999px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1),0 0 0 1px rgba(0,0,0,.05);transition:left .22s ease;z-index:0;pointer-events:none}
+.wire-toggle--lofi .wire-toggle-thumb{left:4px}
+.wire-toggle--hifi .wire-toggle-thumb{left:calc(4px + (100% - 8px) / 2)}
+.wire-toggle-track .wire-toggle-btn{position:relative;z-index:1;flex:1;font-family:var(--font);font-size:14px;font-weight:400;padding:10px 16px;border:none;border-radius:999px;background:transparent;color:#9ca3af;cursor:pointer;transition:color .2s ease,font-weight .2s ease}
+.wire-toggle-track .wire-toggle-btn:focus-visible{outline:2px solid var(--tf-blue);outline-offset:2px}
+.wire-toggle--lofi .wire-toggle-btn[data-fidelity="lofi"],
+.wire-toggle--hifi .wire-toggle-btn[data-fidelity="hifi"]{color:var(--ink);font-weight:600}
+.wire-toggle--lofi .wire-toggle-btn[data-fidelity="hifi"],
+.wire-toggle--hifi .wire-toggle-btn[data-fidelity="lofi"]{color:#9ca3af;font-weight:400}
+.wire-video-wrap{
+  position:relative;
+  margin-top:12px;
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--tf-blue-soft);
+  line-height:0;
+  aspect-ratio:16/10;
+  max-height:min(78vh,860px);
+  width:100%;
+}
+.wire-video-label{font-size:clamp(17px,2.2vw,20px);font-weight:600;letter-spacing:-.02em;color:var(--ink);line-height:1.25;margin-top:32px;margin-bottom:12px}
+.wire-video{
+  position:absolute;
+  inset:0;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center center;
+  vertical-align:top;
+  background:var(--tf-blue-soft);
+  border:none;
+  outline:none;
+  box-shadow:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.wire-video::-webkit-media-controls-panel{display:none!important}
+.wire-video::-webkit-media-controls-start-playback-button{display:none!important}
+.wire-video::-webkit-media-controls-enclosure{display:none!important}
+
+footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-size:13px;color:var(--muted)}
+
+/* Password gate: everything from Annotated user flow onward */
+.tf-gate{
+  position:relative;
+  margin-top:40px;
+  isolation:isolate;
+  z-index:1;
+}
+.tf-gate-inner{position:relative;z-index:0}
+.tf-gate.tf-gate--locked .tf-gate-inner{
+  filter:blur(10px);
+  pointer-events:none;
+  user-select:none;
+  max-height:min(68vh,600px);
+  overflow:hidden;
+}
+.tf-gate.tf-gate--locked .tf-gate-inner iframe,
+.tf-gate.tf-gate--locked .tf-gate-inner video{
+  pointer-events:none!important;
+}
+.tf-gate.tf-gate--unlocked .tf-gate-inner{
+  filter:none;
+  pointer-events:auto;
+  user-select:auto;
+  max-height:none;
+  overflow:visible;
+}
+.tf-gate-overlay{
+  position:absolute;
+  inset:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px 20px;
+  min-height:min(68vh,600px);
+  background:rgba(250,250,250,0.94);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.tf-gate.tf-gate--unlocked .tf-gate-overlay{display:none!important}
+.tf-gate-panel{
+  width:100%;
+  max-width:400px;
+  padding:28px 26px;
+  background:var(--white);
+  border:1px solid var(--border-hair);
+  border-radius:14px;
+  box-shadow:0 16px 48px rgba(0,0,0,.08);
+}
+.tf-gate-panel h2{font-size:17px;font-weight:600;margin-bottom:8px;color:var(--ink);letter-spacing:-.02em}
+.tf-gate-panel > p{font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.55}
+.tf-gate-panel label{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:8px}
+.tf-gate-panel input[type="password"]{
+  width:100%;
+  padding:12px 14px;
+  font-size:15px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  font-family:var(--font);
+  margin-bottom:14px;
+  box-sizing:border-box;
+}
+.tf-gate-panel input[type="password"]:focus{outline:2px solid var(--tf-blue);outline-offset:1px;border-color:transparent}
+.tf-gate-panel button[type="submit"]{
+  width:100%;
+  padding:12px 16px;
+  font-size:15px;
+  font-weight:600;
+  color:#fff;
+  background:var(--tf-blue);
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:var(--font);
+}
+.tf-gate-panel button[type="submit"]:hover{filter:brightness(1.06)}
+.tf-gate-panel button[type="submit"]:disabled{opacity:.55;cursor:not-allowed}
+.tf-gate-error{font-size:13px;color:#b91c1c;margin-top:12px;line-height:1.4}
+.tf-gate.tf-gate--pulse .tf-gate-panel{animation:tfGatePulse .5s ease}
+@keyframes tfGatePulse{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}60%{transform:translateX(5px)}}
+@media(max-width:960px){
+  body{margin-left:0;padding-top:56px}
+  .sidebar{
+    position:fixed;
+    top:0;left:0;right:0;
+    width:100%;
+    height:auto;
+    flex-direction:row;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:8px 12px;
+    padding:14px 20px;
+    overflow:visible;
+    border-bottom:1px solid var(--border);
+  }
+  .sidebar-back{margin-bottom:0;flex-shrink:0}
+  .sidebar-nav-links{
+    flex:none;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    padding:0;
+    gap:8px 14px;
+    width:auto;
+  }
+  .sidebar-nav-links a{
+    width:auto;
+    padding:6px 0;
+    font-size:14px;
+    white-space:nowrap;
+  }
+  main{padding:32px 20px 80px}
+}
+</style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar" aria-label="Case study sections">
+  <a href="/" target="_top" rel="noopener noreferrer" class="sidebar-back" aria-label="Back to portfolio">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    Back
+  </a>
+  <div class="sidebar-nav-links">
+    <a href="#intro" class="active">Introduction</a>
+    <a href="#problem">Problem</a>
+    <a href="#focus">Focus</a>
+    <a href="#approach">Approach</a>
+    <a href="#flows">Flows</a>
+    <a href="#solution">Solution</a>
+    <a href="#reflection">Outcome</a>
+  </div>
+</nav>
+
+<main>
+  <section id="intro" class="intro story-section">
+    <div class="intro-hero-wrap">
+      <video
+        class="intro-hero-video"
+        src="https://res.cloudinary.com/drajdxssq/video/upload/v1775548236/addpayment_r0dhz6.mov"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-label="Telefónica · Google Pay case study overview"
+      >
+        <p>Your browser does not support embedded video. <a href="https://res.cloudinary.com/drajdxssq/video/upload/v1775548236/addpayment_r0dhz6.mov" target="_blank" rel="noopener noreferrer">Download the clip</a>.</p>
+      </video>
+    </div>
+    <p class="intro-eyebrow">Case study</p>
+    <h1>Adding Google Pay without breaking trust</h1>
+    <p class="intro-deck"><strong>Google Pay</strong> had to join live <strong>payment methods</strong> with the same clarity as cards and other trusted options, not as a novelty screen. <strong>I led design</strong> from flows through hi-fi inside the design system at <strong>BORN and Tech Mahindra</strong>, working with Telef&oacute;nica engineering and stakeholders.</p>
+
+    <div class="pill-row" aria-label="Tools">
+      <span>Figma</span>
+      <span>Jira</span>
+      <span>Design system</span>
+    </div>
+
+    <div class="outcome-tiles" aria-label="Scale and deliverables">
+      <div class="outcome-tile">
+        <strong>383M+</strong>
+        <span>Every pattern had to hold at real telecom scale.</span>
+      </div>
+      <div class="outcome-tile">
+        <strong>Payment methods</strong>
+        <span>Add flow, outcomes, and how it reads in saved methods and defaults.</span>
+      </div>
+      <div class="outcome-tile">
+        <strong>Build-ready</strong>
+        <span>Flows, wireframes, hi-fi, and motion treated as specs engineering could implement.</span>
+      </div>
+    </div>
+
+    <div class="intro-foot">
+      <div>
+        <h2>My role</h2>
+        <p>I owned <strong>Google Pay</strong> across entry, add and verify, list, default, and edge cases, from wireframe to hi-fi with engineering and stakeholders.</p>
+      </div>
+      <div>
+        <h2>Context</h2>
+        <ul>
+          <li><strong>Client</strong> <span class="ctx-k">Telefónica</span></li>
+          <li><strong>Company</strong> <span class="ctx-k">BORN · Tech Mahindra</span></li>
+          <li><strong>Teams</strong> <span class="ctx-k">Creative · Tech · Business</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="problem" class="story-section">
+    <header class="story-head">
+      <p class="section-eyebrow">Problem</p>
+      <h2 class="story-title">Make Google Pay feel native, not bolted on</h2>
+      <p class="story-lead">People reach for <strong>payment methods they already trust</strong> when a moment has to feel fast and sure. On a telecom-scale stack, adding Google Pay was <strong>integration work</strong>, not a new line item: fit it beside <strong>existing methods</strong> without friction, confusion, or drop-off.</p>
+    </header>
+    <div class="story-prose">
+      <p>They expect the add flow to stay <strong>fast, legible, and safe</strong>; ambiguity costs completion. Google Pay spans <strong>handoff and return</strong> the core product does not fully own, so those beats had to read like the rest of the app or trust breaks early. Drop-off follows unclear labels, unexplained steps, and outcomes that do not feel final. <strong>Cards and other methods already set the pattern</strong>; Google Pay had to <strong>inherit that pattern</strong>, not run a parallel experience.</p>
+    </div>
+  </section>
+
+  <section id="focus" class="story-section">
+    <header class="brief-section-head">
+      <div>
+        <p class="section-eyebrow">Focus</p>
+        <h2 class="brief-title">What I held in scope: <span class="brief-accent">Google Pay</span></h2>
+      </div>
+    </header>
+    <div class="brief-body">
+      <div class="brief-quad-grid">
+        <div class="brief-block">
+          <h3>Goals</h3>
+          <ul class="brief-list">
+            <li>Add Google Pay as a trusted option without destabilizing existing payment methods.</li>
+            <li>Keep the add flow quick, predictable, and understandable for a broad audience.</li>
+            <li>Ship UI that fits Telef&oacute;nica&rsquo;s design system and scales with the rest of payments.</li>
+          </ul>
+        </div>
+        <article class="scope-card scope-in">
+          <h3>In scope</h3>
+          <ul class="brief-list">
+            <li>Add &amp; manage Google Pay</li>
+            <li>Payment methods list &amp; defaults</li>
+            <li>Wireframes through prototype</li>
+            <li>Design system fit</li>
+          </ul>
+        </article>
+        <div class="brief-block">
+          <h3>My lane</h3>
+          <ul class="brief-list brief-list--lane">
+            <li>Google Pay UX: add flow, verification, list, default.</li>
+            <li>States and edge cases across mobile and desktop.</li>
+            <li>Hi-fi prototypes for review and handoff.</li>
+            <li>Regular sync with developers and stakeholders.</li>
+          </ul>
+        </div>
+        <article class="scope-card scope-out">
+          <h3>Out of scope</h3>
+          <ul class="brief-list brief-list--lane">
+            <li>Other wallets</li>
+            <li>Backend / APIs</li>
+            <li>Full payments redesign</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="approach" class="story-section">
+    <header class="story-head">
+      <p class="section-eyebrow">Approach</p>
+      <h2 class="story-title">Design direction</h2>
+      <p class="story-lead">I treated this as system integration for adoption, not only shipping another option. People rarely compare payment methods in depth; they pick what feels familiar, clear, and reliable, so a new method has to read as understandable and trustworthy almost immediately.</p>
+    </header>
+    <div class="story-prose">
+      <p>Three principles steered the work:</p>
+      <ul>
+        <li><strong>Reduce cognitive load.</strong> Keep the path simple and predictable so people can finish without extra mental models or pattern-breaking layout.</li>
+        <li><strong>Leverage familiarity.</strong> Match hierarchy, cues, and tone with cards and other methods so Google Pay feels like a natural extension of what is already there.</li>
+        <li><strong>Trust and feedback.</strong> Make every step legible, especially <strong>success</strong> and <strong>error</strong>, so users always know where they are and what to do next.</li>
+      </ul>
+      <p>I mapped add and manage <strong>end to end</strong>, flagged where hesitation or failure tends to surface, and kept the experience consistent with the rest of payments so engineering is not stuck maintaining a one-off.</p>
+    </div>
+  </section>
+
+  <section id="flows" class="story-section">
+    <header class="story-head">
+      <p class="section-eyebrow">System thinking</p>
+      <h2 class="story-title">The full add-and-manage story</h2>
+      <p class="story-lead">A payment method isn&rsquo;t done at &ldquo;linked.&rdquo; It has to read correctly in the list, survive failure, and support choices like default without fighting the rest of the system.</p>
+    </header>
+    <div class="story-prose">
+      <p>I mapped mobile and desktop in one narrative so patterns stayed aligned. The Figma board below traces adding Google Pay: entry into payment methods, selection and handoff to Google&rsquo;s flow, return paths, and <strong>success vs. failure</strong>. It also covers how the method appears in the <strong>saved list</strong> and flows around <strong>making it default</strong>, moments that decide whether people actually use what they added.</p>
+      <p>Decision points and annotations spell out <strong>verification errors</strong>, <strong>retry vs. choose another method</strong>, and <strong>confirmation</strong> so the logic was shareable with engineering and stakeholders, not just a wall of frames.</p>
+    </div>
+  </section>
+
+  <div class="tf-gate tf-gate--locked" id="tfGate">
+    <div class="tf-gate-inner" id="tfGateInner">
+    <div class="flow-figma-block">
+      <h3 class="flow-figma-title">Annotated user flow (Figma)</h3>
+      <p class="flow-figma-lead">Embedded on this single frame (not the whole file). Pan and zoom inside the board as needed. If it doesn&rsquo;t load, open the link below.</p>
+      <div class="flow-figma-wrap">
+        <iframe
+          title="Figma: Google Pay, annotated user flow (single frame)"
+          src="https://embed.figma.com/design/4FeoKjDJdEzYH2ipqb0K4A?node-id=683-92961&amp;embed-host=kanishka-portfolio&amp;page-selector=false"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p class="flow-figma-foot">
+        <a href="https://www.figma.com/design/4FeoKjDJdEzYH2ipqb0K4A/projects?node-id=683-92961" target="_blank" rel="noopener noreferrer">Open this frame in Figma →</a>
+      </p>
+    </div>
+
+  <section id="solution" class="story-section">
+    <header class="story-head">
+      <p class="section-eyebrow">Solution</p>
+      <h2 class="story-title">How it shows up in the product</h2>
+      <p class="story-lead">The experience is shaped across three key moments: entry, integration, and feedback.</p>
+    </header>
+    <div class="story-prose">
+      <h3>Entry: Add payment method</h3>
+      <p>Entry is the payment methods hub. Google Pay appears as one more option in the same list, so it reads as part of the system users already trust.</p>
+      <h3>The Google Pay integration path</h3>
+      <p>From selection, the flow covers linking and verification with clear handoffs to Google where needed. Structure and copy follow other methods so the wallet still feels in-product.</p>
+      <h3>Confirmation and feedback</h3>
+      <p>Success updates the list: the method is visible, labeled, and ready to use. Failures spell out what happened and the next step (retry, verify details, or choose another method).</p>
+    </div>
+
+    <h3 class="wire-video-label">Desktop walkthrough</h3>
+    <p class="solution-video-lead">Add payment method flow in motion. Google Pay hi-fi was not fully live at capture, so this clip uses PayPal with the same structure as the Google Pay design.</p>
+    <div class="wire-video-wrap">
+      <video
+        id="wire-flow-video"
+        class="wire-video"
+        src="/addpaymentad.mov"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        disablePictureInPicture
+        controlsList="nodownload noplaybackrate"
+        data-src-hifi="/addpaymentad.mov"
+        data-src-lofi="https://res.cloudinary.com/drajdxssq/video/upload/v1775548072/herotele_cwwcpy.mov"
+        aria-label="Desktop walkthrough: add payment method (hi-fi recording)"
+      >
+        <p>Your browser does not support embedded video. <a href="/addpaymentad.mov">Download hi-fi</a> · <a href="https://res.cloudinary.com/drajdxssq/video/upload/v1775548072/herotele_cwwcpy.mov" target="_blank" rel="noopener noreferrer">Download low-fi</a></p>
+      </video>
+    </div>
+    <div class="wire-video-toolbar">
+      <div id="wire-fidelity-toggle" class="wire-toggle wire-toggle--hifi" role="group" aria-label="Switch between low-fi and hi-fi recording">
+        <div class="wire-toggle-track">
+          <span class="wire-toggle-thumb" aria-hidden="true"></span>
+          <button type="button" class="wire-toggle-btn" data-fidelity="lofi" aria-pressed="false">Low-fi</button>
+          <button type="button" class="wire-toggle-btn" data-fidelity="hifi" aria-pressed="true">Hi-fi</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reflection" class="story-section">
+    <header class="story-head">
+      <p class="section-eyebrow">Outcome</p>
+      <h2 class="story-title">What this unlocked</h2>
+      <p class="story-lead">This work enabled a Google Pay integration that could ship within an existing system, consistent with established patterns, explicit in handling edge cases, and clear to users who never see the underlying complexity.</p>
+    </header>
+    <div class="story-prose">
+      <p>Within the product, Google Pay became a first-class payment method: aligned with existing behaviors, fully integrated into success and failure states, and clearly positioned within the payment methods hierarchy.</p>
+      <p>Success would be reflected in:</p>
+      <ul>
+        <li>High completion rates when adding the method</li>
+        <li>Fewer drop-offs during the flow</li>
+        <li>Increased adoption as a preferred payment option</li>
+      </ul>
+      <p>More broadly, this project reinforced that in mature systems, integration is the design. The goal isn&rsquo;t to create something new, it&rsquo;s to introduce new capability in a way that feels inevitable.</p>
+    </div>
+  </section>
+
+  <footer>
+    Telefónica · Google Pay · Payment methods · Kanishka Balaji
+  </footer>
+
+    </div>
+    <div class="tf-gate-overlay" id="tfGateOverlay" role="region" aria-label="Password required">
+      <form class="tf-gate-panel" id="tfGateForm" autocomplete="off">
+        <h2 id="tfGateHeading">Password required</h2>
+        <p id="tfGateDesc">Enter the password to view the annotated Figma flow, solution walkthrough, and outcome.</p>
+        <label for="tfGatePassword">Password</label>
+        <input type="password" id="tfGatePassword" name="telefonica-gate" required autocomplete="current-password" />
+        <button type="submit" id="tfGateSubmit">Unlock</button>
+        <p class="tf-gate-error" id="tfGateError" hidden></p>
+      </form>
+    </div>
+  </div>
+
+</main>
+
+<script>
+(function(){
+  var nav = document.querySelector('.sidebar-nav-links');
+  if(!nav) return;
+  var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+
+  function setActive(id){
+    links.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  function scrollOffset(){
+    return window.matchMedia('(max-width:960px)').matches ? 72 : 24;
+  }
+
+  function currentSectionId(){
+    var y = window.scrollY + scrollOffset();
+    var id = sections.length ? sections[0].id : 'intro';
+    sections.forEach(function(sec){
+      var top = sec.getBoundingClientRect().top + window.scrollY;
+      if(top <= y + 2) id = sec.id;
+    });
+    return id;
+  }
+
+  function onScroll(){
+    setActive(currentSectionId());
+  }
+
+  function scrollToSectionId(id, smooth){
+    var target = document.getElementById(id);
+    if(!target) return false;
+    var top = target.getBoundingClientRect().top + window.scrollY - scrollOffset();
+    window.scrollTo({ top: Math.max(0, top), behavior: smooth ? 'smooth' : 'auto' });
+    setActive(id);
+    return true;
+  }
+
+  function scrollToGateIfLocked(id, smooth){
+    var gate = document.getElementById('tfGate');
+    if(!gate || !gate.classList.contains('tf-gate--locked')) return false;
+    if(id !== 'solution' && id !== 'reflection') return false;
+    var gtop = gate.getBoundingClientRect().top + window.scrollY - scrollOffset();
+    window.scrollTo({ top: Math.max(0, gtop), behavior: smooth ? 'smooth' : 'auto' });
+    gate.classList.remove('tf-gate--pulse');
+    void gate.offsetWidth;
+    gate.classList.add('tf-gate--pulse');
+    setTimeout(function(){ gate.classList.remove('tf-gate--pulse'); }, 600);
+    setActive(id);
+    return true;
+  }
+
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var hash = a.getAttribute('href');
+      if(!hash || hash.length < 2) return;
+      var id = hash.slice(1);
+      if(!document.getElementById(id)) return;
+      e.preventDefault();
+      if(scrollToGateIfLocked(id, true)){
+        if(window.history && window.history.replaceState){
+          window.history.replaceState(null, '', hash);
+        }
+        return;
+      }
+      scrollToSectionId(id, true);
+      if(window.history && window.history.replaceState){
+        window.history.replaceState(null, '', hash);
+      }
+    });
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  window.addEventListener('hashchange', function(){
+    if(location.hash && location.hash.length > 1){
+      var hid = location.hash.slice(1);
+      if(!scrollToGateIfLocked(hid, true)){
+        scrollToSectionId(hid, true);
+      }
+    }
+  });
+
+  if(location.hash && location.hash.length > 1){
+    requestAnimationFrame(function(){
+      var hid = location.hash.slice(1);
+      if(!scrollToGateIfLocked(hid, false)){
+        scrollToSectionId(hid, false);
+      }
+      onScroll();
+    });
+  } else {
+    onScroll();
+  }
+})();
+
+(function(){
+  var v = document.getElementById('wire-flow-video');
+  var toggle = document.getElementById('wire-fidelity-toggle');
+  if (!v || !toggle) return;
+  var hifi = v.getAttribute('data-src-hifi') || '/addpaymentad.mov';
+  var lofi = v.getAttribute('data-src-lofi') || 'https://res.cloudinary.com/drajdxssq/video/upload/v1775548072/herotele_cwwcpy.mov';
+  toggle.querySelectorAll('.wire-toggle-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var fid = btn.getAttribute('data-fidelity');
+      var isHifi = toggle.classList.contains('wire-toggle--hifi');
+      if ((fid === 'hifi' && isHifi) || (fid === 'lofi' && !isHifi)) return;
+      toggle.classList.remove('wire-toggle--hifi', 'wire-toggle--lofi');
+      toggle.classList.add(fid === 'hifi' ? 'wire-toggle--hifi' : 'wire-toggle--lofi');
+      toggle.querySelectorAll('.wire-toggle-btn').forEach(function(b){
+        b.setAttribute('aria-pressed', b.getAttribute('data-fidelity') === fid ? 'true' : 'false');
+      });
+      v.src = fid === 'lofi' ? lofi : hifi;
+      v.setAttribute('aria-label', fid === 'lofi'
+        ? 'Desktop walkthrough: add payment method (low-fi recording)'
+        : 'Desktop walkthrough: add payment method (hi-fi recording)');
+      v.load();
+      v.play().catch(function(){});
+    });
+  });
+})();
+
+(function(){
+  var gate = document.getElementById('tfGate');
+  var form = document.getElementById('tfGateForm');
+  var input = document.getElementById('tfGatePassword');
+  var errEl = document.getElementById('tfGateError');
+  var submitBtn = document.getElementById('tfGateSubmit');
+  if(!gate || !form || !input) return;
+
+  /* Force gate visible again: add ?lock=1 to the case study URL and reload. */
+  try{
+    var sp = new URLSearchParams(window.location.search);
+    if(sp.get('lock') === '1'){
+      sessionStorage.removeItem('telefonicaCsGate_ok_v2');
+      sessionStorage.removeItem('telefonicaCaseStudyUnlocked');
+      sp.delete('lock');
+      var q = sp.toString();
+      window.location.replace(window.location.pathname + (q ? ('?' + q) : '') + window.location.hash);
+      return;
+    }
+  }catch(e){}
+
+  /* Bumped when gate behavior changes so old “unlocked” tabs show the form again. */
+  var STORAGE_KEY = 'telefonicaCsGate_ok_v2';
+  /* No password here — verification runs only on your server. Empty keeps the gate from being bypassed via view source. */
+  var LOCAL_PREVIEW_PASSWORD = '';
+
+  var unlockApiUrl = '/api/telefonica-unlock';
+  try{
+    if(window.location && window.location.origin && window.location.origin !== 'null'){
+      unlockApiUrl = window.location.origin + '/api/telefonica-unlock';
+    }
+  }catch(e){}
+
+  try{
+    sessionStorage.removeItem('telefonicaCaseStudyUnlocked');
+  }catch(x){}
+
+  function showErr(msg){
+    if(!errEl) return;
+    errEl.hidden = !msg;
+    errEl.textContent = msg || '';
+  }
+
+  function unlock(){
+    gate.classList.remove('tf-gate--locked');
+    gate.classList.add('tf-gate--unlocked');
+    try{ sessionStorage.setItem(STORAGE_KEY, '1'); }catch(x){}
+    input.value = '';
+    showErr('');
+    if(submitBtn) submitBtn.disabled = false;
+  }
+
+  if(sessionStorage.getItem(STORAGE_KEY) === '1'){
+    unlock();
+  }
+
+  function tryLocal(pw){
+    if(LOCAL_PREVIEW_PASSWORD && pw === LOCAL_PREVIEW_PASSWORD){
+      unlock();
+      return true;
+    }
+    return false;
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var pw = (input.value || '').trim();
+    if(!pw) return;
+    showErr('');
+    if(submitBtn) submitBtn.disabled = true;
+    fetch(unlockApiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw }),
+      credentials: 'same-origin'
+    }).then(function(r){
+      if(r.ok){
+        unlock();
+        return;
+      }
+      if(r.status === 503){
+        if(tryLocal(pw)) return;
+        showErr('Server has no password set. In Vercel: Settings → Environment Variables → TELEFONICA_CASE_STUDY_PASSWORD for Production, then Redeploy. Open ' + unlockApiUrl + ' in a new tab — JSON should show passwordEnvConfigured:true.');
+        return;
+      }
+      if(r.status === 401){
+        showErr('Incorrect password.');
+        return;
+      }
+      showErr('Could not verify. Try again.');
+    }).catch(function(){
+      if(tryLocal(pw)) return;
+      showErr('Could not reach the API at ' + unlockApiUrl + '. Use your live site (not file://), and confirm /api/telefonica-unlock exists after deploy.');
+    }).finally(function(){
+      if(submitBtn && gate.classList.contains('tf-gate--locked')) submitBtn.disabled = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>

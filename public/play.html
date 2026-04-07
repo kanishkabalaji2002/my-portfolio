@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap" rel="stylesheet">
+<title>play : kanishka</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<style>
+  *, ::before, ::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --paper: #ffffff;
+    --ink: #111827;
+    --muted: #6b7280;
+    --faint: #9ca3af;
+    --green: #5f9e7f;
+    --border: #e5e7eb;
+  }
+  html { height: 100%; }
+  body {
+    width: 100%;
+    min-height: 100%;
+    background: var(--paper);
+    font-family: "General Sans", sans-serif;
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  /* ── Nav ── */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; height: 56px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: none; }
+  .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: "General Sans", sans-serif; font-size: 16px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: -0.025em; transition: color 0.2s; }
+  .nav-logo:hover { color: var(--green); }
+  .nav-links { display: flex; align-items: center; gap: 32px; }
+  .nav-links a { font-family: "General Sans", sans-serif; font-size: 14px; font-weight: 400; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+  .nav-links a.active { font-weight: 600; }
+
+  /* ── Page layout ── */
+  .page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 112px 40px 80px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    margin-bottom: 64px;
+  }
+  .hero-eyebrow {
+    font-family: "General Sans", sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--faint);
+    margin-bottom: 14px;
+  }
+  .hero-title {
+    font-family: "General Sans", sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.06;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  /* ── Gallery grid ── */
+  .gallery {
+    columns: 3;
+    gap: 14px;
+  }
+  @media (max-width: 860px) { .gallery { columns: 2; } }
+  @media (max-width: 520px) { .gallery { columns: 1; } }
+
+  /* ── Base item ── */
+  .g-item {
+    break-inside: avoid;
+    margin-bottom: 14px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* ── Visual item (project with image/color) ── */
+  .g-visual .g-thumb {
+    width: 100%;
+    display: block;
+    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .g-item:hover .g-thumb { transform: scale(1.04); }
+
+  .g-visual .g-thumb-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .g-visual .g-thumb-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .g-item:hover .g-thumb-inner img { transform: scale(1.04); }
+
+  .g-visual .g-thumb-inner--video {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #0f0f0f;
+    overflow: hidden;
+  }
+  .g-visual .g-thumb-inner--video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    pointer-events: none;
+  }
+
+  /* overlay on visual items */
+  .g-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(17,24,39,0.78) 0%, rgba(17,24,39,0.08) 55%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 16px 14px 14px;
+  }
+  .g-item:hover .g-overlay { opacity: 1; }
+  .g-overlay-tag {
+    font-family: "General Sans", sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 4px;
+  }
+  .g-overlay-title {
+    font-family: "General Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.35;
+  }
+  .g-arrow {
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 11px;
+    color: #fff;
+    font-family: "General Sans", sans-serif;
+  }
+  .g-item:hover .g-arrow { opacity: 1; }
+
+  /* stub below visual items */
+  .g-stub {
+    padding: 9px 12px 11px;
+    border-top: 1px solid var(--border);
+    background: var(--paper);
+  }
+  .g-stub-title {
+    font-family: "General Sans", sans-serif;
+    font-size: 11.5px;
+    line-height: 1.45;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .g-stub-tag {
+    font-size: 9px;
+    color: var(--faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  /* ── Article item (text-only, inverts on hover) ── */
+  .g-article {
+    background: var(--paper);
+    padding: 20px 18px 18px;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background 0.22s ease;
+  }
+  .g-article:hover { background: var(--ink); }
+
+  .g-article-tag {
+    font-family: "General Sans", sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--green);
+    transition: color 0.22s ease;
+  }
+  .g-article:hover .g-article-tag { color: rgba(95,158,127,0.65); }
+
+  .g-article-title {
+    font-family: "General Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+    margin-top: 9px;
+    transition: color 0.22s ease;
+  }
+  .g-article:hover .g-article-title { color: #fff; }
+
+  .g-article-meta {
+    font-size: 9px;
+    color: var(--faint);
+    margin-top: 12px;
+    transition: color 0.22s ease;
+  }
+  .g-article:hover .g-article-meta { color: rgba(255,255,255,0.35); }
+
+  /* ── Section divider ── */
+  .section-divider {
+    margin: 56px 0 40px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .section-divider h2 {
+    font-family: "General Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .section-divider p {
+    font-family: "General Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .section-divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    margin-left: 8px;
+    align-self: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">Kanishka Balaji</a>
+    <div class="nav-links">
+      <a href="/#work">Work</a>
+      <a href="/play.html" class="active">Play</a>
+      <a href="/about.html">About</a>
+      <a href="https://drive.google.com/file/d/1-g4M442BWt-ZzfnInqxdvlk_4p8A6sRB/view?usp=sharing" target="_blank" rel="noopener">Resume</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <p class="hero-eyebrow">Writing &amp; Making</p>
+    <h1 class="hero-title">thoughts, <em>scattered</em><br>on purpose.</h1>
+  </div>
+
+  <!-- Gallery grid -->
+  <div class="gallery">
+
+    <!-- Article 1: tall-ish color block + text -->
+    <a class="g-item g-visual" href="https://medium.com/@kanishkabalaji/how-ai-tools-are-shaping-and-shaking-my-design-workflow" target="_blank" rel="noopener">
+      <div class="g-thumb">
+        <div class="g-thumb-inner" style="aspect-ratio:16/9;">
+          <img src="/play/ai-design-workflow.png" alt="Illustration of a robotic hand reaching toward a monitor in a futuristic design workspace, teal and coral tones." loading="lazy" decoding="async" />
+        </div>
+      </div>
+      <div class="g-overlay">
+        <span class="g-overlay-tag">Design</span>
+        <span class="g-overlay-title">How AI Tools Are Shaping (and Shaking) My Design Workflow</span>
+      </div>
+      <div class="g-arrow">↗</div>
+      <div class="g-stub">
+        <div class="g-stub-title">How AI Tools Are Shaping (and Shaking) My Design Workflow</div>
+        <div class="g-stub-tag">Design</div>
+      </div>
+    </a>
+
+    <!-- Project: Crave -->
+    <a class="g-item g-visual" href="https://crave.figma.site" target="_blank" rel="noopener">
+      <div class="g-thumb">
+        <div class="g-thumb-inner g-thumb-inner--video">
+          <iframe
+            src="https://www.youtube.com/embed/tBODXzcn_2s?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=tBODXzcn_2s&amp;playsinline=1&amp;controls=0&amp;modestbranding=1&amp;rel=0"
+            title="Crave pitch video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+      <div class="g-overlay">
+        <span class="g-overlay-tag">Product Design · FigBuild 2025</span>
+        <span class="g-overlay-title">Crave : Turning body signals into smarter food choices</span>
+      </div>
+      <div class="g-arrow">↗</div>
+      <div class="g-stub">
+        <div class="g-stub-title">Crave</div>
+        <div class="g-stub-tag">Product Design · FigBuild 2025</div>
+      </div>
+    </a>
+
+    <!-- Article 2 -->
+    <a class="g-item g-visual" href="https://medium.com/@kanishkabalaji/designing-for-everyone" target="_blank" rel="noopener">
+      <div class="g-thumb">
+        <div class="g-thumb-inner" style="aspect-ratio:2/1;">
+          <img src="/play/designing-for-everyone.png" alt="Colorful grid of eight icons representing digital accessibility: cognitive, hearing, visual, motor, web, mobile, and communication." loading="lazy" decoding="async" />
+        </div>
+      </div>
+      <div class="g-overlay">
+        <span class="g-overlay-tag">UX</span>
+        <span class="g-overlay-title">Designing for Everyone: Why Taking an Accessibility Course Changed How I Think About UX</span>
+      </div>
+      <div class="g-arrow">↗</div>
+      <div class="g-stub">
+        <div class="g-stub-title">Designing for Everyone: Why Taking an Accessibility Course Changed How I Think About UX</div>
+        <div class="g-stub-tag">Article</div>
+      </div>
+    </a>
+
+    <!-- Project: Screen Printing -->
+    <a class="g-item g-visual" href="/screen-printing.html">
+      <div class="g-thumb">
+        <div class="g-thumb-inner" style="aspect-ratio:4/3;">
+          <img src="/screen.png" alt="Screen Printing on Textile" />
+        </div>
+      </div>
+      <div class="g-overlay">
+        <span class="g-overlay-tag">Textile / Print</span>
+        <span class="g-overlay-title">Screen Printing on Textile</span>
+      </div>
+      <div class="g-arrow">↗</div>
+      <div class="g-stub">
+        <div class="g-stub-title">Screen Printing on Textile</div>
+        <div class="g-stub-tag">Textile / Print</div>
+      </div>
+    </a>
+
+    <a class="g-item g-visual" href="/namma-metro-case-study_21.html">
+      <div class="g-thumb">
+        <div class="g-thumb-inner" style="aspect-ratio:4/3;">
+          <img src="/nammaMetro.png" alt="Namma Metro case study" />
+        </div>
+      </div>
+      <div class="g-overlay">
+        <span class="g-overlay-tag">UX Research · Usability</span>
+        <span class="g-overlay-title">Namma Metro : navigation, IA &amp; commuter testing</span>
+      </div>
+      <div class="g-arrow">↗</div>
+      <div class="g-stub">
+        <div class="g-stub-title">Namma Metro</div>
+        <div class="g-stub-tag">Case study · Public transport</div>
+      </div>
+    </a>
+
+    <!-- Article: What is UX Research, Really? -->
+    <a class="g-item g-visual" href="https://medium.com/@kanishkabalaji/what-is-ux-research-really" target="_blank" rel="noopener">
+      <div class="g-thumb">
+        <div class="g-thumb-inner" style="aspect-ratio:2/1;">
+          <img src="/play/ux-research-really.png" alt="Isometric illustration of UX research tools: magnifying glass, notebook, pen, sticky notes, and colorful cubes on a light blue background with blue shadows." loading="lazy" decoding="async" />
+        </div>
+      </div>
+      <div class="g-overlay">
+        <span class="g-overlay-tag">UX Research</span>
+        <span class="g-overlay-title">What is UX Research, Really?</span>
+      </div>
+      <div class="g-arrow">↗</div>
+      <div class="g-stub">
+        <div class="g-stub-title">What is UX Research, Really?</div>
+        <div class="g-stub-tag">Article</div>
+      </div>
+    </a>
+
+    <!-- Article 4 -->
+    <a class="g-item g-visual" href="https://medium.com/@kanishkabalaji/the-difference-between-ux-research-and-ux-design" target="_blank" rel="noopener">
+      <div class="g-thumb">
+        <div class="g-thumb-inner" style="aspect-ratio:1024/834;">
+          <img src="/play/ux-research-vs-ux-design.png" alt="Infographic comparing UX Researcher and UX Designer: split brain and lightbulb graphic with skills, activities, and backgrounds for each role." loading="lazy" decoding="async" />
+        </div>
+      </div>
+      <div class="g-overlay">
+        <span class="g-overlay-tag">UX</span>
+        <span class="g-overlay-title">The Difference Between UX Research and UX Design</span>
+      </div>
+      <div class="g-arrow">↗</div>
+      <div class="g-stub">
+        <div class="g-stub-title">The Difference Between UX Research and UX Design</div>
+        <div class="g-stub-tag">Article</div>
+      </div>
+    </a>
+
+    <!-- Article 5 -->
+    <a class="g-item g-visual" href="https://medium.com/@kanishkabalaji/applying-to-the-mhcid-program-at-uw-part-1" target="_blank" rel="noopener">
+      <div class="g-thumb">
+        <div class="g-thumb-inner" style="aspect-ratio:4/3;">
+          <img src="/play/mhcid-uw-part1.png" alt="At the University of Washington campus: seated at the base of the large W statue, brick plaza and trees behind." loading="lazy" decoding="async" style="object-position:center 35%;" />
+        </div>
+      </div>
+      <div class="g-overlay">
+        <span class="g-overlay-tag">Grad School</span>
+        <span class="g-overlay-title">Applying to the MHCI+D Program at UW: Part 1</span>
+      </div>
+      <div class="g-arrow">↗</div>
+      <div class="g-stub">
+        <div class="g-stub-title">Applying to the MHCI+D Program at UW: Part 1</div>
+        <div class="g-stub-tag">Article</div>
+      </div>
+    </a>
+
+    <!-- Article: MHCI+D at UW Part 2 -->
+    <a class="g-item g-visual" href="https://medium.com/@kanishkabalaji/applying-to-the-mhcid-program-at-uw-part-2" target="_blank" rel="noopener">
+      <div class="g-thumb">
+        <div class="g-thumb-inner" style="aspect-ratio:4/3;">
+          <img src="/play/mhcid-uw-part2.png" alt="Rainier Vista at the University of Washington in autumn: Drumheller Fountain, fall foliage, and Mount Rainier in the distance." loading="lazy" decoding="async" style="object-position:center center;" />
+        </div>
+      </div>
+      <div class="g-overlay">
+        <span class="g-overlay-tag">Grad School</span>
+        <span class="g-overlay-title">Applying to the MHCI+D Program at UW: Part 2</span>
+      </div>
+      <div class="g-arrow">↗</div>
+      <div class="g-stub">
+        <div class="g-stub-title">Applying to the MHCI+D Program at UW: Part 2</div>
+        <div class="g-stub-tag">Article</div>
+      </div>
+    </a>
+
+    <!-- Article 6 -->
+    <a class="g-item g-article" href="https://medium.com/@kanishkabalaji/i-thought-getting-into-mhcid-was-the-hard-part" target="_blank" rel="noopener">
+      <div>
+        <span class="g-article-tag">Grad School</span>
+        <p class="g-article-title">I Thought Getting Into MHCI+D Was the Hard Part. I Was Wrong.</p>
+      </div>
+      <span class="g-article-meta">Article</span>
+    </a>
+
+  </div>
+</div>
+
+
+<!-- Contact Section -->
+<section style="background:#f9f9f7;padding:80px 0;border-top:1px solid #e5e7eb;">
+  <div style="max-width:680px;margin:0 auto;padding:0 40px;">
+    <h2 style="font-family:'General Sans',sans-serif;font-size:clamp(28px,3vw,42px);font-weight:600;color:#111827;letter-spacing:-0.03em;margin-bottom:40px;">Let's have matcha?</h2>
+    <div style="background:#fff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;">
+      <div data-matcha-chat data-bounce-name="bounce"></div>
+    </div>
+    <!-- Contact details -->
+    <div style="margin-top:32px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid #e5e7eb;">
+        <span style="font-family:'General Sans',sans-serif;font-size:14px;color:#9ca3af;">Mail</span>
+        <a href="mailto:kanishkabalaji2002@gmail.com" style="font-family:'General Sans',sans-serif;font-size:14px;color:#111827;text-decoration:none;">kanishkabalaji2002@gmail.com</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid #e5e7eb;">
+        <span style="font-family:'General Sans',sans-serif;font-size:14px;color:#9ca3af;">Socials</span>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <a href="https://linkedin.com/in/kanishkabalaji" target="_blank" style="font-family:'General Sans',sans-serif;font-size:14px;color:#111827;font-weight:600;text-decoration:underline;">LinkedIn</a>
+          <span style="color:#9ca3af;">·</span>
+          <a href="https://medium.com/@kanishkabalaji2002" target="_blank" style="font-family:'General Sans',sans-serif;font-size:14px;color:#111827;font-weight:600;text-decoration:underline;">Medium</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-5px); }
+}
+</style>
+<script src="/matcha-chat.js"></script>
+
+</body>
+</html>

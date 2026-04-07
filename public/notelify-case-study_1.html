@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap" rel="stylesheet">
+<title>Notelify : Case Study</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#f0ece3;
+  --cream2:#e8e3d8;
+  --cream3:#ddd8cc;
+  --rust:#c94a2a;
+  --rust2:#a83c22;
+  --rust-light:#f5ece8;
+  --ink:#1a1714;
+  --ink2:#3d3830;
+  --ink3:#7a7268;
+  --ink4:#b0a898;
+  --border:#d5cfc4;
+  --serif:'General Sans', sans-serif;
+  --mono:'General Sans', sans-serif;
+  --body:'General Sans', sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:'General Sans', sans-serif;overflow-x:hidden;margin-left:220px}
+
+/* NAV (aligned with SafeYelli case study sidebar) */
+nav{position:fixed;top:0;left:0;width:220px;height:100vh;padding:28px 16px 32px;display:flex;flex-direction:column;align-items:stretch;background:#fff;z-index:100;overflow-y:auto}
+.nav-back{flex-shrink:0;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font-family:'General Sans', sans-serif;font-size:14px;font-weight:400;color:#888;text-decoration:none;padding:6px 0;margin-bottom:8px;border:none;background:none;transition:color .15s;letter-spacing:.01em}
+.nav-back:hover{color:#111}
+.nav-links{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:6px;width:100%;min-height:0;padding:12px 0}
+.nav-links a{font-family:'General Sans', sans-serif;font-size:16px;font-weight:400;letter-spacing:0;text-transform:uppercase;color:#aaa;text-decoration:none;padding:8px 0;display:block;width:100%;text-align:left;line-height:1.35;transition:color .15s;background:none;border-radius:0}
+.nav-links a:hover{color:#111}
+.nav-links a.active{color:#111;font-weight:600}
+.nav-demo{flex-shrink:0;margin-top:auto;padding-top:20px;font-family:'General Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#aaa;text-decoration:none;border-bottom:1px solid transparent;align-self:flex-start;transition:color .15s,border-color .15s}
+.nav-demo:hover{color:#111;border-bottom-color:#111}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;align-items:center}
+.hero-left{padding:32px 36px 32px;display:flex;flex-direction:column;gap:20px;border-right:1px solid var(--border);position:relative;padding-top:64px}
+.hero-right{background:var(--cream2);display:flex;align-items:center;justify-content:center;padding:48px 40px;position:relative;overflow:hidden;align-self:stretch;min-height:0}
+
+.watermark{position:absolute;bottom:-20px;right:-20px;font-family:'General Sans', sans-serif;font-size:clamp(80px,14vw,200px);font-weight:600;color:rgba(26,23,20,.055);line-height:1;letter-spacing:-.04em;user-select:none;pointer-events:none;white-space:nowrap}
+
+.hero-title{font-family:'General Sans', sans-serif;font-weight:600;line-height:.92;letter-spacing:-.03em;margin-top:0}
+.hero-title .line1{font-size:clamp(40px,5.5vw,80px);color:var(--ink);display:block}
+.hero-title .line2{font-size:clamp(40px,5.5vw,80px);color:var(--rust);font-style:normal;display:block}
+.hero-title .line3{font-size:clamp(40px,5.5vw,80px);color:var(--ink);display:block}
+
+.hero-desc{font-size:15px;line-height:1.75;color:var(--ink2);max-width:440px;font-weight:400}
+
+.hero-btns{display:flex;align-items:center;gap:28px;margin-top:8px}
+.btn-primary{font-family:'General Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--ink);color:var(--cream);padding:14px 28px;text-decoration:none;transition:background .2s;border:none;cursor:pointer}
+.btn-primary:hover{background:var(--rust)}
+.btn-ghost{font-family:'General Sans', sans-serif;font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);text-decoration:underline;text-underline-offset:4px;transition:color .2s}
+.btn-ghost:hover{color:var(--rust)}
+
+.hero-meta{display:flex;flex-wrap:wrap;gap:32px;padding-top:20px;border-top:1px solid var(--border)}
+.meta-item .meta-label{font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4);margin-bottom:4px}
+.meta-item .meta-val{font-family:'General Sans', sans-serif;font-size:14px;font-weight:600;color:var(--ink)}
+
+.mockup-wrap{width:100%;max-width:500px;position:relative;z-index:1}
+
+/* SHARED */
+section{padding:100px 48px}
+.inner{max-width:1200px;margin:0 auto}
+
+.s-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:48px}
+.s-eyebrow-line{width:32px;height:1px;background:var(--rust)}
+.s-eyebrow-text{font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--rust)}
+.s-eyebrow-rule{flex:1;height:1px;background:var(--border)}
+.s-eyebrow-num{font-family:'General Sans', sans-serif;font-size:10px;color:var(--ink4)}
+
+h2{font-family:'General Sans', sans-serif;font-size:clamp(36px,5vw,64px);font-weight:600;line-height:1.02;letter-spacing:-.03em;color:var(--ink);margin-bottom:20px}
+h2 em{font-style:normal;font-weight:600;color:var(--rust)}
+
+.media{border-radius:4px;background:var(--cream2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.media.v169{aspect-ratio:16/9}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);margin-bottom:72px}
+.stat{padding:36px 28px;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:'General Sans', sans-serif;font-size:64px;font-weight:600;line-height:1;color:var(--ink);margin-bottom:6px}
+.stat-d{font-size:12px;color:var(--ink3);line-height:1.5;font-weight:400}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:8px}
+.bc{background:var(--cream);border:1px solid var(--border);padding:32px 28px;position:relative;overflow:hidden;transition:border-color .25s,transform .3s,box-shadow .3s}
+.bc:hover{border-color:var(--ink3);transform:translateY(-2px);box-shadow:0 8px 28px rgba(26,23,20,.07)}
+.bc.c6{grid-column:span 6}.bc.c4{grid-column:span 4}.bc.c8{grid-column:span 8}.bc.c3{grid-column:span 3}.bc.c9{grid-column:span 9}.bc.c12{grid-column:span 12}
+.bc-accent{position:absolute;top:0;left:0;right:0;height:2px;background:var(--rust)}
+.bc-accent.green{background:#2d6a4f}
+.bc-accent.gray{background:var(--ink3)}
+.bn{font-family:'General Sans', sans-serif;font-size:11px;color:var(--ink4);margin-bottom:16px}
+.bt{font-family:'General Sans', sans-serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.bd{font-size:13px;color:var(--ink3);line-height:1.65;font-weight:400}
+
+.scenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:44px 0 48px}
+.sc{background:var(--cream);border:1px solid var(--border);padding:28px 24px;transition:border-color .25s}
+.sc:hover{border-color:var(--rust)}
+.sc-n{font-family:'General Sans', sans-serif;font-style:normal;font-size:48px;font-weight:600;color:var(--cream3);line-height:1;margin-bottom:14px}
+.sc-t{font-family:'General Sans', sans-serif;font-size:16px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.sc-d{font-size:13px;color:var(--ink3);line-height:1.6;font-weight:400}
+
+.findings{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:44px}
+.fi{border:1px solid var(--border);background:var(--cream);padding:18px 20px;display:flex;gap:12px;align-items:flex-start;transition:border-color .2s}
+.fi:hover{border-color:var(--ink3)}
+.ftag{font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;flex-shrink:0;margin-top:2px}
+.ftag.issue{background:var(--rust-light);color:var(--rust)}
+.ftag.praise{background:#e8f3ee;color:#1a5c3a}
+.ftag.insight{background:#eaecf8;color:#2d3a9c}
+.fi-text{font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400}
+
+.bq{padding:100px 48px;background:var(--ink);position:relative;overflow:hidden}
+.bq-watermark{position:absolute;bottom:-40px;right:-20px;font-family:'General Sans', sans-serif;font-size:clamp(100px,20vw,280px);font-weight:600;color:rgba(255,255,255,.03);line-height:1;pointer-events:none;white-space:nowrap;letter-spacing:-.04em}
+.bq-inner{max-width:800px;position:relative;z-index:1}
+.bq-rule{width:48px;height:1px;background:var(--rust);margin-bottom:32px}
+.bq-q{font-family:'General Sans', sans-serif;font-size:clamp(22px,3.5vw,40px);font-weight:600;font-style:normal;color:rgba(240,236,227,.9);line-height:1.35;letter-spacing:-.02em;margin-bottom:28px}
+.bq-src{font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,236,227,.3)}
+
+.changes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:40px}
+.ch{border:1px solid var(--border);background:var(--cream);padding:22px 18px;transition:border-color .25s,transform .25s}
+.ch:hover{border-color:var(--ink3);transform:translateY(-2px)}
+.cb{font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;display:inline-block;margin-bottom:12px}
+.cb.rm{background:var(--rust-light);color:var(--rust)}
+.cb.ad{background:#e8f3ee;color:#1a5c3a}
+.cb.im{background:#eaecf8;color:#2d3a9c}
+.ct{font-family:'General Sans', sans-serif;font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.cd{font-size:12px;color:var(--ink3);line-height:1.6;font-weight:400}
+
+.rg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:48px}
+.rc{background:var(--cream2);border:1px solid var(--border);padding:40px 32px}
+.rc-n{font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:16px}
+.rc-t{font-family:'General Sans', sans-serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:12px}
+.rc-d{font-size:14px;color:var(--ink3);line-height:1.75;font-weight:400}
+
+.bg-alt{background:var(--cream2)}
+
+footer{padding:52px 48px;border-top:1px solid var(--border);background:var(--cream);display:flex;align-items:center;justify-content:space-between}
+.fl{font-family:'General Sans', sans-serif;font-size:24px;font-weight:600;font-style:normal;color:var(--ink3)}
+.fr{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.fnames{font-family:'General Sans', sans-serif;font-size:10px;color:var(--ink4);letter-spacing:.06em}
+.flink{font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color .2s}
+.flink:hover{color:var(--rust)}
+
+.ticker-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:12px 0;background:var(--cream2)}
+.ticker{display:flex;gap:48px;animation:tick 26s linear infinite;white-space:nowrap}
+.t-item{font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4);flex-shrink:0}
+.t-item b{color:var(--rust);margin-right:8px}
+
+.rv{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.rv.vis{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+@keyframes fadeIn{to{opacity:1;transform:none}}
+@keyframes slideIn{from{opacity:0;transform:translateX(32px)}to{opacity:1;transform:none}}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes line-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+.hero-title .line1{animation:line-in .7s cubic-bezier(.16,1,.3,1) .1s both}
+.hero-title .line2{animation:line-in .7s cubic-bezier(.16,1,.3,1) .22s both}
+.hero-title .line3{animation:line-in .7s cubic-bezier(.16,1,.3,1) .34s both}
+.hero-desc{animation:line-in .7s cubic-bezier(.16,1,.3,1) .44s both}
+.hero-btns{animation:line-in .7s cubic-bezier(.16,1,.3,1) .54s both}
+
+.demo-btn-wrap:hover .demo-tooltip{opacity:1 !important;pointer-events:auto}
+
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;padding-top:70px}
+  .hero-left{padding:48px 24px;border-right:none;border-bottom:1px solid var(--border)}
+  .hero-right{padding:40px 24px}
+  section{padding:72px 24px}
+  .stats,.split,.bento,.scenarios,.findings,.changes,.rg{grid-template-columns:1fr}
+  .bc.c6,.bc.c4,.bc.c8,.bc.c3,.bc.c9,.bc.c12{grid-column:span 1}
+  .stat{border-right:none;border-bottom:1px solid var(--border)}
+  footer{flex-direction:column;gap:20px;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" target="_top" rel="noopener noreferrer" class="nav-back" aria-label="Back to portfolio">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    Back
+  </a>
+  <div class="nav-links">
+    <a href="#overview" class="nav-link">Overview</a>
+    <a href="#process" class="nav-link">Process</a>
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#testing" class="nav-link">Testing</a>
+    <a href="#redesign" class="nav-link">Redesign</a>
+    <a href="#reflection" class="nav-link">Reflection</a>
+  </div>
+  <a href="https://claude.ai/public/artifacts/894bbd71-f7bc-48b5-b409-bca09145c94f" class="nav-demo" target="_blank" rel="noopener">View live demo</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <h1 class="hero-title">
+      <span class="line1">Notelify</span>
+      <span class="line2">Study</span>
+      <span class="line3">Smarter.</span>
+    </h1>
+    <p class="hero-desc">An AI-powered note-taking app designed to help students write, refine, and study their notes more effectively, with intelligence woven throughout the entire workflow.</p>
+    <div class="hero-btns">
+      <div style="position:relative;display:inline-block" class="demo-btn-wrap">
+        <a href="https://claude.ai/public/artifacts/894bbd71-f7bc-48b5-b409-bca09145c94f" class="btn-primary" target="_blank" rel="noopener">View Live Demo</a>
+        <div class="demo-tooltip" style="position:absolute;bottom:calc(100% + 10px);left:0;width:320px;background:#fff;border:1px solid rgba(201,74,42,.2);border-radius:4px;padding:12px 16px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:100;box-shadow:0 4px 16px rgba(0,0,0,0.1)">
+          <span style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#c94a2a;display:block;margin-bottom:4px">Note</span>
+          <p style="font-family:'General Sans', sans-serif;font-size:10px;color:#7a7268;line-height:1.7;margin:0">The interactive demo reflects the version evaluated during user testing. A redesigned iteration is currently in active development and not yet publicly available.</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-item"><div class="meta-label">Team</div><div class="meta-val">Kanishka &amp; Sauhee</div></div>
+      <div class="meta-item"><div class="meta-label">Type</div><div class="meta-val">UX Case Study</div></div>
+      <div class="meta-item"><div class="meta-label">Stack</div><div class="meta-val">Claude AI + Web</div></div>
+      <div class="meta-item" style="flex-basis:100%"><div class="meta-label">My Role</div><div class="meta-val">Research · Wireframing · Prototyping · User Testing · User Analysis · UI Design</div></div>
+    </div>
+  </div>
+
+  <div class="hero-right" style="overflow:hidden">
+    <div class="watermark">NOTELIFY</div>
+    <div class="mockup-wrap" style="width:100%;max-width:min(720px,100%);margin:0 auto;display:flex;justify-content:center">
+      <div style="border-radius:12px;overflow:hidden;box-shadow:0 32px 80px rgba(26,23,20,.3),0 8px 24px rgba(26,23,20,.15);width:100%">
+        <iframe src="/notelify-walkthrough5.html" style="width:100%;height:min(620px,70vh);border:none;outline:none;display:block;background:#f5f4f0" title="Notelify demo"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="t-item"><b>01</b>Note Mode</div>
+    <div class="t-item"><b>02</b>Overview Mode</div>
+    <div class="t-item"><b>03</b>AI Assistant</div>
+    <div class="t-item"><b>04</b>Adaptive Learning</div>
+    <div class="t-item"><b>05</b>5 User Sessions</div>
+    <div class="t-item"><b>06</b>Think-Aloud Protocol</div>
+    <div class="t-item"><b>07</b>7 Redesign Decisions</div>
+    <div class="t-item"><b>08</b>Accessibility-First</div>
+    <div class="t-item"><b>09</b>Claude AI · Co-Dev</div>
+    <div class="t-item"><b>10</b>3 Study Scenarios</div>
+    <div class="t-item"><b>01</b>Note Mode</div>
+    <div class="t-item"><b>02</b>Overview Mode</div>
+    <div class="t-item"><b>03</b>AI Assistant</div>
+    <div class="t-item"><b>04</b>Adaptive Learning</div>
+    <div class="t-item"><b>05</b>5 User Sessions</div>
+    <div class="t-item"><b>06</b>Think-Aloud Protocol</div>
+    <div class="t-item"><b>07</b>7 Redesign Decisions</div>
+    <div class="t-item"><b>08</b>Accessibility-First</div>
+    <div class="t-item"><b>09</b>Claude AI · Co-Dev</div>
+    <div class="t-item"><b>10</b>3 Study Scenarios</div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="inner">
+    <div class="s-eyebrow rv"><div class="s-eyebrow-line"></div><span class="s-eyebrow-text">Overview</span><div class="s-eyebrow-rule"></div><span class="s-eyebrow-num">01</span></div>
+    <div style="padding:60px 60px 0">
+      <h2 style="font-family:'General Sans', sans-serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:600;line-height:1.05;letter-spacing:-.03em;color:#1a1714;margin-bottom:20px">Notes that <em style="color:#c94a2a;font-style:normal;font-weight:600">teach you back</em></h2>
+      <p style="font-size:1rem;line-height:1.75;color:#6b6560;font-weight:400;margin-bottom:0;max-width:560px">Most digital note tools are just storage. Notelify is built on the idea that reviewing and refining notes <em>is</em> the studying, and AI should be woven throughout, not bolted on.</p>
+    </div>
+    <div style="padding:0 60px 80px">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:3rem 0 0;border-radius:16px;overflow:hidden;background:#f5f5f0;">
+        <div style="padding:2rem 1.5rem;border-right:1px solid rgba(0,0,0,0.08);">
+          <p style="font-size:3.5rem;font-weight:600;color:#111827;line-height:1;margin-bottom:0.75rem;font-family:'General Sans', sans-serif;">2</p>
+          <p style="font-size:0.8rem;font-weight:600;color:#111827;margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.08em;">Modes</p>
+          <p style="font-size:0.82rem;color:#6b7280;line-height:1.6;">Note Mode for capturing. Overview Mode for active recall.</p>
+        </div>
+        <div style="padding:2rem 1.5rem;border-right:1px solid rgba(0,0,0,0.08);">
+          <p style="font-size:3.5rem;font-weight:600;color:#111827;line-height:1;margin-bottom:0.75rem;font-family:'General Sans', sans-serif;">5</p>
+          <p style="font-size:0.8rem;font-weight:600;color:#111827;margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.08em;">Participants</p>
+          <p style="font-size:0.82rem;color:#6b7280;line-height:1.6;">Think-aloud user study across 3 realistic scenarios.</p>
+        </div>
+        <div style="padding:2rem 1.5rem;border-right:1px solid rgba(0,0,0,0.08);">
+          <p style="font-size:3.5rem;font-weight:600;color:#111827;line-height:1;margin-bottom:0.75rem;font-family:'General Sans', sans-serif;">3</p>
+          <p style="font-size:0.8rem;font-weight:600;color:#111827;margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.08em;">AI Interactions</p>
+          <p style="font-size:0.82rem;color:#6b7280;line-height:1.6;">Explain, List Examples, Refine : triggered by text highlight.</p>
+        </div>
+        <div style="padding:2rem 1.5rem;">
+          <p style="font-size:3.5rem;font-weight:600;color:#111827;line-height:1;margin-bottom:0.75rem;font-family:'General Sans', sans-serif;">∞</p>
+          <p style="font-size:0.8rem;font-weight:600;color:#111827;margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.08em;">Adaptive</p>
+          <p style="font-size:0.82rem;color:#6b7280;line-height:1.6;">Most-revisited sections surface first during study sessions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="background:#fff;padding:0 48px;">
+  <div style="max-width:1200px;margin:0 auto;padding:4rem 0;border-top:1px solid #e5e7eb;">
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start;">
+      <div>
+        <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;margin-bottom:1rem;">The Problem</p>
+        <h2 style="font-size:1.8rem;font-weight:600;color:#111827;line-height:1.25;">Students take notes.<br/>They rarely go back.</h2>
+      </div>
+      <div>
+        <p style="font-size:1rem;color:#374151;line-height:1.8;margin-bottom:1.25rem;">Most digital note tools treat notes as an <em style="color:#c94a2a;font-style:normal;font-weight:600">archive</em>, you write them, file them, and rarely return. I kept seeing this pattern in how students studied, and it felt like a solvable design problem.</p>
+        <p style="font-size:1rem;color:#374151;line-height:1.8;margin-bottom:1.25rem;">I wanted to design a system where <em style="color:#c94a2a;font-style:normal;font-weight:600">AI doesn't replace thinking</em>, it scaffolds it. My goal was to let students write notes the way they always do, but have the tool <em style="color:#c94a2a;font-style:normal;font-weight:600">surface gaps, generate recall prompts</em>, and adapt to what they struggle with most.</p>
+        <p style="font-size:1rem;color:#374151;line-height:1.8;">I started with <em style="color:#c94a2a;font-style:normal;font-weight:600">user research</em>, mapped the patterns across participants, and let those insights drive every design decision, from the two-mode structure to how adaptive prioritization works.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="process">
+  <div class="inner">
+    <div class="s-eyebrow rv"><div class="s-eyebrow-line"></div><span class="s-eyebrow-text">Design Process</span><div class="s-eyebrow-rule"></div><span class="s-eyebrow-num">03</span></div>
+    <div style="padding:3rem 0 2rem;border-top:1px solid #e5e7eb;">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start;margin-bottom:3rem;">
+        <div>
+          <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;margin-bottom:1rem;">The Process</p>
+          <h2 style="font-size:1.8rem;font-weight:600;color:#111827;line-height:1.25;">Five days.<br/>One clear direction.</h2>
+        </div>
+        <div>
+          <p style="font-size:1rem;color:#374151;line-height:1.8;margin-bottom:1.25rem;">I started where I always do, with people. Before sketching a single screen, I sat with students and asked them <em style="color:#c94a2a;font-style:normal;font-weight:600">how they actually study</em>. Not how they think they should, but what really happens at 11pm before an exam.</p>
+          <p style="font-size:1rem;color:#374151;line-height:1.8;margin-bottom:1.25rem;">What I heard was consistent: <em style="color:#c94a2a;font-style:normal;font-weight:600">notes get written and abandoned</em>. The gap wasn't in the writing, it was in <em style="color:#c94a2a;font-style:normal;font-weight:600">the returning</em>. <em style="color:#c94a2a;font-style:normal;font-weight:600">That single insight</em> shaped everything that followed.</p>
+          <p style="font-size:1rem;color:#374151;line-height:1.8;">From there I moved fast, sketching flows, building wireframes, stress-testing assumptions with users, and iterating in <em style="color:#c94a2a;font-style:normal;font-weight:600">tight loops</em>. The five-day sprint forced clarity. There was no room for indecision, only for <em style="color:#c94a2a;font-style:normal;font-weight:600">listening and making</em>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="split" style="margin-bottom:64px">
+      <div class="rv"><h2>Iterative, <em>tested every step</em></h2><p style="font-size:15px;color:var(--ink3);line-height:1.8;font-weight:400">Every version was tested before changes : aligning the tool with how students naturally capture ideas, then study from them.</p></div>
+      <video class="io-video" loop muted playsinline style="width:100%;border-radius:14px;display:block;box-shadow:0 32px 80px rgba(26,23,20,.3),0 8px 24px rgba(26,23,20,.15)">
+        <source src="https://res.cloudinary.com/drajdxssq/video/upload/f_mp4/v1774641929/iteration_edhnnf.mov" type="video/mp4" />
+      </video>
+    </div>
+
+    <!-- Bridge cards -->
+    <div style="margin-top:48px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+      <div style="background:var(--cream);padding:32px 28px">
+        <p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:12px">Round 1</p>
+        <p style="font-family:'General Sans', sans-serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:10px">I built what made sense to me.</p>
+        <p style="font-size:13px;color:var(--ink3);line-height:1.7;font-weight:400">Two modes, AI on highlight, a Summarize button. It felt complete. I was proud of it. That's usually when you're <em style="color:#c94a2a;font-style:normal;font-weight:600">most wrong</em>.</p>
+      </div>
+      <div style="background:var(--cream);padding:32px 28px">
+        <p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:12px">Round 2</p>
+        <p style="font-family:'General Sans', sans-serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:10px">I watched five people use it in silence.</p>
+        <p style="font-size:13px;color:var(--ink3);line-height:1.7;font-weight:400"><em style="color:#c94a2a;font-style:normal;font-weight:600">Nobody highlighted.</em> Nobody found Summarize useful. One person asked why the AI disappeared when they switched modes. <em style="color:#c94a2a;font-style:normal;font-weight:600">Every assumption</em> I'd made was visible, and most of them were wrong.</p>
+      </div>
+      <div style="background:var(--cream);padding:32px 28px">
+        <p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:12px">Round 3</p>
+        <p style="font-family:'General Sans', sans-serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:10px">I rebuilt <em style="color:#c94a2a;font-style:normal;font-weight:600">only what the research earned.</em></p>
+        <p style="font-size:13px;color:var(--ink3);line-height:1.7;font-weight:400">Summarize went. The AI stayed across both modes. Highlight cues got clearer. <em style="color:#c94a2a;font-style:normal;font-weight:600">Seven changes</em>, <em style="color:#c94a2a;font-style:normal;font-weight:600">each one traceable</em> to a specific moment in testing. That's what the features below are built from.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="features" style="padding:100px 48px;background:#e8e3d8">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:48px">
+      <div style="width:32px;height:1px;background:#c94a2a;flex-shrink:0"></div>
+      <span style="font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#c94a2a">Features</span>
+      <div style="flex:1;height:1px;background:#d5cfc4"></div>
+      <span style="font-family:'General Sans', sans-serif;font-size:10px;color:#b0a898">02</span>
+    </div>
+
+    <div style="margin-bottom:32px">
+      <p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:10px">What I tested</p>
+      <p style="font-family:'General Sans', sans-serif;font-size:clamp(24px,3vw,40px);font-weight:600;color:var(--ink);line-height:1.1">Five features.</p>
+    </div>
+
+    <div style="margin-bottom:64px">
+      <div style="display:flex;align-items:center;gap:0;margin-bottom:24px;border:1px solid #d5cfc4;border-radius:4px;overflow:hidden;width:fit-content">
+        <button id="tab-v1" onclick="showVersion('v1')" style="font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:10px 24px;border:none;cursor:pointer;transition:all .25s;background:transparent;color:#7a7268">Version 1</button>
+        <button id="tab-v2" onclick="showVersion('v2')" style="font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:10px 24px;border:none;cursor:pointer;transition:all .25s;background:transparent;color:#7a7268">Version 2</button>
+        <button id="tab-both" onclick="showVersion('both')" style="font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:10px 24px;border:none;cursor:pointer;transition:all .25s;background:#1a1714;color:#f0ece3">Side by Side</button>
+      </div>
+      <div id="view-v1" style="display:none;opacity:0;transition:opacity .4s">
+        <div style="position:relative">
+          <div style="position:absolute;top:12px;left:12px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#f5ece8;color:#c94a2a;padding:4px 10px">Before · V1</div>
+          <img src="/v1.png" style="width:100%;border-radius:4px;display:block;box-shadow:0 8px 32px rgba(26,23,20,.1)" alt="Notelify Version 1" />
+        </div>
+      </div>
+      <div id="view-v2" style="display:none;opacity:0;transition:opacity .4s">
+        <div style="position:relative">
+          <div style="position:absolute;top:12px;left:12px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#e8f3ee;color:#1a5c3a;padding:4px 10px">After · V2</div>
+          <img src="/v2.png" style="width:100%;border-radius:4px;display:block;box-shadow:0 8px 32px rgba(26,23,20,.1)" alt="Notelify Version 2" />
+        </div>
+      </div>
+      <div id="view-both" style="opacity:1">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="position:relative">
+            <div style="position:absolute;top:12px;left:12px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#f5ece8;color:#c94a2a;padding:4px 10px">Before · V1</div>
+            <img src="/v1.png" style="width:100%;border-radius:4px;display:block;box-shadow:0 8px 32px rgba(26,23,20,.1)" alt="Notelify Version 1" />
+          </div>
+          <div style="position:relative">
+            <div style="position:absolute;top:12px;left:12px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#e8f3ee;color:#1a5c3a;padding:4px 10px">After · V2</div>
+            <img src="/v2.png" style="width:100%;border-radius:4px;display:block;box-shadow:0 8px 32px rgba(26,23,20,.1)" alt="Notelify Version 2" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#e5e7eb;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;margin:3rem 0;">
+      <div style="background:#fff;padding:2.5rem 2rem;position:relative;overflow:hidden;">
+        <div style="width:32px;height:2px;background:#c94a2a;margin-bottom:1.5rem;"></div>
+        <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;margin-bottom:0.5rem;">01</p>
+        <h3 style="font-size:1.1rem;font-weight:600;color:#111827;margin-bottom:0.75rem;">Note Mode</h3>
+        <p style="font-size:0.875rem;color:#6b7280;line-height:1.7;">Highlight any text to trigger Explain Clearly, List Examples, or Refine Text : applied instantly.</p>
+      </div>
+      <div style="background:#fff;padding:2.5rem 2rem;">
+        <div style="width:32px;height:2px;background:#2d6a4f;margin-bottom:1.5rem;"></div>
+        <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;margin-bottom:0.5rem;">02</p>
+        <h3 style="font-size:1.1rem;font-weight:600;color:#111827;margin-bottom:0.75rem;">Overview Mode</h3>
+        <p style="font-size:0.875rem;color:#6b7280;line-height:1.7;">AI study questions for active recall. Surfaces sections you revisit most automatically.</p>
+      </div>
+      <div style="background:#fff;padding:2.5rem 2rem;">
+        <div style="width:32px;height:2px;background:#c94a2a;margin-bottom:1.5rem;"></div>
+        <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;margin-bottom:0.5rem;">03</p>
+        <h3 style="font-size:1.1rem;font-weight:600;color:#111827;margin-bottom:0.75rem;">Always-On AI Chat</h3>
+        <p style="font-size:0.875rem;color:#6b7280;line-height:1.7;">Available in both modes. Flags questions outside your notes to keep your study guide credible.</p>
+      </div>
+      <div style="background:#fff;padding:2.5rem 2rem;">
+        <div style="width:32px;height:2px;background:#2d6a4f;margin-bottom:1.5rem;"></div>
+        <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;margin-bottom:0.5rem;">04</p>
+        <h3 style="font-size:1.1rem;font-weight:600;color:#111827;margin-bottom:0.75rem;">Adaptive Priority</h3>
+        <p style="font-size:0.875rem;color:#6b7280;line-height:1.7;">Sections revisited most surface first during study sessions automatically.</p>
+      </div>
+      <div style="background:#fff;padding:2.5rem 2rem;">
+        <div style="width:32px;height:2px;background:#c94a2a;margin-bottom:1.5rem;"></div>
+        <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;margin-bottom:0.5rem;">05</p>
+        <h3 style="font-size:1.1rem;font-weight:600;color:#111827;margin-bottom:0.75rem;">Accessibility</h3>
+        <p style="font-size:0.875rem;color:#6b7280;line-height:1.7;">Adjustable font size, dyslexia-friendly options, high-contrast mode : all shaped by user feedback.</p>
+      </div>
+      <div style="background:#000;padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:space-between;">
+        <p style="font-family:'General Sans', sans-serif;font-size:1.4rem;font-style:normal;color:#fff;line-height:1.4;">Notes that teach you back.</p>
+        <a href="https://claude.ai/public/artifacts/894bbd71-f7bc-48b5-b409-bca09145c94f" target="_blank" style="font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c94a2a;text-decoration:none;">Try it live →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="background:#fff;padding:0 48px;">
+  <div style="max-width:1200px;margin:0 auto;padding:4rem 0;border-top:1px solid #e5e7eb;">
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start;">
+      <div>
+        <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#9ca3af;margin-bottom:1rem;">Why Testing</p>
+        <h2 style="font-size:1.8rem;font-weight:600;color:#111827;line-height:1.25;">I had a system.<br/>I needed to know<br/>if it worked.</h2>
+      </div>
+      <div>
+        <p style="font-size:1rem;color:#374151;line-height:1.8;margin-bottom:1.25rem;">Designing the features felt good. But <em style="color:#c94a2a;font-style:normal;font-weight:600">feeling good about a design is not the same as knowing it works.</em></p>
+        <p style="font-size:1rem;color:#374151;line-height:1.8;margin-bottom:1.25rem;">The most dangerous moment in any design process is when <em style="color:#c94a2a;font-style:normal;font-weight:600">you've convinced yourself.</em> That's exactly when you need to hand it to someone with no idea what you were thinking, and watch what happens.</p>
+        <p style="font-size:1rem;color:#374151;line-height:1.8;">So I took the prototype to five participants with a think-aloud protocol. I wasn't looking for validation. I was looking for <em style="color:#c94a2a;font-style:normal;font-weight:600">the moments where the design broke</em>, because those are the moments that move the work forward.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTING -->
+<section id="testing" class="bg-alt">
+  <div class="inner">
+    <div class="s-eyebrow rv"><div class="s-eyebrow-line"></div><span class="s-eyebrow-text">User Testing</span><div class="s-eyebrow-rule"></div><span class="s-eyebrow-num">04</span></div>
+    <h2 class="rv">Three scenarios, <em>real insights</em></h2>
+    <div class="scenarios">
+      <div class="sc rv"><div class="sc-n">01</div><div class="sc-t">Notes from a video</div><div class="sc-d">Real-time note-taking during a short video : testing AI feature discoverability during capture.</div><div style="margin-top:18px"><video class="io-video" loop muted playsinline style="width:100%;border-radius:4px;display:block"><source src="https://res.cloudinary.com/drajdxssq/video/upload/f_mp4/v1774647382/notes_zvfbid.mov" type="video/mp4" /></video></div></div>
+      <div class="sc rv d1"><div class="sc-n">02</div><div class="sc-t">Learning from notes</div><div class="sc-d">Using Explain Clearly, refinement, and highlighting : surfacing interaction model confusion.</div><div style="margin-top:18px"><video class="io-video" loop muted playsinline style="width:100%;border-radius:4px;display:block"><source src="https://res.cloudinary.com/drajdxssq/video/upload/f_mp4/v1774647362/learning_v29gn1.mov" type="video/mp4" /></video></div></div>
+      <div class="sc rv d2"><div class="sc-n">03</div><div class="sc-t">Studying in Study Mode</div><div class="sc-d">Switching modes and engaging with Study Assistant : revealing duplication confusion.</div><div style="margin-top:18px"><video class="io-video" loop muted playsinline style="width:100%;border-radius:4px;display:block"><source src="https://res.cloudinary.com/drajdxssq/video/upload/f_mp4/v1774647480/study_mode_xcsgpb.mov" type="video/mp4" /></video></div></div>
+    </div>
+
+    <!-- Takeaway cards -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:2rem 0">
+      <div style="background:var(--cream);padding:32px 28px">
+        <p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#2d6a4f;margin-bottom:16px">What worked</p>
+        <p style="font-family:'General Sans', sans-serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:10px">Explain Clearly landed.</p>
+        <p style="font-size:13px;color:var(--ink3);line-height:1.7;font-weight:400">Every participant used it. Getting a deeper explanation without leaving the note felt natural and useful. <em style="color:#2d6a4f;font-style:normal;font-weight:600">This was the one thing we got right from the start.</em></p>
+      </div>
+      <div style="background:var(--cream);padding:32px 28px">
+        <p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:16px">What didn't</p>
+        <p style="font-family:'General Sans', sans-serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:10px">Three things broke immediately.</p>
+        <p style="font-size:13px;color:var(--ink3);line-height:1.7;font-weight:400"><em style="color:var(--rust);font-style:normal;font-weight:600">Nobody highlighted.</em> Summarize made notes longer. And having two AI elements side by side created confusion about which one to use and when.</p>
+      </div>
+      <div style="background:var(--cream);padding:32px 28px">
+        <p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#1B2D6B;margin-bottom:16px">The insight</p>
+        <p style="font-family:'General Sans', sans-serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:10px">AI should follow the student, not the mode.</p>
+        <p style="font-size:13px;color:var(--ink3);line-height:1.7;font-weight:400">Participants wanted help <em style="color:#1B2D6B;font-style:normal;font-weight:600">while writing</em>, not just while studying. The tool had to be present throughout, not gated behind a mode switch.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="bq">
+  <div class="bq-watermark">NOTELIFY</div>
+  <div class="inner bq-inner">
+    <div class="bq-rule"></div>
+    <p class="bq-q">"Being able to ask questions or clarify concepts during note-taking would make the system more useful in real time, not just when studying."</p>
+    <div class="bq-src">Participant · Scenario 2 · Think-Aloud Session</div>
+  </div>
+</div>
+
+<!-- REDESIGN -->
+<section id="redesign">
+  <div class="inner">
+    <div class="s-eyebrow rv"><div class="s-eyebrow-line"></div><span class="s-eyebrow-text">Redesign</span><div class="s-eyebrow-rule"></div><span class="s-eyebrow-num">05</span></div>
+    <h2 class="rv">Every change <em>earned its place</em></h2>
+
+    <div style="margin:40px 0">
+      <div style="display:flex;gap:0;margin-bottom:24px;border:1px solid #d5cfc4;border-radius:4px;overflow:hidden;width:fit-content">
+        <button id="phase-1" class="redesign-tab" style="font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:10px 24px;border:none;cursor:pointer;background:#1a1714;color:#f0ece3;transition:all .25s">Initial Concept</button>
+        <button id="phase-2" class="redesign-tab" style="font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:10px 24px;border:none;cursor:pointer;background:transparent;color:#7a7268;transition:all .25s">User Tested</button>
+        <button id="phase-3" class="redesign-tab" style="font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:10px 24px;border:none;cursor:pointer;background:transparent;color:#7a7268;transition:all .25s">Explored Further</button>
+        <button id="phase-4" class="redesign-tab" style="font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:10px 24px;border:none;cursor:pointer;background:transparent;color:#7a7268;transition:all .25s">Final Design</button>
+      </div>
+      <div style="height:2px;background:#e2ddd5;border-radius:2px;margin-bottom:28px;overflow:hidden">
+        <div id="progress-bar" style="height:100%;background:#c94a2a;transition:width .4s ease;width:25%"></div>
+      </div>
+      <div style="position:relative">
+        <div id="panel-1" class="redesign-panel" style="opacity:1">
+          <div style="position:relative">
+            <div style="position:absolute;top:12px;left:12px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#f5ece8;color:#c94a2a;padding:4px 10px">Phase 1 : Initial Concept</div>
+            <img src="/v1.png" style="width:100%;border-radius:4px;display:block;box-shadow:0 8px 32px rgba(26,23,20,.1)" alt="Initial Concept" />
+          </div>
+          <p style="font-family:'General Sans', sans-serif;font-size:11px;color:#7a7268;margin-top:14px;line-height:1.7">First exploration of the two-mode structure. Established Note Mode and Overview Mode as the core interaction model.</p>
+        </div>
+        <div id="panel-2" class="redesign-panel" style="display:none;opacity:0">
+          <div style="position:relative">
+            <div style="position:absolute;top:12px;left:12px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#eaecf8;color:#2d3a9c;padding:4px 10px">Phase 2 : User Tested</div>
+            <img src="/it1.png" style="width:100%;border-radius:4px;display:block;box-shadow:0 8px 32px rgba(26,23,20,.1)" alt="User Tested Version" />
+          </div>
+          <p style="font-family:'General Sans', sans-serif;font-size:11px;color:#7a7268;margin-top:14px;line-height:1.7">Version tested with 5 participants using think-aloud protocol. Revealed key issues with highlight interaction cues and the Summarize feature.</p>
+        </div>
+        <div id="panel-3" class="redesign-panel" style="display:none;opacity:0">
+          <div style="position:relative">
+            <div style="position:absolute;top:12px;left:12px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#fff8e8;color:#8a5c00;padding:4px 10px">Phase 3 : Further Exploration</div>
+            <img src="/it2.png" style="width:100%;border-radius:4px;display:block;box-shadow:0 8px 32px rgba(26,23,20,.1)" alt="Further Exploration" />
+          </div>
+          <p style="font-family:'General Sans', sans-serif;font-size:11px;color:#7a7268;margin-top:14px;line-height:1.7">Explored alternative approaches to AI interactions and layout after testing feedback. Tested merging the Study Assistant with the AI chat into a single unified element.</p>
+        </div>
+        <div id="panel-4" class="redesign-panel" style="display:none;opacity:0">
+          <div style="position:relative">
+            <div style="position:absolute;top:12px;left:12px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#e8f3ee;color:#1a5c3a;padding:4px 10px">Phase 4 : Final Design</div>
+            <img src="/final.png" style="width:100%;border-radius:4px;display:block;box-shadow:0 8px 32px rgba(26,23,20,.1)" alt="Final Design" />
+          </div>
+          <p style="font-family:'General Sans', sans-serif;font-size:11px;color:#7a7268;margin-top:14px;line-height:1.7">Final redesign incorporating all 7 changes from user testing. AI assistant unified across both modes, Summarize removed, bullet-point refinement fixed.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Changes carousel -->
+    <div id="changes-carousel" style="margin-top:40px">
+      <div style="display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--border);border-radius:4px;overflow:hidden;width:fit-content;margin-bottom:0">
+        <button class="ch-tab" data-index="0" style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:none;cursor:pointer;background:#c94a2a;color:#fff;border-right:1px solid var(--border);transition:all .2s">Preview &amp; Accept</button>
+        <button class="ch-tab" data-index="1" style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:none;cursor:pointer;background:transparent;color:#7a7268;border-right:1px solid var(--border);transition:all .2s">Summarize</button>
+        <button class="ch-tab" data-index="2" style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:none;cursor:pointer;background:transparent;color:#7a7268;border-right:1px solid var(--border);transition:all .2s">AI in Note Mode</button>
+        <button class="ch-tab" data-index="3" style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:none;cursor:pointer;background:transparent;color:#7a7268;border-right:1px solid var(--border);transition:all .2s">Highlight Cues</button>
+        <button class="ch-tab" data-index="4" style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:none;cursor:pointer;background:transparent;color:#7a7268;border-right:1px solid var(--border);transition:all .2s">Visual Diff</button>
+        <button class="ch-tab" data-index="5" style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:none;cursor:pointer;background:transparent;color:#7a7268;border-right:1px solid var(--border);transition:all .2s">Bullet Refine</button>
+        <button class="ch-tab" data-index="6" style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:none;cursor:pointer;background:transparent;color:#7a7268;border-right:1px solid var(--border);transition:all .2s">Note List UX</button>
+        <button class="ch-tab" data-index="7" style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:none;cursor:pointer;background:transparent;color:#7a7268;transition:all .2s">Accessibility</button>
+      </div>
+      <div style="height:2px;background:var(--border);margin-bottom:28px;overflow:hidden">
+        <div id="ch-progress" style="height:100%;background:var(--rust);transition:width .4s ease;width:12.5%"></div>
+      </div>
+      <div style="position:relative">
+
+        <div class="ch-panel" data-panel="0">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <div style="position:relative">
+              <div style="position:absolute;top:10px;left:10px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--rust-light);color:var(--rust);padding:4px 10px">Before</div>
+              <video autoplay loop muted playsinline style="width:100%;border-radius:8px;display:block;box-shadow:0 4px 20px rgba(26,23,20,.12)"><source src="/preview-before.mov" type="video/mp4" /></video>
+            </div>
+            <div style="position:relative">
+              <div style="position:absolute;top:10px;left:10px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#e8f3ee;color:#1a5c3a;padding:4px 10px">After</div>
+              <video autoplay loop muted playsinline style="width:100%;border-radius:8px;display:block;box-shadow:0 4px 20px rgba(26,23,20,.12)"><source src="/preview-after.mov" type="video/mp4" /></video>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);margin-bottom:6px">Removed</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">The Preview &amp; Accept confirmation step. Results now apply immediately on selection.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Why</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Testing showed the confirm step broke flow. Users lost context mid-note and abandoned the feature.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2d6a4f;margin-bottom:6px">Result</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">AI actions feel instant and lightweight, keeping students in their writing flow.</p></div>
+          </div>
+        </div>
+
+        <div class="ch-panel" data-panel="1" style="display:none">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--rust-light);color:var(--rust);padding:4px 10px">Before</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#e8f3ee;color:#1a5c3a;padding:4px 10px">After</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);margin-bottom:6px">Removed</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Summarize removed entirely. It generated more text than the original notes.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Why</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Users felt it added noise rather than clarity. The point is comprehension, not more text.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2d6a4f;margin-bottom:6px">Result</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Cleaner AI panel focused entirely on understanding, not content generation.</p></div>
+          </div>
+        </div>
+
+        <div class="ch-panel" data-panel="2" style="display:none">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--rust-light);color:var(--rust);padding:4px 10px">Before</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#e8f3ee;color:#1a5c3a;padding:4px 10px">After</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2d6a4f;margin-bottom:6px">Added</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">AI assistant now persists across both Note and Overview mode.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Why</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Participants wanted AI help while writing, not just when studying. Gating it felt arbitrary.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2d6a4f;margin-bottom:6px">Result</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">AI feels like a consistent collaborator, available wherever the student is working.</p></div>
+          </div>
+        </div>
+
+        <div class="ch-panel" data-panel="3" style="display:none">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--rust-light);color:var(--rust);padding:4px 10px">Before</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#e8f3ee;color:#1a5c3a;padding:4px 10px">After</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Improved</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Added onboarding hint text making highlight-to-activate visible from session one.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Why</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Not a single participant discovered highlighting on their own. The interaction was invisible.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2d6a4f;margin-bottom:6px">Result</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Users discover the core AI interaction without needing a tutorial.</p></div>
+          </div>
+        </div>
+
+        <div class="ch-panel" data-panel="4" style="display:none">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <div style="position:relative">
+              <div style="position:absolute;top:10px;left:10px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--rust-light);color:var(--rust);padding:4px 10px">Before</div>
+              <video autoplay loop muted playsinline preload="metadata" style="width:100%;border-radius:8px;display:block;box-shadow:0 4px 20px rgba(26,23,20,.12)">
+                <source src="/beforevis.mov" type="video/mp4" />
+              </video>
+            </div>
+            <div style="position:relative">
+              <div style="position:absolute;top:10px;left:10px;z-index:2;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#e8f3ee;color:#1a5c3a;padding:4px 10px">After</div>
+              <video autoplay loop muted playsinline preload="metadata" style="width:100%;border-radius:8px;display:block;box-shadow:0 4px 20px rgba(26,23,20,.12)">
+                <source src="/aftervis.mov" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Improved</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Distinct colors for each AI action. Emojis removed entirely.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Why</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Emojis felt juvenile. Users wanted a focused, academic aesthetic that matched their study context.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2d6a4f;margin-bottom:6px">Result</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Cleaner visual hierarchy that matches the seriousness of studying.</p></div>
+          </div>
+        </div>
+
+        <div class="ch-panel" data-panel="5" style="display:none">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--rust-light);color:var(--rust);padding:4px 10px">Before</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#e8f3ee;color:#1a5c3a;padding:4px 10px">After</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Improved</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Refine Text now detects bullet format and preserves list structure.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Why</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">It was converting bullet notes into paragraphs, destroying the structure students had built.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2d6a4f;margin-bottom:6px">Result</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">AI refines content without changing how students have chosen to organize it.</p></div>
+          </div>
+        </div>
+
+        <div class="ch-panel" data-panel="6" style="display:none">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--rust-light);color:var(--rust);padding:4px 10px">Before</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#e8f3ee;color:#1a5c3a;padding:4px 10px">After</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Improved</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">New notes auto-sort to top. Draggable reordering. Toggle repositioned.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Why</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Users had to scroll to find their newest note. The list felt static and hard to manage.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2d6a4f;margin-bottom:6px">Result</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Note management feels fast and in control, reducing friction before studying begins.</p></div>
+          </div>
+        </div>
+
+        <div class="ch-panel" data-panel="7" style="display:none">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--rust-light);color:var(--rust);padding:4px 10px">Before</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+            <div style="background:var(--cream2);border-radius:8px;min-height:320px;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:10px;left:10px;font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#e8f3ee;color:#1a5c3a;padding:4px 10px">After</div><p style="font-size:11px;color:var(--ink4)">Add video</p></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Improved</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Accessibility controls made more prominent. Dyslexia-friendly font improved.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1B2D6B;margin-bottom:6px">Why</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Users appreciated the options existed but couldn't find them. The panel was buried.</p></div>
+            <div style="background:var(--cream);padding:20px 18px"><p style="font-family:'General Sans', sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2d6a4f;margin-bottom:6px">Result</p><p style="font-size:13px;color:var(--ink2);line-height:1.6;font-weight:400">Accessibility features are now discoverable and feel like a first-class part of the product.</p></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reflection" style="background:#fff;padding:5rem 0;border-top:1px solid #e5e7eb;">
+  <div class="inner">
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start;margin-bottom:4rem;">
+      <div>
+        <div class="s-eyebrow rv"><div class="s-eyebrow-line"></div><span class="s-eyebrow-text">Looking Back</span><div class="s-eyebrow-rule"></div></div>
+        <h2 class="rv" style="margin-top:1.5rem;">If I did this<br><em>all over again</em></h2>
+      </div>
+      <div style="padding-top:1rem;">
+        <p style="font-size:1.05rem;color:#374151;line-height:1.75;margin-bottom:1.25rem;">Notelify was a five-day sprint. But the questions it raised have stayed with me longer than the build itself.</p>
+        <p style="font-size:1.05rem;color:#374151;line-height:1.75;margin-bottom:1.25rem;">What I kept thinking about after testing: I'd designed features users found useful, but I'd also introduced friction I didn't anticipate. The highlight-to-activate pattern felt obvious to me as the designer. It was invisible to every single participant.</p>
+        <p style="font-size:1.05rem;color:#374151;line-height:1.75;">That gap, between designer intuition and user expectation, is where the most valuable design work happens. I left this project with a sharper instinct for where that gap tends to hide.</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#e5e7eb;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;margin-top:3rem;">
+      <div style="background:#fff;padding:2rem 1.75rem;">
+        <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#c94a2a;margin-bottom:0.75rem;">What I'd do differently</p>
+        <p style="font-size:0.9rem;color:#374151;line-height:1.7;">Break the prototype earlier. Test rougher things with real people before I've convinced myself they're good. The discomfort of showing unfinished work is almost always worth it.</p>
+      </div>
+      <div style="background:#fff;padding:2rem 1.75rem;border-left:1px solid #e5e7eb;">
+        <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#2d6a4f;margin-bottom:0.75rem;">What I overcame</p>
+        <p style="font-size:0.9rem;color:#374151;line-height:1.7;">Designing for approval instead of clarity. I learned to stop softening decisions and start making them, trusting the research over my own assumptions about what users would tolerate.</p>
+      </div>
+      <div style="background:#fff;padding:2rem 1.75rem;border-left:1px solid #e5e7eb;">
+        <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#1B2D6B;margin-bottom:0.75rem;">What I didn't see coming</p>
+        <p style="font-size:0.9rem;color:#374151;line-height:1.7;">How much the small decisions would matter. The micro-copy, the timing of an animation, the exact moment the AI speaks up, these felt minor until users reacted to them. Details are the design.</p>
+      </div>
+      <div style="background:#fff;padding:2rem 1.75rem;border-left:1px solid #e5e7eb;">
+        <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#6b7280;margin-bottom:0.75rem;">Building with AI</p>
+        <p style="font-size:0.9rem;color:#374151;line-height:1.7;">Prompting became a design skill. Vague inputs gave vague results, the more specific I was about the user, the context, and the feeling I was designing for, the sharper everything got.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#111;padding:120px 48px;text-align:center;position:relative;overflow:hidden">
+  <div style="font-family:'General Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#c94a2a;margin-bottom:28px">Try It Yourself</div>
+  <h2 style="font-family:'General Sans', sans-serif;font-size:clamp(48px,8vw,96px);font-weight:600;line-height:.95;letter-spacing:-.03em;color:#f0ece3;margin-bottom:0">See Notelify</h2>
+  <h2 style="font-family:'General Sans', sans-serif;font-size:clamp(48px,8vw,96px);font-weight:600;line-height:.95;letter-spacing:-.03em;font-style:normal;color:#c94a2a;margin-bottom:32px">in action.</h2>
+  <p style="font-size:17px;color:rgba(240,236,227,.5);line-height:1.7;max-width:560px;margin:0 auto 52px;font-weight:400">The live demo is fully interactive. Open a note, try the slash commands, highlight some text, and ask the study assistant anything.</p>
+  <p style="font-family:'General Sans', sans-serif;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(240,236,227,.3);margin-bottom:32px;margin-top:-20px">Note: The live demo reflects the user-tested version of Notelify. The redesigned V2 is currently in development.</p>
+  <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap">
+    <a href="https://claude.ai/public/artifacts/894bbd71-f7bc-48b5-b409-bca09145c94f" target="_blank" rel="noopener" style="font-family:'General Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#f0ece3;color:#1a1714;padding:18px 36px;text-decoration:none;transition:background .2s">Open Live Demo →</a>
+    <a href="mailto:kanishkabalaji2002@gmail.com" style="font-family:'General Sans', sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:#f0ece3;padding:18px 36px;text-decoration:none;border:1px solid rgba(240,236,227,.25);transition:border-color .2s">Get In Touch</a>
+  </div>
+</section>
+
+<script>
+// Scroll reveal
+(function(){
+  var els = document.querySelectorAll('.rv');
+  if(!els.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target); } });
+  },{threshold:0.12});
+  els.forEach(function(el){ io.observe(el); });
+})();
+
+// Nav scroll spy
+(function() {
+  var sections = ['overview','process','features','testing','redesign','reflection'];
+  var links = document.querySelectorAll('.nav-link');
+  function updateNav() {
+    var current = sections[0];
+    sections.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= 120) current = id;
+    });
+    links.forEach(function(link) {
+      var href = link.getAttribute('href');
+      link.classList.toggle('active', href === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+})();
+
+// Redesign carousel
+(function() {
+  var tabs = document.querySelectorAll('.redesign-tab');
+  var panels = document.querySelectorAll('.redesign-panel');
+  var current = 0;
+  var timer;
+  var paused = false;
+  function showTab(i) {
+    current = i;
+    tabs.forEach(function(t,idx){ t.style.background = idx===i ? '#1a1714' : 'transparent'; t.style.color = idx===i ? '#f0ece3' : '#7a7268'; });
+    panels.forEach(function(p,idx){ p.style.display = idx===i ? 'block' : 'none'; setTimeout(function(){ if(p) p.style.opacity = idx===i ? '1' : '0'; },10); });
+    var bar = document.getElementById('progress-bar');
+    if(bar) bar.style.width = ((i+1)/tabs.length*100)+'%';
+  }
+  function start() { timer = setInterval(function(){ if(!paused) showTab((current+1)%tabs.length); },4000); }
+  tabs.forEach(function(tab,i){ tab.addEventListener('click',function(){ showTab(i); paused=true; setTimeout(function(){ paused=false; },8000); }); });
+  showTab(0); start();
+})();
+
+// V1/V2 switcher
+var _vCurrent = 'both';
+function showVersion(v) {
+  _vCurrent = v;
+  ['v1','v2','both'].forEach(function(id) {
+    var el = document.getElementById('view-'+id);
+    if(el){ el.style.display = id===v ? 'block' : 'none'; setTimeout(function(){ if(el) el.style.opacity = id===v ? '1' : '0'; },10); }
+    var btn = document.getElementById('tab-'+id);
+    if(btn){ btn.style.background = id===v ? '#1a1714' : 'transparent'; btn.style.color = id===v ? '#f0ece3' : '#7a7268'; }
+  });
+}
+
+// Changes carousel
+(function() {
+  var tabs = document.querySelectorAll('.ch-tab');
+  var panels = document.querySelectorAll('.ch-panel');
+  var progress = document.getElementById('ch-progress');
+  var current = 0;
+  var paused = false;
+  var tabColors = ['#c94a2a','#c94a2a','#2d6a4f','#1B2D6B','#1B2D6B','#1B2D6B','#1B2D6B','#1B2D6B'];
+  function showTab(i) {
+    current = i;
+    tabs.forEach(function(t,idx){ t.style.background = idx===i ? tabColors[idx] : 'transparent'; t.style.color = idx===i ? '#fff' : '#7a7268'; });
+    panels.forEach(function(p,idx){
+      p.style.display = idx===i ? 'block' : 'none';
+      if (idx===i) {
+        p.querySelectorAll('video').forEach(function(v){
+          v.playbackRate = 1.5;
+          var pr = v.play();
+          if (pr && pr.catch) pr.catch(function(){});
+        });
+      }
+    });
+    if(progress) progress.style.width = ((i+1)/tabs.length*100)+'%';
+  }
+  setInterval(function(){ if(!paused) showTab((current+1)%tabs.length); },5000);
+  tabs.forEach(function(tab,i){ tab.addEventListener('click',function(){ showTab(i); paused=true; setTimeout(function(){ paused=false; },10000); }); });
+  showTab(0);
+})();
+
+// Autoplay videos on scroll
+(function() {
+  var videos = document.querySelectorAll('.io-video');
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.play(); } else { e.target.pause(); } });
+  },{threshold:0.3});
+  videos.forEach(function(v){ v.removeAttribute('autoplay'); obs.observe(v); });
+})();
+</script>
+</body>
+</html>

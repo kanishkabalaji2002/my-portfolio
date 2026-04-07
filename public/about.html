@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About &mdash; Kanishka Balaji</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'General Sans',sans-serif;font-weight:400;background:#ffffff;color:#111827;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6{font-family:'General Sans',sans-serif;font-weight:600}
+p,li{font-family:'General Sans',sans-serif;font-weight:400}
+a{font-family:inherit}
+strong,b{font-weight:600}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+
+
+
+
+
+
+
+.nc{font-family:'General Sans',sans-serif;font-size:.875rem;font-weight:600;padding:.5rem 1.25rem;border-radius:9999px;border:1px solid #5f9e7f;color:#5f9e7f;background:transparent;text-decoration:none;transition:all .2s}
+.nc:hover{background:#5f9e7f;color:#fff}
+.wrap{max-width:80rem;margin:0 auto;padding:0 1.5rem}
+.sec{max-width:80rem;margin:0 auto;padding:80px 1.5rem}
+.pill{font-family:'General Sans',sans-serif;display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:9999px;background:#f3f4f6;font-size:12px;font-weight:600;color:#6b7280;margin-bottom:16px}
+.stitle{font-family:'General Sans',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:600;letter-spacing:-.02em;color:#111827;margin-bottom:48px}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(95,158,127,.4)}50%{box-shadow:0 0 0 12px rgba(95,158,127,0)}}
+.qa-item{display:grid;grid-template-columns:1fr 1.6fr;gap:40px;align-items:start;padding:40px 0;border-top:1px solid #e5e7eb}
+.qa-num{font-family:'General Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;color:#d1d5db;margin-bottom:10px}
+.qa-q{font-family:'General Sans',sans-serif;font-size:15px;font-weight:600;color:#111827;line-height:1.4}
+.qa-a{font-family:'General Sans',sans-serif;font-size:17px;font-weight:400;color:#374151;line-height:1.75;padding:24px 28px;background:#fff;border-radius:16px;border:1px solid #e5e7eb;transition:box-shadow .25s,transform .25s}
+.qa-a:hover{box-shadow:0 8px 32px rgba(0,0,0,.07);transform:translateY(-2px)}
+.sp{font-family:'General Sans',sans-serif;display:inline-flex;align-items:center;padding:8px 16px;border-radius:9999px;font-size:13px;font-weight:600;border:1px solid #e5e7eb;background:#fff;color:#374151;transition:all .2s;cursor:default;margin:4px}
+.sp:hover{border-color:#5f9e7f;color:#fff;background:#5f9e7f;transform:scale(1.05)}
+.card{font-family:'General Sans',sans-serif;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:28px;transition:box-shadow .3s,transform .3s,border-color .3s;cursor:default;opacity:0;transform:translateY(20px)}
+.card.in{opacity:1;transform:none}
+.card:hover{box-shadow:0 16px 48px rgba(0,0,0,.1);transform:translateY(-6px);border-color:#5f9e7f}
+.cta-btn{font-family:'General Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:#5f9e7f;color:#fff;text-decoration:none;border-radius:9999px;font-size:15px;font-weight:600;transition:background .2s,transform .2s;animation:pulse 2.5s ease-in-out infinite}
+.cta-btn:hover{background:#4a8a6a;transform:scale(1.03)}
+footer{font-family:'General Sans',sans-serif;font-weight:400;background:#fff;padding:3rem 0}
+  /* Nav */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; height: 56px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: none; font-family: "General Sans", sans-serif; }
+  .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: "General Sans", sans-serif; font-size: 16px; font-weight:600; color: #111827; text-decoration: none; letter-spacing: -0.025em; transition: color 0.2s; }
+  .nav-logo:hover { color: #5f9e7f; }
+  .nav-links { display: flex; align-items: center; gap: 32px; }
+  .nav-links a { font-family: "General Sans", sans-serif; font-size: 14px; font-weight: 400; color: #6b7280; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: #111827; }
+  .nav-links a.active { color: #111827; font-weight: 600; }
+  .about-portrait-rotator { position: relative; width: 100%; height: 100%; min-height: 0; }
+  .about-portrait-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transition: opacity 0.85s ease; }
+  .about-portrait-slide.active { opacity: 1; z-index: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .about-portrait-slide { transition: none; }
+  }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".rv, .card").forEach(function (el) {
+    el.classList.add("in");
+  });
+});
+</script>
+</head>
+<body>
+
+<nav style="position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);font-family:'General Sans',sans-serif">
+  <div style="max-width:80rem;margin:0 auto;padding:1rem 3rem;display:flex;align-items:center;justify-content:space-between">
+    <a href="/" target="_top" style="color:#111827;font-weight:600;font-size:1rem;letter-spacing:-0.025em;text-decoration:none" onmouseover="this.style.color='#5f9e7f'" onmouseout="this.style.color='#111827'">Kanishka Balaji</a>
+    <div style="display:flex;align-items:center;gap:2rem;margin-left:auto">
+      <a href="/" target="_top" style="color:#6b7280;font-size:0.875rem;font-weight:400;text-decoration:none" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#6b7280'">Work</a>
+      <a href="/play.html" target="_top" style="color:#6b7280;font-size:0.875rem;font-weight:400;text-decoration:none" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#6b7280'">Play</a>
+      <a href="/about.html" target="_top" style="color:#6b7280;font-size:0.875rem;font-weight:400;text-decoration:none" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#6b7280'">About</a>
+      <a href="https://drive.google.com/file/d/1-g4M442BWt-ZzfnInqxdvlk_4p8A6sRB/view?usp=sharing" target="_blank" rel="noopener noreferrer" style="color:#6b7280;font-size:0.875rem;font-weight:400;text-decoration:none" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#6b7280'">Resume</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<div style="max-width:80rem;margin:0 auto;padding:100px 1.5rem 80px;display:grid;grid-template-columns:1.2fr 0.8fr;gap:80px;align-items:center;">
+  <div>
+    <p style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.15em;color:#9ca3af;margin-bottom:20px;">Product Designer &middot; MHCI+D @ UW</p>
+    <h1 style="font-family:'General Sans', sans-serif;font-size:clamp(32px,5vw,58px);font-weight:600;line-height:1.08;letter-spacing:-0.03em;color:#111827;margin-bottom:28px;">designer.<br>researcher.<br><span style="color:#5f9e7f;">slightly obsessed</span><br>with food.</h1>
+    <p style="font-size:18px;color:#6b7280;line-height:1.72;margin-bottom:28px;max-width:42rem;">I will plan an entire trip around food. I'm perpetually looking for the next destination, preferably one that involves some form of mild danger. Certified adrenaline junkie. I ran a mental health podcast for two years and genuinely believe conversation is a design tool.</p>
+  </div>
+  <div>
+    <div style="border-radius:20px;overflow:hidden;aspect-ratio:3/4;max-width:400px;margin-left:auto;animation:float 6s ease-in-out infinite;">
+    <div class="about-portrait-rotator" aria-label="Portrait photos rotating">
+      <img class="about-portrait-slide active" src="/about/portrait-1.png" alt="Kanishka" width="800" height="1067" decoding="async" />
+      <img class="about-portrait-slide" src="/about/portrait-2.png" alt="" width="800" height="1067" decoding="async" />
+      <img class="about-portrait-slide" src="/about/portrait-3.png" alt="" width="800" height="1067" decoding="async" />
+      <img class="about-portrait-slide" src="/about/portrait-4.png" alt="" width="800" height="1067" decoding="async" />
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- Q&A -->
+
+
+
+
+<!-- PERSONALITY -->
+<div class="sec rv" id="cs" style="margin-top:0;padding-top:2rem;">
+  <div class="pill">Things that make me, me</div>
+  <h2 class="stitle">A few pieces of who I am.</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+    <div class="card" style="position:relative;overflow:hidden;"><video autoplay muted loop playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;border-radius:inherit;"><source src="https://res.cloudinary.com/drajdxssq/video/upload/v1775594076/podcast_lnbopj.mov" type="video/quicktime"></video><div style="position:absolute;bottom:0;left:0;right:0;padding:20px 24px;background:linear-gradient(transparent,rgba(0,0,0,0.65));border-radius:0 0 16px 16px;z-index:1;"><h3 style="font-size:17px;font-weight:600;color:#ffffff;margin-bottom:8px;">Podcast host on mental health &amp; storytelling</h3><p style="font-size:14px;color:rgba(255,255,255,0.85);line-height:1.6;">Builds empathy, active listening, and comfort with difficult conversations.</p></div></div>
+    <div class="card" style="position:relative;overflow:hidden;background-image:url('/bamboo.jpg');background-size:cover;background-position:center;"><div style="position:absolute;bottom:0;left:0;right:0;padding:20px 24px;background:linear-gradient(transparent,rgba(0,0,0,0.65));border-radius:0 0 16px 16px;z-index:1;"><h3 style="font-size:17px;font-weight:600;color:#ffffff;margin-bottom:8px;">Helped build a 30-foot bamboo sculpture</h3><p style="font-size:14px;color:rgba(255,255,255,0.85);line-height:1.6;">Collaborative making at scale &mdash; learning by doing, getting your hands dirty.</p></div></div>
+    <div style="position:relative;border-radius:16px;overflow:hidden;aspect-ratio:4/3;">
+  <img src="/food.jpeg" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+  <div style="position:absolute;bottom:0;left:0;right:0;padding:20px 24px;background:linear-gradient(transparent,rgba(0,0,0,0.65));">
+    <p style="font-weight:600;font-size:15px;color:#fff;margin-bottom:4px;">Known to plan my day around food</p>
+    <p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.5;">Cultural curiosity &amp; attention to sensory experience : runs <a href="https://instagram.com/foodie.ventures" target="_blank" style="color:#5f9e7f;font-weight:600;text-decoration:none;">@foodie.ventures</a></p>
+  </div>
+</div>
+    <div class="card" style="position:relative;overflow:hidden;background-image:url('/postcard.jpeg');background-size:cover;background-position:center;"><div style="position:absolute;bottom:0;left:0;right:0;padding:20px 24px;background:linear-gradient(transparent,rgba(0,0,0,0.65));z-index:1;border-radius:0 0 16px 16px;"><h3 style="font-size:17px;font-weight:600;color:#ffffff;margin-bottom:8px;">Collects postcards wherever I go</h3><p style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">Observer of places, typography, and the everyday design of the world.</p></div></div>
+    <div class="card" style="position:relative;overflow:hidden;background-image:url('/mud.jpg');background-size:cover;background-position:center;"><div style="position:absolute;bottom:0;left:0;right:0;padding:20px 24px;background:linear-gradient(transparent,rgba(0,0,0,0.65));border-radius:0 0 16px 16px;z-index:1;"><h3 style="font-size:17px;font-weight:600;color:#ffffff;margin-bottom:8px;">Building with cob &amp; vernacular techniques</h3><p style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">Earth, straw, water &mdash; understanding what it means to build slowly with what's already there.</p></div></div>
+    <div style="position:relative;border-radius:16px;overflow:hidden;aspect-ratio:4/3;"><img src="/joy.jpeg" style="width:100%;height:100%;object-fit:cover;display:block;"/><div style="position:absolute;bottom:0;left:0;right:0;padding:20px 24px;background:linear-gradient(transparent,rgba(0,0,0,0.65));"><p style="font-weight:600;font-size:15px;color:#fff;margin-bottom:4px;">Finds joy in small wins</p><p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.5;">Progress over perfection &mdash; sustainable creative practice, always.</p></div></div>
+  </div>
+</div>
+
+<!-- Let's have matcha? (same block as play.html) -->
+<section style="background:#f9f9f7;padding:80px 0;border-top:1px solid #e5e7eb;">
+  <div style="max-width:680px;margin:0 auto;padding:0 40px;">
+    <h2 style="font-family:'General Sans',sans-serif;font-size:clamp(28px,3vw,42px);font-weight:600;color:#111827;letter-spacing:-0.03em;margin-bottom:40px;">Let&apos;s have matcha?</h2>
+    <div style="background:#fff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;">
+      <div data-matcha-chat data-bounce-name="aboutMatchaBounce"></div>
+    </div>
+    <div style="margin-top:32px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid #e5e7eb;">
+        <span style="font-family:'General Sans',sans-serif;font-size:14px;color:#9ca3af;">Mail</span>
+        <a href="mailto:kanishkabalaji2002@gmail.com" style="font-family:'General Sans',sans-serif;font-size:14px;color:#111827;text-decoration:none;">kanishkabalaji2002@gmail.com</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid #e5e7eb;">
+        <span style="font-family:'General Sans',sans-serif;font-size:14px;color:#9ca3af;">Socials</span>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <a href="https://linkedin.com/in/kanishkabalaji" target="_blank" rel="noopener noreferrer" style="font-family:'General Sans',sans-serif;font-size:14px;color:#111827;font-weight:600;text-decoration:underline;">LinkedIn</a>
+          <span style="color:#9ca3af;">&middot;</span>
+          <a href="https://medium.com/@kanishkabalaji2002" target="_blank" rel="noopener noreferrer" style="font-family:'General Sans',sans-serif;font-size:14px;color:#111827;font-weight:600;text-decoration:underline;">Medium</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+@keyframes aboutMatchaBounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+</style>
+<script src="/matcha-chat.js"></script>
+<script>
+(function () {
+  var rotator = document.querySelector(".about-portrait-rotator");
+  if (!rotator) return;
+  var slides = rotator.querySelectorAll(".about-portrait-slide");
+  if (slides.length < 2) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var i = 0;
+  setInterval(function () {
+    slides[i].classList.remove("active");
+    i = (i + 1) % slides.length;
+    slides[i].classList.add("active");
+  }, 4500);
+})();
+</script>
+
+</main>
+</body>
+</html>

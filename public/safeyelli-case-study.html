@@ -1,0 +1,2368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeYelli: UX Case Study</title>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-sans: 'General Sans', sans-serif;
+    --yellow: #F5C518;
+    --yellow-light: #FFF8D6;
+    --yellow-dark: #D4A800;
+    --black: #111111;
+    --dark: #1A1A1A;
+    --mid: #444444;
+    --muted: #888888;
+    --border: #E8E8E8;
+    --surface: #F9F9F7;
+    --white: #FFFFFF;
+    --red: #E63946;
+    --green: #2D9B5A;
+    --navy: #0c1f3f;
+    --navy-soft: rgba(12, 31, 63, 0.62);
+    --sidebar-w: 260px;
+    --content-max: 820px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--white);
+    color: var(--black);
+    line-height: 1.62;
+    font-size: 17px;
+    font-weight: 400;
+  }
+
+  .main strong,
+  .main b {
+    font-weight: 600;
+  }
+
+  em {
+    font-family: inherit;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    padding: 28px 20px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--white);
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .sidebar-back {
+    flex-shrink: 0;
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 6px 0;
+    margin-bottom: 8px;
+    border: none;
+    background: none;
+    transition: color 0.15s;
+    letter-spacing: 0.01em;
+  }
+
+  .sidebar-back:hover {
+    color: var(--black);
+  }
+
+  .sidebar-nav-links {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    gap: 6px;
+    width: 100%;
+    min-height: 0;
+    padding: 12px 0;
+  }
+
+  .sidebar-nav-links a {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    color: #AAAAAA;
+    text-decoration: none;
+    padding: 8px 0;
+    display: block;
+    width: 100%;
+    text-align: left;
+    letter-spacing: 0;
+    transition: color 0.15s;
+    background: none;
+    border-radius: 0;
+    line-height: 1.35;
+  }
+
+  .sidebar-nav-links a:hover {
+    color: var(--black);
+  }
+
+  .sidebar-nav-links a.active {
+    color: var(--black);
+    font-weight: 600;
+    background: none;
+  }
+
+  /* ─── MAIN ─── */
+  .main {
+    margin-left: var(--sidebar-w);
+    min-height: 100vh;
+  }
+
+  /* ─── HERO (video + detail panel) ─── */
+  section#hero {
+    padding: 0;
+    background: var(--white);
+    border-bottom: none;
+  }
+
+  .hero {
+    background: var(--white);
+    color: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-video-stage {
+    padding: 48px 80px 28px;
+    background: var(--white);
+  }
+
+  .hero-video-inner {
+    max-width: min(1200px, 100%);
+    margin: 0 auto;
+  }
+
+  /* Hero video: cover fills frame (no letterboxing); anchor left so copy column stays in view */
+  .hero-video-wrap,
+  #solution .video-annotate-wrap,
+  #solution .solution-media-frame {
+    border: none;
+    box-shadow: none;
+  }
+
+  .hero-video-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: min(72vh, 820px);
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--white);
+    position: relative;
+  }
+
+  #solution .video-annotate-wrap {
+    border-radius: 16px;
+  }
+
+  #solution .solution-media-frame {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .hero-video-wrap video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: left center;
+    background: transparent;
+    border-radius: 16px;
+  }
+
+  .hero-detail-panel {
+    border-top: none;
+    border-bottom: 1px solid var(--border);
+    background: var(--white);
+    padding: 40px 80px 72px;
+  }
+
+  .hero-detail-inner {
+    max-width: min(1200px, 100%);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: clamp(20px, 3vw, 48px);
+    margin-bottom: 20px;
+  }
+
+  .hero-title-row .hero-case-title {
+    margin: 0;
+    flex: 0 1 auto;
+  }
+
+  .hero-case-tagline {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.68;
+    color: var(--mid);
+    margin: 0;
+    flex: 1 1 min(100%, 320px);
+    min-width: min(100%, 260px);
+    max-width: 560px;
+    padding-top: 0.2em;
+  }
+
+  @media (max-width: 640px) {
+    .hero-case-tagline {
+      padding-top: 0;
+      max-width: none;
+    }
+  }
+
+  .hero-case-title {
+    font-family: var(--font-sans);
+    font-size: clamp(48px, 7.5vw, 92px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: var(--black);
+    margin: 0 0 24px;
+  }
+
+  .hero-case-title .safe {
+    color: var(--black);
+  }
+
+  .hero-case-title .yelli {
+    color: var(--yellow-dark);
+  }
+
+  .hero-case-lead {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.68;
+    color: var(--mid);
+    max-width: none;
+    margin: 0 0 20px;
+  }
+
+  .hero-detail-meta-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 0;
+    margin-top: 36px;
+    padding-top: 36px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Match #problem: .lead + .body-text */
+  #hero .hero-aside-body {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.68;
+    color: var(--mid);
+    margin: 0 0 20px;
+    max-width: none;
+  }
+
+  #hero .hero-aside-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  #hero .hero-aside-list li {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.78;
+    color: var(--mid);
+    padding-left: 1.1em;
+    position: relative;
+  }
+
+  #hero .hero-aside-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--black);
+    opacity: 0.28;
+  }
+
+  #hero .hero-meta-footer {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  #hero .hero-platform-footer {
+    margin-top: 0;
+    padding-top: 28px;
+    border-top: none;
+  }
+
+  #hero .hero-aside-block {
+    margin-top: 0;
+    padding-top: 28px;
+    border-top: none;
+  }
+
+  #hero .hero-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px 32px;
+  }
+
+  .hero-panel-label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .hero-panel-value {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--mid);
+    line-height: 1.78;
+  }
+
+  @media (max-width: 960px) {
+    .hero-video-stage {
+      padding: 32px 24px 20px;
+    }
+    .hero-video-wrap {
+      aspect-ratio: 16 / 9;
+      max-height: 56vh;
+    }
+    .hero-detail-panel {
+      padding: 28px 24px 56px;
+    }
+    #hero .hero-meta-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    #hero .hero-meta-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 100px 80px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  section:last-of-type { border-bottom: none; }
+
+  .section-inner {
+    max-width: var(--content-max);
+  }
+
+  /* ─── CHAPTER LABEL ─── */
+  .chapter-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--black);
+    color: var(--white);
+    padding: 7px 14px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+  }
+
+  .chapter-label.yellow {
+    background: var(--yellow);
+    color: var(--black);
+  }
+
+  .chapter-label.outline {
+    background: transparent;
+    color: var(--black);
+    border: 1.5px solid var(--black);
+  }
+
+  /* ─── TYPOGRAPHY ─── */
+  .display {
+    font-family: var(--font-sans);
+    font-size: clamp(38px, 5.25vw, 62px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 20px;
+  }
+
+  .display em {
+    font-style: normal;
+    color: var(--yellow-dark);
+    font-weight: 600;
+  }
+
+  #glance .display {
+    font-size: clamp(28px, 3.6vw, 44px);
+    margin-bottom: 16px;
+  }
+
+  #glance .glance-kw,
+  #framing .glance-kw {
+    color: var(--black);
+    font-weight: 600;
+  }
+
+  #glance .body-text {
+    font-size: 18px;
+    line-height: 1.78;
+  }
+
+  #glance .glance-block {
+    margin-bottom: 28px;
+  }
+
+  #glance .glance-heading {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--black);
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  #glance .glance-block .body-text {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  /* Problem & context + What's broken: same headline / body scale as Glance */
+  #problem .display,
+  #tension .display,
+  #insights .display,
+  #direction .display,
+  #solution .display,
+  #outcome .display {
+    font-size: clamp(28px, 3.6vw, 44px);
+    margin-bottom: 16px;
+  }
+
+  #problem .body-text,
+  #tension .body-text,
+  #insights .body-text,
+  #direction .body-text,
+  #solution .body-text,
+  #outcome .body-text {
+    font-size: 18px;
+    line-height: 1.78;
+  }
+
+  /* Key insights pillars: same type scale as What's broken (.body-text) */
+  #insights .pillar h3 {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--black);
+    margin-bottom: 10px;
+  }
+
+  #insights .pillar p {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.78;
+    color: var(--mid);
+  }
+
+  /* Solution subheads + captions: same type scale as What's broken */
+  #solution h3 {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+
+  #problem .glance-stats-block .glance-stat-title {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-top: 10px;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  #problem .glance-stats-block .glance-label {
+    margin-top: 8px;
+  }
+
+  /* Bridge: thinking / intent between Problem and Tension */
+  #framing .bridge-section {
+    max-width: min(1000px, 100%);
+  }
+
+  .bridge-grid {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.95fr) 1.4fr;
+    gap: clamp(36px, 5vw, 80px);
+    align-items: start;
+  }
+
+  .bridge-kicker {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 22px;
+  }
+
+  .bridge-headline {
+    font-family: var(--font-sans);
+    font-size: clamp(26px, 3.15vw, 40px);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    color: var(--black);
+    margin: 0;
+  }
+
+  .bridge-body {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .bridge-body p {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.75;
+    color: var(--mid);
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .bridge-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+
+  .glance-stats-block {
+    margin-top: 44px;
+  }
+
+  .glance-stats-title {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--dark);
+    letter-spacing: -0.02em;
+    margin: 0 0 20px;
+  }
+
+  /* Glance KPIs: light cards, left-aligned (outcomes-style) */
+  .glance-stats-block .glance-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .glance-stats-block .glance-item {
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 24px 26px;
+    text-align: left;
+    border: none;
+  }
+
+  .glance-stats-block .glance-num {
+    font-family: var(--font-sans);
+    font-size: clamp(28px, 3.4vw, 38px);
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .glance-stats-block .glance-label {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 10px;
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 720px) {
+    .glance-stats-block .glance-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .lead {
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--mid);
+    line-height: 1.68;
+    max-width: 640px;
+    margin-bottom: 48px;
+  }
+
+  .body-text {
+    font-size: 16px;
+    color: var(--mid);
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-family: var(--font-sans);
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  h4 {
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  /* ─── THREE PILLARS ─── */
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .pillar {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 28px 24px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pillar-num {
+    font-family: var(--font-sans);
+    font-size: 68px;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    color: var(--yellow);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .pillar h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .pillar p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ─── CHALLENGE CARDS ─── */
+  .challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .challenge-card {
+    border-radius: 16px;
+    padding: 28px;
+    position: relative;
+  }
+
+  .challenge-card.dark { background: var(--black); color: var(--white); }
+  .challenge-card.yellow { background: var(--yellow); }
+  .challenge-card.light { background: var(--surface); border: 1px solid var(--border); }
+
+  .challenge-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .dark .challenge-icon { background: rgba(255,255,255,0.08); }
+  .yellow .challenge-icon { background: rgba(0,0,0,0.1); }
+  .light .challenge-icon { background: #EBEBEB; }
+
+  .challenge-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+  .challenge-card p { font-size: 14px; line-height: 1.6; opacity: 0.8; }
+
+  /* ─── CALLOUT BOX ─── */
+  .callout {
+    background: var(--yellow-light);
+    border: 1.5px solid rgba(245,197,24,0.4);
+    border-radius: 16px;
+    padding: 36px;
+    margin: 40px 0;
+  }
+
+  .callout h3 {
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--yellow-dark);
+    margin-bottom: 16px;
+  }
+
+  .callout ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .callout li {
+    font-size: 15px;
+    color: var(--dark);
+    padding-left: 20px;
+    position: relative;
+    font-weight: 400;
+  }
+
+  .callout li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--yellow-dark);
+    font-weight: 600;
+  }
+
+  /* ─── STAT CARDS ─── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 40px 0;
+  }
+
+  .stat-grid.two { grid-template-columns: repeat(2, 1fr); }
+  .stat-grid.four { grid-template-columns: repeat(4, 1fr); }
+
+  .stat-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    background: var(--white);
+  }
+
+  .stat-card.accent { background: var(--black); color: var(--white); border-color: var(--black); }
+  .stat-card.yellow-bg { background: var(--yellow-light); border-color: rgba(245,197,24,0.4); }
+
+  .stat-num {
+    font-family: var(--font-sans);
+    font-size: 54px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--yellow-dark);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-card.accent .stat-num { color: var(--yellow); }
+
+  .stat-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .stat-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .stat-card.accent .stat-desc { color: rgba(255,255,255,0.55); }
+  .stat-card.accent .stat-title { color: var(--white); }
+
+  /* ─── QUOTE CARD ─── */
+  .quote-card {
+    background: var(--black);
+    color: var(--white);
+    border-radius: 20px;
+    padding: 44px;
+    margin: 40px 0;
+    position: relative;
+  }
+
+  .quote-mark {
+    font-family: var(--font-sans);
+    font-size: 80px;
+    font-weight: 600;
+    line-height: 0.8;
+    color: var(--yellow);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .quote-text {
+    font-size: 21px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.5;
+    margin-bottom: 28px;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .quote-attr {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .quote-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--yellow);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--black);
+  }
+
+  .quote-name { font-size: 15px; font-weight: 600; }
+  .quote-role { font-size: 13px; color: rgba(255,255,255,0.45); }
+
+  /* ─── RESEARCH METHOD DIAGRAM ─── */
+  .method-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 40px 0;
+  }
+
+  .method-item {
+    background: var(--white);
+    padding: 28px 24px;
+    text-align: center;
+  }
+
+  .method-icon {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--mid);
+  }
+
+  .method-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .method-sub { font-size: 13px; color: var(--muted); }
+
+  /* ─── PERSONA INSIGHT GRID ─── */
+  .insight-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 40px 0;
+  }
+
+  .insight-item {
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .insight-item.highlight { background: var(--surface); border: 1px solid var(--border); }
+  .insight-item.warn { background: #FFF5F5; border: 1px solid rgba(230,57,70,0.2); }
+
+  .insight-score {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    background: var(--black);
+    color: var(--white);
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .insight-score.green { background: var(--green); }
+  .insight-score.red { background: var(--red); }
+
+  .insight-body h4 { font-size: 15px; text-transform: none; letter-spacing: 0; font-weight: 600; margin-bottom: 4px; }
+  .insight-body p { font-size: 14px; color: var(--muted); }
+
+  /* ─── STEP LIST ─── */
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 32px 0;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    transition: box-shadow 0.2s;
+  }
+
+  .step-item:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+
+  .step-num {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--yellow);
+    color: var(--black);
+    font-weight: 600;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-num.dark { background: var(--black); color: var(--white); }
+
+  .step-body h4 { font-size: 16px; font-weight: 600; text-transform: none; letter-spacing: 0; margin-bottom: 3px; }
+  .step-body p { font-size: 14px; color: var(--muted); }
+
+  .step-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 12px;
+    font-weight: 400;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: var(--surface);
+    color: var(--mid);
+    border: 1px solid var(--border);
+  }
+
+  /* ─── FLOW CARDS ─── */
+  .flow-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 40px 0;
+  }
+
+  .flow-card {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .flow-header {
+    background: var(--black);
+    color: var(--white);
+    padding: 16px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .flow-time {
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--yellow);
+  }
+
+  .flow-steps {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--surface);
+  }
+
+  .flow-step-num {
+    width: 24px; height: 24px;
+    background: var(--yellow);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .flow-step-text { font-size: 14px; font-weight: 400; flex: 1; }
+  .flow-step-time { font-size: 12px; color: var(--muted); }
+
+  /* ─── KEY FINDINGS ─── */
+  .finding-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 40px 0;
+  }
+
+  .finding {
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid;
+  }
+
+  .finding.pos {
+    background: #F0FDF4;
+    border-color: rgba(45,155,90,0.25);
+  }
+
+  .finding.neg {
+    background: #FFF5F5;
+    border-color: rgba(230,57,70,0.25);
+  }
+
+  .finding-pct {
+    font-family: var(--font-sans);
+    font-size: 44px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .finding.pos .finding-pct { color: var(--green); }
+  .finding.neg .finding-pct { color: var(--red); }
+
+  .finding h4 { font-size: 15px; font-weight: 600; text-transform: none; letter-spacing: 0; margin-bottom: 4px; }
+  .finding p { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+  /* ─── DESIGN SYSTEM ─── */
+  .ds-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 40px 0;
+  }
+
+  .ds-card {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    background: var(--white);
+  }
+
+  .ds-card h4 { color: var(--yellow-dark); margin-bottom: 16px; }
+
+  .color-swatches {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .swatch {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 2px solid rgba(0,0,0,0.08);
+  }
+
+  .type-sample { line-height: 1.4; }
+  .type-sample .ts-display { font-family: var(--font-sans); font-size: 30px; font-weight: 600; }
+  .type-sample .ts-body { font-size: 15px; color: var(--mid); margin-top: 4px; }
+  .type-sample .ts-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-top: 4px; }
+
+  /* ─── OUTCOME ─── */
+  .outcome-section {
+    background: var(--white);
+    color: var(--black);
+  }
+
+  .outcome-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 48px 0;
+  }
+
+  .outcome-item {
+    background: var(--white);
+    padding: 36px 28px;
+    text-align: center;
+  }
+
+  .outcome-num {
+    font-family: var(--font-sans);
+    font-size: 68px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--yellow-dark);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .outcome-label {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .outcome-section .display em { color: var(--yellow-dark); }
+
+  .outcome-quote {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    margin-top: 40px;
+  }
+
+  .outcome-quote > .hero-panel-label {
+    margin-bottom: 16px;
+  }
+
+  .outcome-quote p {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--mid);
+    line-height: 1.78;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  /* ─── METHODOLOGY CARDS ─── */
+  .method-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 40px 0;
+  }
+
+  .method-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+  }
+
+  .method-card-num {
+    width: 36px; height: 36px;
+    background: var(--yellow);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+  }
+
+  .method-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .method-card p { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+
+  /* ─── DEMO CHART BAR ─── */
+  .demo-chart {
+    margin: 32px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .bar-label { font-size: 14px; width: 80px; color: var(--mid); flex-shrink: 0; }
+  .bar-track { flex: 1; height: 8px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 100px; background: var(--yellow); }
+  .bar-pct { font-size: 14px; font-weight: 600; width: 36px; text-align: right; flex-shrink: 0; }
+
+  /* ─── SECTION ALTERNATING BG ─── */
+  section.alt { background: var(--surface); }
+
+  .site-link-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--yellow-dark);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    margin-bottom: 0;
+    transition: color 0.2s;
+  }
+
+  .site-link-hero:hover {
+    color: var(--black);
+  }
+
+  /* ─── ANIMATION SYSTEM ─── */
+
+  /* Fade up: default for sections */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  /* Staggered children */
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+  .stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay: 0s; }
+  .stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay: 0.1s; }
+  .stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay: 0.2s; }
+  .stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay: 0.3s; }
+  .stagger.visible > *:nth-child(5) { opacity:1; transform:none; transition-delay: 0.4s; }
+
+  /* Fade left: for stat cards */
+  .fade-left {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+  .fade-left.visible { opacity: 1; transform: none; }
+
+  /* Scale in: for icons and numbers */
+  .scale-in {
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+  .scale-in.visible { opacity: 1; transform: scale(1); }
+
+  /* Progress bar animation */
+  .bar-fill-anim {
+    width: 0% !important;
+    transition: width 1.2s cubic-bezier(0.22,1,0.36,1);
+  }
+  .bar-fill-anim.visible { width: var(--target-width) !important; }
+
+  /* Counter number animation */
+  .count-num { display: inline-block; }
+
+  /* Hero enter animation */
+  .hero-video-stage { animation: slideUpFade 0.75s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
+  .hero-case-title { animation: slideUpFade 0.75s cubic-bezier(0.22,1,0.36,1) 0.12s both; }
+  .hero-case-tagline { animation: slideUpFade 0.75s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
+  .hero-case-lead { animation: slideUpFade 0.75s cubic-bezier(0.22,1,0.36,1) 0.2s both; }
+  .site-link-hero { animation: slideUpFade 0.75s cubic-bezier(0.22,1,0.36,1) 0.28s both; }
+  .hero-detail-meta-stack { animation: slideUpFade 0.75s cubic-bezier(0.22,1,0.36,1) 0.36s both; }
+
+  @keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Chapter label pop */
+  .chapter-label {
+    animation: none;
+  }
+  .chapter-label.popped {
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes popIn {
+    from { opacity:0; transform: scale(0.8) translateY(8px); }
+    to   { opacity:1; transform: scale(1) translateY(0); }
+  }
+
+  /* Sidebar link highlight pulse */
+  .sidebar-nav-links a.active {
+    animation: none;
+  }
+  .sidebar-nav-links a.newly-active {
+    animation: none;
+  }
+  @keyframes sidebarPulse {
+    0%   { background: transparent; }
+    50%  { background: transparent; }
+    100% { background: transparent; }
+  }
+
+  /* Stat card hover lift */
+  .stat-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  /* Step item hover */
+  .step-item {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .step-item:hover {
+    transform: translateX(4px);
+    border-color: var(--yellow);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  /* Pillar hover */
+  .pillar {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .pillar:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+
+  /* Flow card hover */
+  .flow-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .flow-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+  }
+
+  /* Finding card hover */
+  .finding {
+    transition: transform 0.2s ease;
+  }
+  .finding:hover { transform: translateY(-2px); }
+
+  /* Design direction cards (also .principle for scroll/hover hooks) */
+  .principle {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .principle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.07);
+    border-color: rgba(245, 197, 24, 0.45);
+  }
+
+  #direction .direction-block {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  #direction .direction-block-label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  #direction .direction-principles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 28px;
+  }
+
+  #direction .direction-principle-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 26px 28px;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    align-items: stretch;
+  }
+
+  #direction .direction-principle-head {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  #direction .direction-principle-index {
+    font-family: var(--font-sans);
+    font-size: clamp(26px, 2.8vw, 34px);
+    font-weight: 600;
+    color: var(--yellow);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    flex-shrink: 0;
+  }
+
+  #direction .direction-principle-head-text h3 {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    line-height: 1.28;
+    letter-spacing: -0.01em;
+    color: var(--black);
+  }
+
+  #direction .direction-principle-tagline {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--yellow-dark);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  #direction .direction-principle-body {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--mid);
+    line-height: 1.68;
+    margin: 0;
+  }
+
+  @media (max-width: 720px) {
+    #direction .direction-principles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Outcome: success metrics (one line + bar per row) */
+  #outcome .outcome-metrics-wrap {
+    margin-bottom: 48px;
+  }
+
+  #outcome .outcome-metrics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    max-width: 640px;
+  }
+
+  #outcome .outcome-metric-row {
+    padding-bottom: 2px;
+  }
+
+  #outcome .outcome-metric-line {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--mid);
+    margin: 0 0 10px;
+  }
+
+  #outcome .outcome-metric-line strong {
+    font-weight: 600;
+    color: var(--black);
+    margin-right: 0.25em;
+  }
+
+  #outcome .outcome-metric-bar {
+    height: 6px;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  #outcome .outcome-metric-bar span {
+    display: block;
+    height: 100%;
+    background: var(--yellow-dark);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  #outcome .outcome-hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin: 48px 0;
+    text-align: center;
+  }
+
+  @media (max-width: 720px) {
+    #outcome .outcome-hero-stats {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+
+  #outcome .outcome-hero-stat-num {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(36px, 3.8vw, 48px);
+    color: var(--black);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+
+  #outcome .outcome-metrics-heading {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--black);
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+    margin: 0 0 10px;
+  }
+
+  #outcome .outcome-metrics-wrap > .outcome-metrics-heading {
+    margin-bottom: 20px;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ─── SIDEBAR NAV ─── -->
+<nav class="sidebar" id="sidebar">
+  <a href="/" target="_top" rel="noopener noreferrer" class="sidebar-back" aria-label="Back to portfolio">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    Back
+  </a>
+  <div class="sidebar-nav-links">
+    <a href="#hero">Introduction</a>
+    <a href="#glance">Project at a Glance</a>
+    <a href="#problem">Problem &amp; context</a>
+    <a href="#tension">What's broken</a>
+    <a href="#insights">Key insights</a>
+    <a href="#direction">Design direction</a>
+    <a href="#solution">Solution</a>
+    <a href="#outcome">Outcome</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <section id="hero" class="hero">
+    <!-- Hero video: Cloudinary-hosted clip -->
+    <div class="hero-video-stage">
+      <div class="hero-video-inner">
+        <div class="hero-video-wrap">
+          <video
+            id="hero-case-video"
+            class="hero-case-video"
+            src="https://res.cloudinary.com/drajdxssq/video/upload/v1775549034/safeyelli-2_cg6fhq.mov"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            disablepictureinpicture
+            aria-label="SafeYelli product screen recording"
+          >
+            <source src="https://res.cloudinary.com/drajdxssq/video/upload/v1775549034/safeyelli-2_cg6fhq.mov" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-detail-panel">
+      <div class="hero-detail-inner">
+        <div class="hero-title-row">
+          <h1 class="hero-case-title"><span class="safe">Safe</span><span class="yelli">Yelli</span></h1>
+          <p class="hero-case-tagline">SafeYelli is an information website that empowers women to navigate urban India safely through real-time incident reporting, interactive heat mapping, and community-verified safety intelligence.</p>
+        </div>
+        <p class="hero-case-lead">The narrative below ties research to product decisions, but the spine of the work is design: a map-led, responsive experience that turns community signals into something people can read and act on quickly.</p>
+        <a href="https://safeyelli.in" target="_blank" rel="noopener noreferrer" class="site-link-hero">
+          Visit safeyelli.in
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+        </a>
+        <div class="hero-detail-meta-stack">
+          <div class="hero-meta-footer">
+            <div class="hero-meta-grid">
+              <div>
+                <span class="hero-panel-label">My role</span>
+                <div class="hero-panel-value">Website Designer &amp; Junior UX Researcher</div>
+              </div>
+              <div>
+                <span class="hero-panel-label">Timeline</span>
+                <div class="hero-panel-value">2021 to ongoing</div>
+              </div>
+              <div>
+                <span class="hero-panel-label">Team</span>
+                <div class="hero-panel-value">2 UX Designers, 1 UX Researcher, 2 PMs</div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-platform-footer">
+            <span class="hero-panel-label">Platform</span>
+            <div class="hero-panel-value">Web (responsive)</div>
+          </div>
+          <div class="hero-aside-block">
+            <span class="hero-panel-label">What I did</span>
+            <p class="hero-aside-body">From IA through build: map-first layout, explore and report patterns, responsive UI, and usability testing when safety felt urgent.</p>
+            <ul class="hero-aside-list">
+              <li>Shipped the responsive site in code</li>
+              <li>Research-led IA and map-first flows</li>
+              <li>Personas, journeys, and multi-round usability validation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROJECT AT A GLANCE ─── -->
+  <section id="glance">
+    <div class="section-inner fade-in">
+      <div class="chapter-label">Executive Summary</div>
+      <h2 class="display">Project at a <em>Glance</em></h2>
+      <p class="lead">SafeYelli is an information website that empowers women to navigate urban India safely through real-time incident reporting, interactive heat mapping, and community-verified safety intelligence.</p>
+
+      <div class="glance-block">
+        <div class="glance-heading">The Challenge:</div>
+        <div class="body-text">Choosing a route through <span class="glance-kw">unfamiliar or high-risk areas</span> meant guessing with incomplete information. There was no single place for <span class="glance-kw">comprehensive, real-time safety data</span> that matched how decisions are made on the ground. Existing tools didn&apos;t capture the lived reality of navigating urban streets, especially after dark.</div>
+      </div>
+      <div class="glance-block">
+        <div class="glance-heading">Our Response:</div>
+        <div class="body-text">We designed a <span class="glance-kw">citizen-centric platform</span> where the community can <span class="glance-kw">report, verify, and share</span> what happens where they live and work, so discrete incidents add up to <span class="glance-kw">collective intelligence</span> everyone can plan from.</div>
+      </div>
+
+      <div class="glance-stats-block">
+        <h3 class="glance-stats-title">Three months after launch</h3>
+        <div class="glance-grid no-stagger">
+        <div class="glance-item">
+          <div class="glance-num">50K+</div>
+          <div class="glance-label">Active users within 3 months</div>
+        </div>
+        <div class="glance-item">
+          <div class="glance-num">92%</div>
+          <div class="glance-label">Task success rate</div>
+        </div>
+        <div class="glance-item">
+          <div class="glance-num">40%</div>
+          <div class="glance-label">Faster than industry benchmark</div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY (narrative case study) ═══ -->
+
+  <section id="problem" class="alt">
+    <div class="section-inner fade-in">
+      <div class="chapter-label">Problem &amp; context</div>
+      <h2 class="display">A map that doesn&apos;t answer the <em>real</em> question</h2>
+      <p class="lead">Women moving through Indian cities plan around a layer that doesn&apos;t exist on Google: which streets feel safe <em>right now</em>, for <em>someone like them</em>, at <em>this hour</em>.</p>
+      <p class="body-text">Official crime data is sparse, delayed, and disconnected from what people ask before they leave the house or the office: &ldquo;Is this route worth it tonight?&rdquo; That gap shows up as changed plans, longer commutes, money spent on cabs, and endless check-ins with family: small decisions that add up to a hidden tax on mobility and peace of mind.</p>
+
+      <div class="glance-stats-block" style="margin-top:40px;">
+        <div class="glance-grid no-stagger">
+          <div class="glance-item">
+            <div class="glance-num">83%</div>
+            <div class="glance-stat-title">Alter routes weekly</div>
+            <div class="glance-label">Weekly route or timing shifts for safety, before the tool.</div>
+          </div>
+          <div class="glance-item">
+            <div class="glance-num">67%</div>
+            <div class="glance-stat-title">Trust peers over stats</div>
+            <div class="glance-label">Community-verified intel over distant stats: honest and current.</div>
+          </div>
+          <div class="glance-item">
+            <div class="glance-num">91%</div>
+            <div class="glance-stat-title">Want geomapping</div>
+            <div class="glance-label">Map-based safer-route planning in real time, if available.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="framing">
+    <div class="section-inner fade-in bridge-section">
+      <div class="bridge-grid">
+        <div class="bridge-left">
+          <div class="bridge-kicker">Framing</div>
+          <h2 class="bridge-headline">Maps answer minutes and meters, not whether a street feels okay tonight.</h2>
+        </div>
+        <div class="bridge-body">
+          <p>I kept hearing a question that speed and distance alone never answer: whether a route would feel acceptable for someone like them, at that hour. For me, the gap between sparse official data and that <span class="glance-kw">lived decision</span> was the real <span class="glance-kw">design problem</span>, not something a single feature could patch.</p>
+          <p>I set out to hold community-grounded reporting on a map people already know how to read, without turning pain into spectacle. I wasn&apos;t trying to replace judgment with charts; I wanted peer signal, time, and place clear enough that safer planning felt possible. What kept surfacing in my interviews and survey work became the backbone of information architecture and the <span class="glance-kw">map-first experience</span>, from first load through reporting back.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tension" class="alt">
+    <div class="section-inner fade-in">
+      <div class="chapter-label">What&apos;s actually broken</div>
+      <h2 class="display">Navigation tools ignore <em>time</em> and <em>trust</em></h2>
+      <p class="lead">The problem wasn&apos;t &ldquo;no safety app.&rdquo; It was that the products people already use for directions treat safety as out of scope.</p>
+      <p class="body-text">A street can be fast and well lit on the map and still feel hostile after dark. Users weren&apos;t asking for more charts; they needed lived, time-aware, place-based intelligence that matched how fear actually shows up in a week, not how crime is filed on a form.</p>
+      <p class="body-text">Across interviews and a broad survey, the same pattern held: people constantly adapt routes, timing, and mode using informal knowledge and word of mouth. When that breaks down (new city, new job, late night), they improvise. <strong>Existing tools optimized for efficiency, not for the temporal, social reality of moving through public space as a woman.</strong></p>
+    </div>
+  </section>
+
+  <section id="insights" class="alt">
+    <div class="section-inner fade-in">
+      <div class="chapter-label yellow">Key insights</div>
+      <h2 class="display">Two findings that <em>reframed</em> the product</h2>
+      <p class="lead">Interviews, survey write-ins, and headline stats from the same study. After synthesis, not nice-to-haves: <strong>constraints</strong> the design had to obey.</p>
+
+      <div class="pillar-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="pillar" style="border-color:var(--yellow);">
+          <div class="pillar-num" style="font-size:48px;">01</div>
+          <h3>Safety is temporal</h3>
+          <p>In interviews, the <strong>same streets and crossings</strong> read completely differently at 4&nbsp;PM vs 10&nbsp;PM. <strong>83%</strong> already changed routes or timing weekly for safety, so <strong>time of day</strong> had to be first-class and easy to act on, not buried in settings.</p>
+        </div>
+        <div class="pillar" style="border-color:var(--yellow);">
+          <div class="pillar-num" style="font-size:48px;">02</div>
+          <h3>Trust flows from peers</h3>
+          <p><strong>67%</strong> preferred <strong>community-verified, recent, local</strong> signal to distant official stats; distant authority felt cold on the street. The product had to read as <strong>collective sensemaking</strong>, not a top-down dashboard.</p>
+        </div>
+      </div>
+      <p class="body-text" style="margin-top:32px;">Those patterns plus the <strong>survey benchmarks</strong> above pointed to one move: <strong>a citizen-powered safety layer on the city</strong> with reporting, verification, map exploration, and <strong>privacy</strong> in the core offer, not bolted on after.</p>
+    </div>
+  </section>
+
+  <section id="direction">
+    <div class="section-inner fade-in">
+      <div class="chapter-label">Design direction</div>
+      <h2 class="display">Principles I used to judge <em>every</em> iteration</h2>
+      <p class="lead">Temporal safety and peer trust were inputs; four checks gated layout, flow, and defaults before build.</p>
+
+      <div class="direction-block">
+        <p class="direction-block-label">Framework</p>
+        <p class="body-text" style="margin-bottom:0;">Each principle is a <strong>decision gate</strong>: orientation, time and place in filters, trust on the map, reporting that protects the sharer, not polish.</p>
+      </div>
+
+      <div class="direction-principles-grid">
+        <article class="principle direction-principle-card" aria-labelledby="dir-p1-title">
+          <div class="direction-principle-head">
+            <span class="direction-principle-index" aria-hidden="true">01</span>
+            <div class="direction-principle-head-text">
+              <h3 id="dir-p1-title">Map first, readable in seconds</h3>
+              <p class="direction-principle-tagline">Stress-first entry</p>
+            </div>
+          </div>
+          <p class="direction-principle-body">Under stress, the <strong>map</strong> carries the first read of the area: no hero walls or intros before context.</p>
+        </article>
+        <article class="principle direction-principle-card" aria-labelledby="dir-p2-title">
+          <div class="direction-principle-head">
+            <span class="direction-principle-index" aria-hidden="true">02</span>
+            <div class="direction-principle-head-text">
+              <h3 id="dir-p2-title">Time and place are inputs, not filters buried in settings</h3>
+              <p class="direction-principle-tagline">Match the research</p>
+            </div>
+          </div>
+          <p class="direction-principle-body">Same street, different hour, different risk. Filters lead with <strong>when and where</strong>, not a buried category list.</p>
+        </article>
+        <article class="principle direction-principle-card" aria-labelledby="dir-p3-title">
+          <div class="direction-principle-head">
+            <span class="direction-principle-index" aria-hidden="true">03</span>
+            <div class="direction-principle-head-text">
+              <h3 id="dir-p3-title">Trust you can interrogate</h3>
+              <p class="direction-principle-tagline">Plain language, visible provenance</p>
+            </div>
+          </div>
+          <p class="direction-principle-body">Say how corroboration works: recency, locality, uncertainty, so people can <strong>trust or challenge</strong> the map, not a black box.</p>
+        </article>
+        <article class="principle direction-principle-card" aria-labelledby="dir-p4-title">
+          <div class="direction-principle-head">
+            <span class="direction-principle-index" aria-hidden="true">04</span>
+            <div class="direction-principle-head-text">
+              <h3 id="dir-p4-title">Privacy and control as part of the emotional design</h3>
+              <p class="direction-principle-tagline">Reporting that feels safe</p>
+            </div>
+          </div>
+          <p class="direction-principle-body">Anonymity and precision control mattered for willingness to report; the flow had to feel <strong>emotionally safe</strong> before tech privacy could help.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="solution" class="alt">
+    <div class="section-inner fade-in solution-wide">
+      <div class="chapter-label outline">Solution</div>
+      <h2 class="display">A <em>system</em>, not a single screen</h2>
+      <p class="lead">SafeYelli connects three loops: <strong>see</strong> what&apos;s happening on the map, <strong>report</strong> so the map stays alive and local, and <strong>act</strong> with flows that support planning and urgency.</p>
+      <p class="body-text" style="margin-bottom:40px;">The site is the public face of that system: map-led layout, filters that match how people talk about risk (when, where, what happened), and IA tested so emergency-oriented paths stay discoverable while the rest stays scannable.</p>
+
+      <style>
+        .solution-wide { max-width: min(1180px, 100%) !important; }
+        .homepage-feature { display: flex; align-items: flex-start; gap: 14px; }
+        .hf-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+        .yellow-dot { background: var(--yellow); }
+        .black-dot { background: var(--black); }
+        .hf-title { font-family: var(--font-sans); font-size: 18px; font-weight: 600; margin-bottom: 4px; line-height: 1.35; letter-spacing: -0.01em; color: var(--black); }
+        .hf-desc { font-family: var(--font-sans); font-size: 18px; font-weight: 400; color: var(--mid); line-height: 1.78; }
+        .video-annotate-wrap {
+          position: relative;
+          overflow: hidden;
+          background: var(--surface);
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          max-height: min(82vh, 960px);
+          margin-left: auto;
+          margin-right: auto;
+          border-radius: 16px;
+        }
+        .video-annotate-wrap video {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          display: block;
+          object-fit: cover;
+          object-position: left center;
+          background: transparent;
+          border-radius: 16px;
+        }
+        #reporting-video {
+          object-position: center center;
+        }
+        .video-annotate-layer {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+        .anno-tag {
+          position: absolute;
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          pointer-events: auto;
+          cursor: pointer;
+          color: #fff;
+          font-family: var(--font-sans);
+          padding: 8px 11px 8px 8px;
+          border-radius: 12px;
+          max-width: min(168px, 36vw);
+          transition: max-width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            background 0.25s ease,
+            box-shadow 0.25s ease,
+            border-color 0.25s ease;
+          background: rgba(18, 18, 20, 0.42);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+        .anno-tag:hover,
+        .anno-tag:focus-within {
+          max-width: min(300px, 88vw);
+          background: rgba(22, 22, 26, 0.78);
+          border-color: rgba(245, 197, 24, 0.45);
+          box-shadow:
+            0 16px 48px rgba(0, 0, 0, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.14),
+            0 0 0 1px rgba(245, 197, 24, 0.12);
+        }
+        .anno-tag:focus-visible {
+          outline: 2px solid var(--yellow);
+          outline-offset: 2px;
+        }
+        .anno-tag .anno-num {
+          flex-shrink: 0;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: rgba(245, 197, 24, 0.92);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          color: #111;
+          font-size: 11px;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: var(--font-sans);
+          border: 1px solid rgba(255, 255, 255, 0.35);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .anno-text {
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+          min-width: 0;
+        }
+        .anno-title {
+          font-size: 13px;
+          font-weight: 600;
+          line-height: 1.35;
+          letter-spacing: 0.01em;
+        }
+        .anno-detail {
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 1.5;
+          color: rgba(255, 255, 255, 0.82);
+          max-height: 0;
+          opacity: 0;
+          overflow: hidden;
+          transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.3s ease,
+            margin-top 0.3s ease;
+          margin-top: 0;
+        }
+        .anno-tag:hover .anno-detail,
+        .anno-tag:focus-within .anno-detail {
+          max-height: 120px;
+          opacity: 1;
+          margin-top: 6px;
+        }
+        @media (hover: none) {
+          .anno-tag {
+            max-width: min(280px, 88vw);
+            background: rgba(22, 22, 26, 0.65);
+          }
+          .anno-detail {
+            max-height: 120px;
+            opacity: 1;
+            margin-top: 6px;
+          }
+        }
+        .anno-tag.anno-tr { transform: translate(-100%, 0); }
+        .anno-tag.anno-center { transform: translate(-50%, -50%); }
+        @media (max-width: 640px) {
+          .anno-tag {
+            font-size: 10px;
+            max-width: min(200px, 70vw);
+            padding: 6px 9px 6px 6px;
+          }
+          .anno-tag:hover,
+          .anno-tag:focus-within {
+            max-width: min(280px, 92vw);
+          }
+          .anno-tag .anno-num { width: 20px; height: 20px; font-size: 10px; }
+          .anno-title { font-size: 11px; }
+          .anno-detail { font-size: 10px; }
+          .video-annotate-wrap { max-height: 58vh; }
+        }
+      </style>
+
+      <div style="margin-bottom:10px;">
+        <h3>Map &amp; exploration</h3>
+        <p class="body-text" style="margin-bottom:0;">Hover the pins on the video for detail, or tap on mobile.</p>
+      </div>
+
+      <div class="video-annotate-wrap" style="margin-top:20px;">
+          <video
+            id="safeyelli-video"
+            src="https://res.cloudinary.com/drajdxssq/video/upload/f_mp4/v1774641992/safeyelli1_jrtgql.mov"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            onerror="this.style.display='none'; document.getElementById('video-placeholder').style.display='flex';"
+          ></video>
+          <div id="video-placeholder" style="display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:32px; position:absolute; inset:0; background:var(--black);">
+            <div style="font-size:14px; font-weight:600; color:rgba(255,255,255,0.9);">Add map walkthrough video</div>
+          </div>
+          <div class="video-annotate-layer" role="group" aria-label="Map walkthrough: hover or focus each pin for more detail">
+            <div class="anno-tag anno-center" tabindex="0" role="button" aria-label="1. Bilingual header. English and Kannada so the product matches how the city speaks." style="left: 18%; top: 12%;"><span class="anno-num" aria-hidden="true">1</span><div class="anno-text" aria-hidden="true"><span class="anno-title">Bilingual header</span><span class="anno-detail">English and Kannada so the product matches how the city speaks.</span></div></div>
+            <div class="anno-tag anno-center" tabindex="0" role="button" aria-label="2. Hero map. Full-screen map with incident markers and a quick read of the city." style="left: 60%; top: 40%;"><span class="anno-num" aria-hidden="true">2</span><div class="anno-text" aria-hidden="true"><span class="anno-title">Hero map</span><span class="anno-detail">Full-screen map with incident markers and a quick read of the city.</span></div></div>
+            <div class="anno-tag anno-center" tabindex="0" role="button" aria-label="3. Map controls. Zoom, search, and view controls on the map, not buried in the story column." style="left: 47%; top: 15%;"><span class="anno-num" aria-hidden="true">3</span><div class="anno-text" aria-hidden="true"><span class="anno-title">Map controls</span><span class="anno-detail">Zoom, search, and view controls on the map, not buried in the story column.</span></div></div>
+            <div class="anno-tag anno-center" tabindex="0" role="button" aria-label="4. Report incident. Primary CTA to contribute back to the community dataset." style="left: 22%; top: 72%;"><span class="anno-num" aria-hidden="true">4</span><div class="anno-text" aria-hidden="true"><span class="anno-title">Report incident</span><span class="anno-detail">Primary CTA to contribute back to the community dataset.</span></div></div>
+            <div class="anno-tag anno-center" tabindex="0" role="button" aria-label="5. Filtering. Year, time-of-day, and incident type: risk is never one-dimensional." style="left: 72%; top: 84%;"><span class="anno-num" aria-hidden="true">5</span><div class="anno-text" aria-hidden="true"><span class="anno-title">Filtering</span><span class="anno-detail">Year, time-of-day, and incident type: risk is never one-dimensional.</span></div></div>
+          </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div style="margin-bottom:10px;">
+        <h3>Reporting</h3>
+        <p class="body-text" style="margin-bottom:0;">Anonymous incident reporting so the map stays current without asking people to over-expose themselves.</p>
+      </div>
+
+      <div class="video-annotate-wrap" style="margin-top:20px;">
+          <video
+            id="reporting-video"
+            src="https://res.cloudinary.com/drajdxssq/video/upload/f_mp4/v1774647440/safeyelli2_z0iadq.mov"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            onerror="this.style.display='none';"
+          ></video>
+          <div class="video-annotate-layer" role="group" aria-label="Reporting walkthrough: hover or focus each pin for more detail">
+            <div class="anno-tag anno-center" tabindex="0" role="button" aria-label="1. Anonymous reporting. Defaults that lower the social cost of speaking up." style="left: 50%; top: 20%;"><span class="anno-num" aria-hidden="true">1</span><div class="anno-text" aria-hidden="true"><span class="anno-title">Anonymous reporting</span><span class="anno-detail">Defaults that lower the social cost of speaking up.</span></div></div>
+            <div class="anno-tag anno-center" tabindex="0" role="button" aria-label="2. Map pin. Place the incident with control over how precise the location is." style="left: 50%; top: 48%;"><span class="anno-num" aria-hidden="true">2</span><div class="anno-text" aria-hidden="true"><span class="anno-title">Map pin</span><span class="anno-detail">Place the incident with control over how precise the location is.</span></div></div>
+            <div class="anno-tag anno-center" tabindex="0" role="button" aria-label="3. Context fields. Type, time, and optional detail so reports stay structured." style="left: 50%; top: 78%;"><span class="anno-num" aria-hidden="true">3</span><div class="anno-text" aria-hidden="true"><span class="anno-title">Context fields</span><span class="anno-detail">Type, time, and optional detail so reports stay structured.</span></div></div>
+          </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div style="margin-bottom:10px;">
+        <h3>Community on the ground</h3>
+        <p class="body-text" style="margin-bottom:0;">Neighborhood mapping initiatives validated the crowdsourced model and deepened trust.</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 3fr; gap:40px; margin-top:28px; align-items:start;">
+        <div style="display:flex; flex-direction:column; gap:24px;">
+          <div class="homepage-feature">
+            <div class="hf-dot black-dot"></div>
+            <div>
+              <div class="hf-title">Grassroots mapping</div>
+              <div class="hf-desc">Residents document local safety concerns together</div>
+            </div>
+          </div>
+          <div class="homepage-feature">
+            <div class="hf-dot yellow-dot"></div>
+            <div>
+              <div class="hf-title">Workshops &amp; sessions</div>
+              <div class="hf-desc">Structured moments to turn stories into data</div>
+            </div>
+          </div>
+          <div class="homepage-feature">
+            <div class="hf-dot black-dot"></div>
+            <div>
+              <div class="hf-title">Feeds the platform</div>
+              <div class="hf-desc">Community output integrates into the main map</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div class="solution-media-frame">
+            <img src="/safeyelli3.png" alt="Community mapping initiatives, SafeYelli" style="width:100%; height:auto; display:block;"/>
+          </div>
+          <div style="background:var(--yellow-light); border-left:3px solid var(--yellow); border-radius:0 10px 10px 0; padding:16px 20px;">
+            <span style="font-family:var(--font-sans); font-size:18px; font-weight:600; line-height:1.78; color:var(--dark);">Why it mattered: </span>
+            <span style="font-family:var(--font-sans); font-size:18px; font-weight:400; line-height:1.78; color:var(--mid);">It proved the model wasn&apos;t only digital; trust also comes from showing up in real neighborhoods.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── OUTCOME ─── -->
+  <section id="outcome" class="outcome-section" style="border-bottom:none;">
+    <div class="section-inner fade-in">
+      <div class="chapter-label yellow">The Result</div>
+
+      <!-- ── Outcome & impact ── -->
+      <h2 class="display">What <em>changed</em></h2>
+      <p class="lead" style="margin-bottom:40px;">Validation showed the mental model stuck: strong task success, faster flows after IA work, and real adoption as proof that temporal, community-first safety tooling was the right bet.</p>
+
+      <!-- 3 headline stats (no icons) -->
+      <div class="outcome-hero-stats">
+        <div>
+          <div class="outcome-hero-stat-num">50K+</div>
+          <div style="font-family:var(--font-sans);font-size:18px;font-weight:600;color:var(--black);margin-top:8px;line-height:1.35;letter-spacing:-0.01em;">Active Users</div>
+          <div style="font-family:var(--font-sans);font-size:18px;font-weight:400;color:var(--mid);margin-top:4px;line-height:1.78;">Monthly active</div>
+        </div>
+        <div>
+          <div class="outcome-hero-stat-num">25K+</div>
+          <div style="font-family:var(--font-sans);font-size:18px;font-weight:600;color:var(--black);margin-top:8px;line-height:1.35;letter-spacing:-0.01em;">Safety Reports</div>
+          <div style="font-family:var(--font-sans);font-size:18px;font-weight:400;color:var(--mid);margin-top:4px;line-height:1.78;">Community contributions</div>
+        </div>
+        <div>
+          <div class="outcome-hero-stat-num">150K+</div>
+          <div style="font-family:var(--font-sans);font-size:18px;font-weight:600;color:var(--black);margin-top:8px;line-height:1.35;letter-spacing:-0.01em;">Routes Planned</div>
+          <div style="font-family:var(--font-sans);font-size:18px;font-weight:400;color:var(--mid);margin-top:4px;line-height:1.78;">Safe navigation paths</div>
+        </div>
+      </div>
+
+      <div style="height:1px;background:var(--border);margin:56px 0;"></div>
+
+      <!-- Success metrics: one-line copy + progress bar -->
+      <div class="outcome-metrics-wrap">
+        <h3 class="outcome-metrics-heading">Success metrics</h3>
+        <div class="outcome-metrics-list">
+          <div class="outcome-metric-row">
+            <p class="outcome-metric-line"><strong>89%</strong> of users report feeling safer when navigating with SafeYelli.</p>
+            <div class="outcome-metric-bar" role="img" aria-label="89 percent"><span style="width:89%"></span></div>
+          </div>
+          <div class="outcome-metric-row">
+            <p class="outcome-metric-line"><strong>78%</strong> are weekly active: the map and reporting loop became a regular habit.</p>
+            <div class="outcome-metric-bar" role="img" aria-label="78 percent"><span style="width:78%"></span></div>
+          </div>
+          <div class="outcome-metric-row">
+            <p class="outcome-metric-line"><strong>92%</strong> can submit a safety report without help, so friction stays low in the moment.</p>
+            <div class="outcome-metric-bar" role="img" aria-label="92 percent"><span style="width:92%"></span></div>
+          </div>
+          <div class="outcome-metric-row">
+            <p class="outcome-metric-line"><strong>71%</strong> pick safer alternate routes when the product surfaces them clearly.</p>
+            <div class="outcome-metric-bar" role="img" aria-label="71 percent"><span style="width:71%"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:1px;background:var(--border);margin:56px 0;"></div>
+
+      <!-- Closing quote + CTA -->
+      <div class="outcome-quote">
+        <span class="hero-panel-label">Reflection</span>
+        <p>It reinforced a belief I bring to every engagement: the best interfaces don&apos;t feel designed; they feel like someone understood you. SafeYelli worked because we listened first, then designed.</p>
+      </div>
+
+      <div style="margin-top: 56px; display:flex; align-items:center; gap: 20px;">
+        <a href="https://safeyelli.in" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;background:var(--yellow);color:var(--black);font-family:var(--font-sans);font-size:15px;font-weight:600;padding:16px 28px;border-radius:10px;text-decoration:none;letter-spacing:0.02em;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 32px rgba(245,197,24,0.25)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+          View Live Site
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+        </a>
+        <span style="font-family:var(--font-sans); font-size:18px; font-weight:400; line-height:1.78; color:var(--muted);">safeyelli.in</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // ─── HERO VIDEO: loop + autoplay (fallback if browser ignores attribute) ───
+  (function () {
+    const v = document.getElementById('hero-case-video');
+    if (!v) return;
+    v.loop = true;
+    v.muted = true;
+    const tryPlay = function () {
+      v.play().catch(function () {});
+    };
+    v.addEventListener('loadeddata', tryPlay);
+    v.addEventListener('ended', function () {
+      v.currentTime = 0;
+      tryPlay();
+    });
+    tryPlay();
+  })();
+
+  // ─── ACTIVE SIDEBAR LINK ON SCROLL ───
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.sidebar-nav-links a');
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => {
+          l.classList.remove('active', 'newly-active');
+        });
+        const id = entry.target.getAttribute('id');
+        const link = document.querySelector(`.sidebar-nav-links a[href="#${id}"]`);
+        if (link) {
+          link.classList.add('active', 'newly-active');
+          setTimeout(() => link.classList.remove('newly-active'), 500);
+        }
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => sectionObserver.observe(s));
+
+  // ─── PERSONA SCROLL REVEAL ───
+  document.querySelectorAll('.persona-reveal').forEach((el) => {
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { el.classList.add('visible'); obs.unobserve(el); }
+    }, { threshold: 0.12 });
+    obs.observe(el);
+  });
+
+  // ─── SCROLL ANIMATION ENGINE ───
+  const animObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        animObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  // Fade-in sections
+  document.querySelectorAll('.fade-in').forEach(el => animObserver.observe(el));
+
+  // Stagger grids: add class to grid parents
+  document.querySelectorAll('.glance-grid, .challenge-grid, .pillar-grid, .stat-grid, .method-cards, .finding-grid, .ds-grid, .flow-grid, .insight-grid').forEach(el => {
+    if (el.classList.contains('no-stagger')) return;
+    el.classList.add('stagger');
+    animObserver.observe(el);
+  });
+
+  // Fade left on step lists and principle lists
+  document.querySelectorAll('.step-item, .principle, .homepage-feature').forEach((el, i) => {
+    el.classList.add('fade-left');
+    el.style.transitionDelay = `${i * 0.07}s`;
+    animObserver.observe(el);
+  });
+
+  // Scale in chapter labels
+  document.querySelectorAll('.chapter-label').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'scale(0.85) translateY(8px)';
+    el.style.transition = 'opacity 0.4s cubic-bezier(0.34,1.56,0.64,1), transform 0.4s cubic-bezier(0.34,1.56,0.64,1)';
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'scale(1) translateY(0)';
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    obs.observe(el);
+  });
+
+  // ─── ANIMATED COUNTERS ───
+  function animateCounter(el) {
+    const original = el.textContent.trim();
+    // Match: optional prefix, digits, optional suffix (%, k+, +, s, min, etc)
+    const match = original.match(/^([^0-9]*)([0-9]+(?:\.[0-9]+)?)(.*)$/);
+    if (!match) return;
+    const prefix = match[1];
+    const target = parseFloat(match[2]);
+    const suffix = match[3];
+    const isFloat = match[2].includes('.');
+    const duration = 1600;
+    const start = performance.now();
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const val = easeOut(progress) * target;
+      el.textContent = prefix + (isFloat ? val.toFixed(1) : Math.round(val)) + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+      else el.textContent = original; // snap to exact final value
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.outcome-num, .finding-pct, .outcome-hero-stat-num').forEach(el => {
+    counterObserver.observe(el);
+  });
+
+  // ─── ANIMATED PROGRESS BARS ───
+  document.querySelectorAll('.bar-fill').forEach(el => {
+    const targetWidth = el.style.width || '0%';
+    el.style.width = '0%';
+    el.style.transition = 'none';
+
+    const barObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          requestAnimationFrame(() => {
+            el.style.transition = 'width 1.2s cubic-bezier(0.22,1,0.36,1)';
+            el.style.width = targetWidth;
+          });
+          barObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    barObs.observe(el);
+  });
+
+  // ─── SMOOTH SCROLL FOR SIDEBAR LINKS ───
+  document.querySelectorAll('.sidebar-nav-links a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // ─── QUADRANT DOT PULSE ON LOAD ───
+  setTimeout(() => {
+    document.querySelectorAll('.method-dot').forEach((dot, i) => {
+      setTimeout(() => {
+        const origR = dot.getAttribute('r');
+        dot.setAttribute('r', String(parseInt(origR) + 5));
+        dot.style.transition = 'r 0.3s ease';
+        setTimeout(() => dot.setAttribute('r', origR), 300);
+      }, i * 120);
+    });
+  }, 800);
+</script>
+</body>
+</html>

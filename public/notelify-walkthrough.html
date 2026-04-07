@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap" rel="stylesheet">
+<title>Notelify : Demo Walkthrough</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f4f0;--surface:#fff;--surface2:#f0efe9;--border:#e8e6df;--border2:#d8d5cc;
+  --text:#1a1917;--text2:#6b6860;--text3:#9b9890;
+  --accent:#D4522A;--accent-l:#fdf0eb;--accent-m:#e07050;
+  --hi:#fef3c7;--hi-b:#f59e0b;
+  --r:12px;--rsm:8px;
+}
+body{font-family:'General Sans', sans-serif;background:#1a1917;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px 16px;gap:0}
+
+/* browser chrome */
+.demo-wrap{position:relative;width:100%;max-width:1200px}
+.browser{border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6);background:var(--bg)}
+.browser-bar{height:40px;background:#e8e6e0;display:flex;align-items:center;padding:0 16px;gap:8px}
+.b-dots{display:flex;gap:6px}
+.b-dot{width:11px;height:11px;border-radius:50%}
+.b-dot.r{background:#ff5f57}.b-dot.y{background:#febc2e}.b-dot.g{background:#28c840}
+.b-url{flex:1;background:#fff;border-radius:6px;padding:5px 12px;font-size:12px;color:#666;margin:0 12px;font-family:'General Sans', sans-serif}
+
+/* app layout */
+.app{display:flex;height:580px;font-family:'General Sans', sans-serif;font-size:14px}
+
+/* sidebar */
+.sidebar{width:200px;background:var(--surface2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.sb-search{padding:10px 12px 6px}
+.sb-searchbox{background:#fff;border:1px solid var(--border);border-radius:7px;padding:6px 8px 6px 24px;font-size:12px;color:var(--text3);width:100%;font-family:inherit}
+.sb-actions{padding:4px 10px 8px;display:flex;gap:5px}
+.sb-btn-pri{padding:5px 10px;border-radius:6px;background:var(--accent);color:#fff;font-size:11px;font-family:inherit;border:none;font-weight:600}
+.sb-btn{padding:5px 10px;border-radius:6px;background:transparent;color:var(--text2);font-size:11px;font-family:inherit;border:1px solid var(--border)}
+.sb-content{flex:1;padding:4px 8px;overflow:hidden}
+.nb-hdr{display:flex;align-items:center;gap:5px;padding:5px;border-radius:6px;font-size:12px;font-weight:600;color:var(--text)}
+.chev{font-size:8px;color:var(--text3);display:inline-block;transform:rotate(90deg)}
+.note-list{padding-left:16px;margin-top:2px}
+.note-item{padding:4px 8px;border-radius:6px;font-size:11.5px;color:var(--text2);margin-bottom:1px;display:flex;align-items:center;gap:5px;cursor:pointer}
+.note-item.active{background:var(--accent-l);color:var(--accent);font-weight:600}
+
+/* main */
+.main{flex:1;display:flex;flex-direction:column;background:#fff;overflow:hidden;min-width:0}
+.mode-bar{padding:10px 24px 0;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.mode-tab{padding:10px 22px;border-radius:8px 8px 0 0;border:none;background:transparent;color:var(--text2);font-size:15px;font-family:inherit;font-weight:600;position:relative;bottom:-1px;border-bottom:2px solid transparent}
+.mode-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.editor{flex:1;overflow:hidden;padding:36px 56px}
+.note-title-el{font-family:'DM Serif Display',serif;font-size:34px;color:var(--text);line-height:1.15;letter-spacing:-.5px;margin-bottom:6px}
+.hi-hint{font-size:12px;color:var(--text3);margin-bottom:24px;display:flex;align-items:center;gap:5px}
+.hi-hint::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent-m);display:inline-block}
+.b-h2{font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px}
+.b-p{font-size:13.5px;line-height:1.75;color:var(--text);font-weight:400;margin-bottom:16px}
+.b-ul{list-style:none;padding:0;margin-bottom:16px}
+.b-ul li{font-size:13.5px;line-height:1.75;font-weight:400;padding-left:16px;position:relative;color:var(--text)}
+.b-ul li::before{content:'·';position:absolute;left:4px;color:var(--accent-m);font-weight:600}
+.b-callout{background:var(--hi);border-left:3px solid var(--hi-b);border-radius:0 7px 7px 0;padding:12px 16px;font-size:13px;line-height:1.65;color:#92400e;display:flex;gap:8px;margin-bottom:16px}
+
+/* highlight */
+.highlight-sel{background:#bfdbfe;border-radius:2px}
+
+/* tooltip */
+.ai-tooltip{position:absolute;background:#1a1917;border-radius:9px;padding:5px 3px;display:flex;gap:2px;box-shadow:0 4px 20px rgba(0,0,0,.35);z-index:100;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;pointer-events:none}
+.ai-tooltip.show{opacity:1;transform:translateY(0)}
+.tt-btn{padding:4px 8px;border-radius:5px;border:none;background:transparent;font-size:11px;font-family:inherit;font-weight:600;white-space:nowrap}
+.tt-explain{color:#86efac}.tt-examples{color:#93c5fd}.tt-refine{color:#fcd34d}
+
+/* right panel */
+.right-panel{width:290px;border-left:1px solid var(--border);background:var(--surface2);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
+.p-sec{display:flex;flex-direction:column}
+.p-sec.sugg{border-bottom:1px solid var(--border);min-height:130px;max-height:40%}
+.p-sec.asst{flex:1}
+.p-hdr{padding:9px 13px 7px;display:flex;align-items:center;gap:5px;flex-shrink:0}
+.p-hdr-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);flex:1}
+.spark{color:var(--accent);font-size:10px}
+.sugg-area{flex:1;overflow:hidden;padding:0 11px 10px;display:flex;flex-direction:column}
+.sugg-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px;gap:6px;color:var(--text3);flex:1}
+.sugg-empty-icon{font-size:18px;opacity:.35}
+.sugg-empty p{font-size:11.5px;line-height:1.5}
+.sugg-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.sugg-card.show{opacity:1;transform:translateY(0)}
+.sugg-label{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;color:#16a34a}
+.sugg-text{font-size:12px;line-height:1.6;color:var(--text);font-weight:400}
+.chat-area{flex:1;overflow:hidden;padding:7px 11px;display:flex;flex-direction:column;gap:7px}
+.bubble{padding:8px 10px;border-radius:9px;font-size:12px;line-height:1.55;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.bubble.show{opacity:1;transform:translateY(0)}
+.bubble.user{background:var(--accent);color:#fff;align-self:flex-end;border-radius:9px 9px 2px 9px;max-width:85%}
+.bubble.assistant{background:#fff;border:1px solid var(--border);color:var(--text);font-weight:400;border-radius:9px 9px 9px 2px}
+.bubble.typing{background:#fff;border:1px solid var(--border);color:var(--text3);font-style:normal;border-radius:9px 9px 9px 2px}
+.chips{padding:9px 12px;display:flex;flex-wrap:wrap;gap:10px;border-top:1px solid var(--border);flex-shrink:0}
+.chip{padding:8px 18px;border-radius:22px;border:1px solid var(--border2);background:#fff;color:var(--text2);font-size:13px;font-family:inherit;font-weight:600}
+.chat-row{padding:7px 11px 10px;display:flex;gap:6px;align-items:flex-end;border-top:1px solid var(--border);flex-shrink:0}
+.chat-input-el{flex:1;background:#fff;border:1px solid var(--border);border-radius:9px;padding:7px 10px;font-size:12px;font-family:inherit;color:var(--text);min-height:33px}
+.send-btn-el{width:30px;height:30px;border-radius:7px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+
+/* overview */
+.overview{flex:1;overflow:hidden;padding:36px 56px}
+.ov-sec{margin-bottom:28px}
+.ov-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.ov-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.sum-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13px;line-height:1.7;color:var(--text);font-weight:400}
+.q-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:13px 16px;margin-bottom:8px}
+.q-row{font-size:13px;font-weight:600;color:var(--text);display:flex;justify-content:space-between;gap:10px}
+.q-tog{color:var(--text3);font-size:10.5px}
+.q-ans{font-size:12.5px;color:var(--text2);margin-top:10px;line-height:1.6;font-weight:400;border-top:1px solid var(--border);padding-top:10px}
+.c-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;background:var(--accent-l);color:var(--accent);font-size:12px;font-weight:600;margin:3px;border:1px solid rgba(212,82,42,.15)}
+
+/* cursor */
+.cursor{position:absolute;width:18px;height:18px;pointer-events:none;z-index:999;transition:top .4s cubic-bezier(.4,0,.2,1),left .4s cubic-bezier(.4,0,.2,1)}
+.cursor svg{width:18px;height:18px;filter:drop-shadow(1px 1px 2px rgba(0,0,0,.4))}
+.cursor.clicking{transform:scale(.85)}
+.cursor.transition-fast{transition:top .2s ease,left .2s ease}
+
+/* new note pulse */
+.note-pulse{animation:notePulse .4s ease}
+@keyframes notePulse{0%{background:var(--accent-l)}50%{background:#fde8e0}100%{background:var(--accent-l)}}
+
+/* drag ghost */
+.dragging-ghost{border:1.5px dashed var(--accent)!important;opacity:.5!important;background:var(--accent-l)!important}
+.drop-target{outline:2px solid var(--accent);border-radius:6px}
+
+/* controls */
+.controls{display:flex;align-items:center;gap:12px;margin-top:12px}
+.ctrl-btn{padding:8px 18px;border-radius:8px;border:none;background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:13px;font-family:'General Sans', sans-serif;cursor:pointer;transition:background .15s;font-weight:600}
+.ctrl-btn:hover{background:rgba(255,255,255,.18)}
+.ctrl-btn.pri{background:var(--accent);color:#fff}
+.ctrl-btn.pri:hover{background:#b8421d}
+.step-dots{display:flex;gap:6px;align-items:center}
+.step-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .3s}
+.step-dot.active{background:var(--accent)}
+.step-label{color:rgba(255,255,255,.4);font-size:12px;font-family:'General Sans', sans-serif}
+
+/* dots anim */
+.dots span{animation:dotA 1.2s infinite;opacity:0}
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dotA{0%,80%,100%{opacity:0}40%{opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="demo-wrap">
+<div class="browser">
+    <div class="browser-bar">
+      <div class="b-dots"><div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div></div>
+      <div class="b-url">notelify-demo.html</div>
+    </div>
+
+    <div class="app" style="position:relative">
+
+      <!-- SIDEBAR -->
+      <div class="sidebar" id="sidebar">
+        <div class="sb-search"><div class="sb-searchbox" style="position:relative;color:#bbb">⌕ &nbsp;Search notes…</div></div>
+        <div class="sb-actions">
+          <button class="sb-btn-pri">+ Page</button>
+          <button class="sb-btn">+ Folder</button>
+        </div>
+        <div class="sb-content" id="sb-content">
+          <div class="nb-hdr"><span class="chev">›</span> Biology 101</div>
+          <div class="note-list" id="nb1-list">
+            <div class="note-item active" id="n-photo"><span style="opacity:.4;font-size:9px">⠿</span> Photosynthesis</div>
+            <div class="note-item" id="n-cell"><span style="opacity:.4;font-size:9px">⠿</span> Cell Division</div>
+          </div>
+          <div class="nb-hdr" style="margin-top:6px" id="chem-hdr"><span class="chev">›</span> Chemistry</div>
+          <div class="note-list" id="nb2-list" style="display:none">
+            <div class="note-item" id="n-periodic"><span style="opacity:.4;font-size:9px">⠿</span> Periodic Table</div>
+          </div>
+          <div id="new-note-slot"></div>
+        </div>
+      </div>
+
+      <!-- MAIN -->
+      <div class="main">
+        <div class="mode-bar">
+          <button class="mode-tab active" id="tab-note">Note</button>
+          <button class="mode-tab" id="tab-overview">Overview</button>
+        </div>
+
+        <!-- NOTE VIEW -->
+        <div class="editor" id="note-view">
+          <div class="note-title-el">Photosynthesis</div>
+          <div class="hi-hint">Highlight note text to get AI suggestions</div>
+          <div class="b-h2">What is Photosynthesis?</div>
+          <p class="b-p" id="p1">Photosynthesis is the process by which green plants convert <span id="sel-text">light energy into chemical energy</span> stored in glucose. It is the primary source of energy for nearly all life on Earth.</p>
+          <div class="b-h2">The Two Stages</div>
+          <ul class="b-ul">
+            <li>Light-dependent reactions occur in the thylakoid membrane</li>
+            <li>Calvin cycle (light-independent) occurs in the stroma</li>
+            <li>Water is split, releasing oxygen as a byproduct</li>
+          </ul>
+          <div class="b-callout"><span>💡</span><span>Think of photosynthesis as the plant's way of eating sunlight : it's the foundation of almost all food chains on Earth.</span></div>
+        </div>
+
+        <!-- OVERVIEW VIEW -->
+        <div class="overview" id="overview-view" style="display:none">
+          <div class="ov-sec">
+            <div class="ov-title">Summary</div>
+            <div class="sum-card">Photosynthesis is the fundamental process by which green plants convert light energy into chemical energy stored as glucose. It occurs in two stages : the light-dependent reactions (thylakoid membrane) and the Calvin Cycle (stroma) : and is responsible for producing essentially all oxygen in Earth's atmosphere.</div>
+          </div>
+          <div class="ov-sec">
+            <div class="ov-title">Key Concepts</div>
+            <div>
+              <span class="c-chip">✦ Chloroplast</span>
+              <span class="c-chip">✦ Light-dependent reactions</span>
+              <span class="c-chip">✦ Calvin Cycle</span>
+              <span class="c-chip">✦ Glucose synthesis</span>
+              <span class="c-chip">✦ ATP & NADPH</span>
+            </div>
+          </div>
+          <div class="ov-sec">
+            <div class="ov-title">Study Questions</div>
+            <div class="q-card">
+              <div class="q-row"><span>What are the two main stages of photosynthesis?</span><span class="q-tog" id="q1-tog">▼ Show</span></div>
+              <div class="q-ans" id="q1-ans" style="display:none">The light-dependent reactions (thylakoid membrane) and the Calvin Cycle (stroma). The first produces ATP and NADPH; the second uses those to fix CO₂ into glucose.</div>
+            </div>
+            <div class="q-card">
+              <div class="q-row"><span>What is the overall equation for photosynthesis?</span><span class="q-tog">▼ Show</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="right-panel">
+        <div class="p-sec sugg" id="sugg-sec" style="display:flex;flex-direction:column">
+          <div class="p-hdr"><span class="spark">✦</span><span class="p-hdr-title">AI Suggestions</span></div>
+          <div class="sugg-area" id="sugg-area">
+            <div class="sugg-empty" id="sugg-empty">
+              <div class="sugg-empty-icon">✦</div>
+              <p>Highlight text to get AI-powered explanations, examples, or refinements.</p>
+            </div>
+            <div class="sugg-card" id="sugg-card">
+              <div class="sugg-label">Explanation</div>
+              <div class="sugg-text">Light energy is captured by chlorophyll pigments in the thylakoid membranes. This energy drives the splitting of water molecules, releasing oxygen and producing ATP and NADPH : the energy carriers that power the Calvin Cycle.</div>
+            </div>
+          </div>
+          <div class="ai-tooltip" id="ai-tooltip">
+            <button class="tt-btn tt-explain">Explain clearly</button>
+            <button class="tt-btn tt-examples">List examples</button>
+            <button class="tt-btn tt-refine">Refine text</button>
+          </div>
+        </div>
+        <div class="p-sec asst" style="display:flex;flex-direction:column">
+          <div class="p-hdr"><span class="spark">✦</span><span class="p-hdr-title">Study Assistant</span></div>
+          <div class="chat-area" id="chat-area">
+            <div class="bubble assistant show">Hi! Ask me anything about your notes : I'm here in both Note and Overview mode.</div>
+          </div>
+          <div class="chips">
+            <div class="chip">Flashcards</div>
+            <div class="chip">Study questions</div>
+            <div class="chip">Summarize</div>
+          </div>
+          <div class="chat-row">
+            <div class="chat-input-el" id="chat-input-el"></div>
+            <div class="send-btn-el">➤</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CURSOR -->
+      <div class="cursor" id="cursor" style="top:300px;left:400px">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 2L15 9L9 10.5L6.5 16L3 2Z" fill="white" stroke="#333" stroke-width="1"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls" style="display:none">
+    <button class="ctrl-btn" id="prev-btn" onclick="prevStep()">← Prev</button>
+    <div class="step-dots" id="step-dots"></div>
+    <button class="ctrl-btn pri" id="next-btn" onclick="nextStep()">Next →</button>
+    <span class="step-label" id="step-label">Step 1 of 8</span>
+  </div>
+</div>
+
+<script>
+const cursor = document.getElementById('cursor');
+
+function moveCursor(x, y, fast) {
+  cursor.style.transition = fast
+    ? 'top .15s ease, left .15s ease'
+    : 'top .5s cubic-bezier(.4,0,.2,1), left .5s cubic-bezier(.4,0,.2,1)';
+  cursor.style.left = x + 'px';
+  cursor.style.top = y + 'px';
+}
+
+function click() {
+  cursor.classList.add('clicking');
+  setTimeout(() => cursor.classList.remove('clicking'), 200);
+}
+
+function typeText(el, text, speed=45) {
+  return new Promise(res => {
+    let i = 0;
+    el.textContent = '';
+    const iv = setInterval(() => {
+      if (i >= text.length) { clearInterval(iv); res(); return; }
+      el.textContent += text[i++];
+    }, speed);
+  });
+}
+
+function showBubble(role, text) {
+  const area = document.getElementById('chat-area');
+  const b = document.createElement('div');
+  b.className = 'bubble ' + role;
+  b.style.whiteSpace = 'pre-line';
+  b.textContent = text;
+  area.appendChild(b);
+  setTimeout(() => b.classList.add('show'), 30);
+  area.scrollTop = area.scrollHeight;
+  return b;
+}
+
+function setCaption(text) {
+  const el = document.getElementById('caption');
+  el.style.opacity = '0';
+  setTimeout(() => { el.textContent = text; el.style.opacity = '1'; }, 300);
+}
+
+// ── STEPS ─────────────────────────────────────────
+// ── FEATURE BADGE ────────────────────────────────
+function showBadge(text, color='#D4522A') {
+  let badge = document.getElementById('feature-badge');
+  if (!badge) {
+    badge = document.createElement('div');
+    badge.id = 'feature-badge';
+    badge.style.cssText = `position:absolute;top:54px;left:50%;transform:translateX(-50%) translateY(-8px);
+      background:${color};color:#fff;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;
+      padding:4px 14px;border-radius:20px;z-index:200;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;font-family:'General Sans', sans-serif`;
+    document.querySelector('.app').appendChild(badge);
+  }
+  badge.style.background = color;
+  badge.textContent = text;
+  badge.style.opacity = '1';
+  badge.style.transform = 'translateX(-50%) translateY(0)';
+  return badge;
+}
+function hideBadge() {
+  const b = document.getElementById('feature-badge');
+  if (b) { b.style.opacity='0'; b.style.transform='translateX(-50%) translateY(-8px)'; }
+}
+
+const steps = [
+  {
+    caption: "👋  Notelify : an adaptive AI note-taking system built for students.",
+    sub: "Two modes: Note Mode for writing, Overview Mode for studying.",
+    action: async () => {
+      moveCursor(600, 300);
+      await delay(300);
+    }
+  },
+  {
+    caption: "📁  Notes are organised into folders in the sidebar.",
+    sub: "Click any note to open it. Folders can be expanded or collapsed.",
+    action: async () => {
+      showBadge('Sidebar Navigation');
+      moveCursor(115, 180);
+      await delay(400);
+      moveCursor(130, 258);
+      await delay(300);
+      click();
+      await delay(200);
+      moveCursor(130, 295);
+      await delay(200);
+      click();
+    }
+  },
+  {
+    caption: "✏️  Note Mode : freely write and organise your notes.",
+    sub: "Headings, bullet points, and callout blocks keep content structured.",
+    action: async () => {
+      hideBadge();
+      showBadge('Note Mode', '#1a6b3c');
+      moveCursor(500, 200);
+      await delay(300);
+      moveCursor(500, 280);
+      await delay(300);
+      moveCursor(500, 360);
+      await delay(300);
+      moveCursor(500, 430);
+    }
+  },
+  {
+    caption: "🖊️  Select any text to get instant AI suggestions.",
+    sub: "Choose Explain, Examples, or Refine : results appear in the right panel.",
+    action: async () => {
+      hideBadge();
+      showBadge('AI Text Selection', '#D4522A');
+      moveCursor(395, 192);
+      await delay(300);
+      document.getElementById('sel-text').classList.add('highlight-sel');
+      moveCursor(555, 192);
+      await delay(400);
+      const tt = document.getElementById('ai-tooltip');
+      tt.style.left = '315px';
+      tt.style.top = '158px';
+      tt.classList.add('show');
+      moveCursor(430, 170);
+      await delay(300);
+    }
+  },
+  {
+    caption: "💡  'Explain clearly' : AI breaks down the concept in plain language.",
+    sub: "The explanation appears instantly in the AI Suggestions panel on the right.",
+    action: async () => {
+      click();
+      document.getElementById('ai-tooltip').classList.remove('show');
+      document.getElementById('sugg-empty').style.display = 'none';
+      const card = document.getElementById('sugg-card');
+      card.querySelector('.sugg-text').innerHTML = '<span class="dots"><span>.</span><span>.</span><span>.</span></span>';
+      card.classList.add('show');
+      moveCursor(820, 280);
+      await delay(900);
+      card.querySelector('.sugg-text').textContent = 'Light energy is captured by chlorophyll in the thylakoid membranes, driving the splitting of water molecules and producing ATP and NADPH : the energy carriers that power the Calvin Cycle.';
+      await delay(400);
+    }
+  },
+  {
+    caption: "🔍  Highlight a different phrase to get examples instead.",
+    sub: "Each AI action : Explain, List Examples, Refine : serves a different learning need.",
+    action: async () => {
+      hideBadge();
+      showBadge('AI: List Examples', '#2563eb');
+      document.getElementById('sel-text').classList.remove('highlight-sel');
+      const callout = document.querySelector('.b-callout span:last-child');
+      callout.style.background = '#bfdbfe';
+      callout.style.borderRadius = '2px';
+      moveCursor(500, 430);
+      await delay(300);
+      const tt = document.getElementById('ai-tooltip');
+      tt.style.left = '380px';
+      tt.style.top = '410px';
+      tt.classList.add('show');
+      moveCursor(510, 422);
+      await delay(300);
+      click();
+      tt.classList.remove('show');
+      const card = document.getElementById('sugg-card');
+      card.querySelector('.sugg-label').textContent = 'Examples';
+      card.querySelector('.sugg-label').className = 'sugg-label examples';
+      card.querySelector('.sugg-text').innerHTML = '<span class="dots"><span>.</span><span>.</span><span>.</span></span>';
+      await delay(800);
+      card.querySelector('.sugg-text').textContent = '1. A tree uses photosynthesis to grow new branches and roots.\n2. Algae in the ocean produce ~50% of Earth\'s oxygen this way.\n3. Greenhouse farmers boost CO₂ levels to speed up the process.';
+      callout.style.background = '';
+    }
+  },
+  {
+    caption: "🤖  Study Assistant is always available : in both Note and Overview mode.",
+    sub: "Ask free-form questions about your notes, or use the quick-action chips.",
+    action: async () => {
+      hideBadge();
+      showBadge('Study Assistant', '#7c3aed');
+      moveCursor(760, 460);
+      await delay(300);
+      const input = document.getElementById('chat-input-el');
+      click();
+      await delay(200);
+      await typeText(input, 'What is the Calvin Cycle?', 35);
+      moveCursor(850, 527);
+      await delay(200);
+      click();
+      showBubble('user', 'What is the Calvin Cycle?');
+      input.textContent = '';
+      await delay(200);
+      const typing = showBubble('typing', '...');
+      await delay(900);
+      typing.remove();
+      showBubble('assistant', 'The Calvin Cycle happens in the stroma and uses ATP + NADPH to fix CO₂ into glucose. The key enzyme is RuBisCO.');
+    }
+  },
+  {
+    caption: "⚡  Quick chips : generate Flashcards, Study Questions, or a Summary instantly.",
+    sub: "One click sends a preset prompt to the assistant based on your current notes.",
+    action: async () => {
+      hideBadge();
+      showBadge('Quick Action Chips', '#D4522A');
+      moveCursor(690, 497);
+      await delay(250);
+      click();
+      showBubble('user', 'Generate flashcards from my notes');
+      await delay(200);
+      const typing = showBubble('typing', '...');
+      await delay(900);
+      typing.remove();
+      showBubble('assistant', 'Card 1 : Q: What is photosynthesis?\nA: The process plants use to convert light into glucose.\n\nCard 2 : Q: Where do light reactions occur?\nA: In the thylakoid membrane.');
+    }
+  },
+  {
+    caption: "📊  Overview Mode : switch tabs to get an AI-generated study overview.",
+    sub: "Notelify analyses your notes and produces a summary, key concepts, and questions.",
+    action: async () => {
+      hideBadge();
+      showBadge('Overview Mode', '#1a6b3c');
+      moveCursor(560, 46);
+      await delay(300);
+      click();
+      document.getElementById('tab-note').classList.remove('active');
+      document.getElementById('tab-overview').classList.add('active');
+      document.getElementById('note-view').style.display = 'none';
+      document.getElementById('overview-view').style.display = 'block';
+      document.getElementById('sugg-sec').style.display = 'none';
+      await delay(400);
+      moveCursor(700, 200);
+    }
+  },
+  {
+    caption: "🧠  Key Concepts chips show the most important topics from your notes.",
+    sub: "These are extracted automatically : no manual tagging needed.",
+    action: async () => {
+      hideBadge();
+      showBadge('Key Concepts', '#1a6b3c');
+      moveCursor(500, 310);
+      await delay(300);
+      moveCursor(600, 310);
+      await delay(200);
+      moveCursor(700, 310);
+    }
+  },
+  {
+    caption: "❓  Study Questions : click to reveal answers for active recall practice.",
+    sub: "Adaptive learning: Notelify tracks which topics you revisit most.",
+    action: async () => {
+      hideBadge();
+      showBadge('Active Recall Questions', '#D4522A');
+      moveCursor(500, 385);
+      await delay(300);
+      click();
+      document.getElementById('q1-tog').textContent = '▲ Hide';
+      document.getElementById('q1-ans').style.display = 'block';
+      await delay(400);
+    }
+  },
+  {
+    caption: "➕  Add a new page : it appears at the top of the folder, ready to edit.",
+    sub: "Pages can also be dragged between folders using the handle on each note.",
+    action: async () => {
+      hideBadge();
+      showBadge('Page Management', '#D4522A');
+      document.getElementById('tab-note').classList.add('active');
+      document.getElementById('tab-overview').classList.remove('active');
+      document.getElementById('note-view').style.display = 'block';
+      document.getElementById('overview-view').style.display = 'none';
+      document.getElementById('sugg-sec').style.display = 'flex';
+      moveCursor(68, 107);
+      await delay(300);
+      click();
+      const list = document.getElementById('nb1-list');
+      const newItem = document.createElement('div');
+      newItem.className = 'note-item active note-pulse';
+      newItem.innerHTML = '<span style="opacity:.4;font-size:9px">⠿</span> Untitled';
+      document.getElementById('n-photo').classList.remove('active');
+      list.insertBefore(newItem, list.firstChild);
+      await delay(400);
+      moveCursor(200, 300);
+      hideBadge();
+    }
+  },
+];
+
+let currentStep = 0;
+let running = false;
+
+// build dots
+const dotsEl = document.getElementById('step-dots');
+steps.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'step-dot' + (i===0?' active':'');
+  d.id = 'dot-'+i;
+  dotsEl.appendChild(d);
+});
+
+function updateDots() {
+  steps.forEach((_, i) => {
+    document.getElementById('dot-'+i).classList.toggle('active', i===currentStep);
+  });
+  document.getElementById('step-label').textContent = `Step ${currentStep+1} of ${steps.length}`;
+  document.getElementById('prev-btn').disabled = currentStep === 0;
+  document.getElementById('next-btn').textContent = currentStep === steps.length-1 ? 'Replay ↺' : 'Next →';
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function runStep(i) {
+  if (running) return;
+  running = true;
+  await steps[i].action();
+  running = false;
+}
+
+async function nextStep() {
+  if (running) return;
+  if (currentStep === steps.length - 1) { restartLoop(); return; }
+  currentStep++;
+  updateDots();
+  await runStep(currentStep);
+}
+
+async function restartLoop() {
+  // reset all visual state
+  hideBadge();
+  document.getElementById('tab-note').classList.add('active');
+  document.getElementById('tab-overview').classList.remove('active');
+  document.getElementById('note-view').style.display = 'block';
+  document.getElementById('overview-view').style.display = 'none';
+  document.getElementById('sugg-sec').style.display = 'flex';
+  document.getElementById('sugg-empty').style.display = 'flex';
+  document.getElementById('sugg-card').classList.remove('show');
+  document.getElementById('sel-text').classList.remove('highlight-sel');
+  document.querySelector('.b-callout span:last-child').style.background = '';
+  document.getElementById('ai-tooltip').classList.remove('show');
+  document.getElementById('q1-tog').textContent = '▼ Show';
+  document.getElementById('q1-ans').style.display = 'none';
+  document.getElementById('sugg-card').querySelector('.sugg-label').textContent = 'Explanation';
+  document.getElementById('sugg-card').querySelector('.sugg-label').className = 'sugg-label';
+  // reset chat
+  const area = document.getElementById('chat-area');
+  while (area.children.length > 1) area.removeChild(area.lastChild);
+  // remove added new note if present
+  const list = document.getElementById('nb1-list');
+  const items = list.querySelectorAll('.note-item');
+  if (items.length > 2) list.removeChild(items[0]);
+  document.getElementById('n-photo').classList.add('active');
+  moveCursor(600, 300, true);
+  currentStep = 0;
+  updateDots();
+  await delay(600);
+  startAutoPlay();
+}
+
+async function prevStep() {
+  if (running || currentStep === 0) return;
+  currentStep--;
+  updateDots();
+  setCaption(steps[currentStep].caption);
+  moveCursor(400, 300);
+}
+
+function startAutoPlay() {
+  (async () => {
+    await runStep(0);
+    for (let i = 1; i < steps.length; i++) {
+      await delay(2200);
+      currentStep = i;
+      updateDots();
+      await runStep(i);
+    }
+    // loop
+    await delay(1500);
+    restartLoop();
+  })();
+}
+
+// kick off
+(async () => {
+  await delay(600);
+  updateDots();
+  startAutoPlay();
+})();
+</script>
+</body>
+</html>
