@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import FitContainVideo from "@/components/FitContainVideo";
 
 interface Stat {
   value: string;
@@ -18,8 +17,6 @@ interface Project {
   placeholder?: boolean; // true = render Apple-style placeholder on right panel
   image?: string;
   video?: string;
-  /** H.264/MP4 URL (e.g. Cloudinary `f_mp4`) so Chrome/Android can play; use with a local `/…mov` in `video`. */
-  videoWebMp4?: string;
   link: string;
   newTab?: boolean;
   comingSoon?: boolean;
@@ -54,9 +51,7 @@ const projects: Project[] = [
     leftTextDark: true,
     rightBg: "#ffffff",
     image: "/safeyelli3.png",
-    video: "/safeyelli-2.mov",
-    videoWebMp4:
-      "https://res.cloudinary.com/drajdxssq/video/upload/f_mp4/v1775549034/safeyelli-2_cg6fhq.mov",
+    video: "/safeyelli2.mp4",
     link: "/safeyelli",
     role: "UX Researcher & Service Designer",
     stats: [{ value: "50K+", label: "Active Users" }],
@@ -431,13 +426,43 @@ export default function Projects() {
                         />
                       </div>
                     ) : isSafeYelliCard && project.video ? (
-                      <FitContainVideo
-                        src={project.video}
-                        webMp4Src={project.videoWebMp4}
-                        panelBg={project.rightBg}
-                        poster={project.image}
-                        objectFit="contain"
-                      />
+                      <div
+                        style={{
+                          minWidth: 0,
+                          width: "100%",
+                          height: "100%",
+                          minHeight: 500,
+                          position: "relative",
+                          overflow: "hidden",
+                          background: project.rightBg,
+                          boxSizing: "border-box",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderTopRightRadius: 24,
+                          borderBottomRightRadius: 24,
+                        }}
+                      >
+                        <video
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          preload="auto"
+                          aria-label={`${project.shortTitle} product video`}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                            objectPosition: "center",
+                            display: "block",
+                            outline: "none",
+                            borderRadius: 16,
+                          }}
+                        >
+                          <source src={project.video} type="video/mp4" />
+                        </video>
+                      </div>
                     ) : (
                       <iframe
                         src="/notelify-walkthrough4.html"
@@ -464,7 +489,7 @@ export default function Projects() {
                         playsInline
                         style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                       >
-                        <source src={project.video} type="video/quicktime" />
+                        <source src={project.video} type="video/mp4" />
                       </video>
                     ) : (
                       <Image
