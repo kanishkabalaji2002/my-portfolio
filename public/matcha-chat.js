@@ -28,8 +28,9 @@
 
   function rowAvatar() {
     return (
-      '<div style="width:36px;height:36px;border-radius:50%;background:#d4e8d2;flex-shrink:0;display:flex;align-items:center;justify-content:center;">' +
-      '<span style="font-size:14px;font-weight:600;color:#2d6a4f;font-family:\'General Sans\',sans-serif;">K</span></div>'
+      '<div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;border:1px solid rgba(15,23,42,0.08);">' +
+      '<img src="/photo.png" alt="Kanishka Balaji" width="36" height="36" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center 25%;display:block;" />' +
+      "</div>"
     );
   }
 
@@ -141,7 +142,14 @@
     }, 3800);
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function boot() {
     document.querySelectorAll("[data-matcha-chat]").forEach(mount);
-  });
+  }
+
+  // Next.js and other late-loaded scripts often run after DOMContentLoaded — still mount.
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
 })();

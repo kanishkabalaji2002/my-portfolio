@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0f172a" />
+<title>Scout: Promo</title>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --rust: #c94a2a;
+    --rust-dim: rgba(201, 74, 42, 0.35);
+    --ink: #f0ece3;
+    --muted: rgba(240, 236, 227, 0.55);
+    --slate: #0f172a;
+    --slate2: #1e293b;
+    --green-dim: rgba(27, 42, 107, 0.25);
+    --font: "General Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font);
+    background: var(--slate);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .promo {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(120% 100% at 50% 0%, #1e293b 0%, #0f172a 45%, #0c0a09 100%);
+    animation: bgShift 24s ease-in-out infinite alternate;
+  }
+  @keyframes bgShift {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(-8deg); }
+  }
+  .grain {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .stage {
+    position: relative;
+    width: min(92vw, 960px);
+    min-height: min(78vh, 560px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(16px, 4vw, 40px);
+  }
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+    transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .scene.is-on {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  .eyebrow {
+    font-size: clamp(10px, 1.8vw, 11px);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .headline {
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+    max-width: 18ch;
+    margin-bottom: 16px;
+  }
+  .headline em {
+    font-style: normal;
+    color: var(--rust);
+  }
+  .sub {
+    font-size: clamp(15px, 2.4vw, 19px);
+    line-height: 1.55;
+    color: rgba(240, 236, 227, 0.78);
+    max-width: 36ch;
+  }
+  .sub strong { color: var(--ink); font-weight: 600; }
+  .feature-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 22px;
+    max-width: 42rem;
+  }
+  .chip {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(240, 236, 227, 0.9);
+  }
+  .big-stat {
+    font-size: clamp(56px, 14vw, 120px);
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .big-stat span { color: var(--rust); }
+  /* Fake browser + popup */
+  .browser-mock {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+    background: #111827;
+  }
+  .browser-chrome {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #1f2937;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .dots { display: flex; gap: 6px; }
+  .dots i {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #4b5563;
+  }
+  .dots i:first-child { background: #ef4444; }
+  .dots i:nth-child(2) { background: #eab308; }
+  .dots i:nth-child(3) { background: #000000; }
+  .url-bar {
+    flex: 1;
+    font-size: 11px;
+    color: #9ca3af;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #111827;
+    text-align: left;
+    font-family: ui-monospace, monospace;
+  }
+  .browser-page {
+    position: relative;
+    height: 140px;
+    background: linear-gradient(145deg, #1e3a5f 0%, #0f172a 100%);
+  }
+  .browser-page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
+  }
+  .popup-float {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: min(240px, 55%);
+    padding: 14px 14px 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    text-align: left;
+    animation: popIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 0.35s;
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: translateY(12px) scale(0.94); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .popup-float .t1 {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(240, 236, 227, 0.5);
+    margin-bottom: 6px;
+  }
+  .popup-float .t2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f0ece3;
+    margin-bottom: 8px;
+  }
+  .popup-float .t3 {
+    font-size: 11px;
+    color: rgba(240, 236, 227, 0.65);
+    line-height: 1.45;
+    margin-bottom: 10px;
+  }
+  .popup-float .btn {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f0ece3;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(201, 74, 42, 0.28);
+    border: 1px solid rgba(201, 74, 42, 0.45);
+  }
+  .badge-live {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(220, 252, 231, 0.95);
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: rgba(22, 163, 74, 0.2);
+    border: 1px solid rgba(34, 197, 94, 0.45);
+  }
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--rust);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rust-dim);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .cta-link:hover { color: #e85a36; border-bottom-color: #e85a36; }
+  .hud {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20px clamp(16px, 4vw, 32px) 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.95), transparent);
+    z-index: 20;
+  }
+  .hud-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .progress {
+    width: min(360px, 70vw);
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
+  .progress > i {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--rust), #f97316);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+  }
+  .dots-nav {
+    display: flex;
+    gap: 8px;
+  }
+  .dots-nav button {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .dots-nav button.is-active {
+    background: var(--rust);
+    transform: scale(1.25);
+  }
+  .btn-ghost {
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(240, 236, 227, 0.75);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 10px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-ghost:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); }
+  .skip-hint {
+    font-size: 11px;
+    color: rgba(240, 236, 227, 0.35);
+    letter-spacing: 0.04em;
+  }
+  .top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px clamp(16px, 3vw, 28px);
+    font-size: 12px;
+    color: rgba(240, 236, 227, 0.45);
+  }
+  .top-bar a {
+    color: rgba(240, 236, 227, 0.65);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .top-bar a:hover { color: var(--ink); }
+  @media (max-width: 520px) {
+    .headline { max-width: 22ch; }
+    .browser-mock { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+  <div class="promo" id="promo">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="top-bar">
+      <span>Scout · promo reel</span>
+      <a href="/scout-case-study.html">Case study</a>
+    </div>
+    <div class="stage" id="stage" aria-live="polite"></div>
+  </div>
+
+  <div class="hud">
+    <div class="progress" aria-hidden="true"><i id="progFill"></i></div>
+    <div class="hud-row">
+      <button type="button" class="btn-ghost" id="btnPause">Pause</button>
+      <div class="dots-nav" id="dotNav" aria-label="Scene"></div>
+      <button type="button" class="btn-ghost" id="btnReplay">Replay</button>
+    </div>
+    <p class="skip-hint">Tip: fullscreen this tab and screen-record for a shareable MP4.</p>
+  </div>
+
+  <script>
+(function () {
+  var SCENES = [
+    {
+      ms: 4500,
+      html:
+        '<div class="eyebrow">Chrome extension</div>' +
+        '<h1 class="headline">Meet <em>Scout</em></h1>' +
+        '<p class="sub">Competitive UX intelligence in your browser: one click on any site.</p>',
+    },
+    {
+      ms: 4200,
+      html:
+        '<div class="eyebrow">The problem</div>' +
+        '<h1 class="headline">Competitive analysis is slow</h1>' +
+        '<p class="sub">Tabs, notes, screenshots, write-ups, and you still feel like you&rsquo;re missing something.</p>',
+    },
+    {
+      ms: 4200,
+      html:
+        '<div class="eyebrow">The shift</div>' +
+        '<h1 class="headline">Learn, don&rsquo;t just audit</h1>' +
+        '<p class="sub">Scout reframes &ldquo;what&rsquo;s broken&rdquo; into <strong>what you can learn</strong> from any competitor.</p>',
+    },
+    {
+      ms: 5200,
+      html:
+        '<div class="browser-mock">' +
+          '<div class="browser-chrome">' +
+            '<div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>' +
+            '<div class="url-bar">competitor.com/pricing</div>' +
+          '</div>' +
+          '<div class="browser-page">' +
+            '<div class="popup-float">' +
+              '<p class="t1">Competitive UX intelligence</p>' +
+              '<p class="t2">Scout</p>' +
+              '<p class="t3">Strength score · strategic takeaways · on-page annotations.</p>' +
+              '<span class="btn">Analyze page</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<p class="sub" style="margin-top:20px">Glass popup, progressive disclosure, built for designers and PMs.</p>',
+    },
+    {
+      ms: 4500,
+      html:
+        '<div class="eyebrow">Under the hood</div>' +
+        '<div class="feature-row">' +
+          '<span class="chip">Gemini insights</span>' +
+          '<span class="chip">Numbered overlays</span>' +
+          '<span class="chip">PNG report</span>' +
+        '</div>' +
+        '<p class="sub" style="margin-top:8px">Free for the user, no API key in the flow.</p>',
+    },
+    {
+      ms: 4000,
+      html:
+        '<div class="eyebrow">Speed</div>' +
+        '<p class="big-stat">&lt;10<span>s</span></p>' +
+        '<p class="sub">A full read on a typical marketing page, end to end.</p>',
+    },
+    {
+      ms: 4000,
+      html:
+        '<div class="eyebrow">Status</div>' +
+        '<h1 class="headline">Live on Chrome Web Store</h1>' +
+        '<p class="sub">Google <strong>approved the listing</strong>. Scout is publicly installable from the Chrome Web Store with no sideloading required.</p>' +
+        '<a class="cta-link" href="https://chrome.google.com/webstore/detail/ecmkeokcmiflgkfnnhbcmcklmdobkila" target="_blank" rel="noopener noreferrer">Install Scout →</a>' +
+        '<span class="badge-live">Listed · installable</span>',
+    },
+    {
+      ms: 5500,
+      html:
+        '<div class="eyebrow">Kanishka Balaji</div>' +
+        '<h1 class="headline">Scout</h1>' +
+        '<p class="sub">Product design &amp; development · Manifest V3 · 2-day sprint to v1</p>' +
+        '<a class="cta-link" href="/scout-case-study.html">Read the full case study →</a>',
+    },
+  ];
+
+  var stage = document.getElementById("stage");
+  var progFill = document.getElementById("progFill");
+  var dotNav = document.getElementById("dotNav");
+  var btnPause = document.getElementById("btnPause");
+  var btnReplay = document.getElementById("btnReplay");
+
+  var idx = 0;
+  var sceneTimer = null;
+  var progressRaf = null;
+  var sceneStart = 0;
+  var paused = false;
+  /** Wall time when pause started; freezes progress math until resume. */
+  var pauseAt = 0;
+  var totalMs = SCENES.reduce(function (a, s) { return a + s.ms; }, 0);
+
+  function elapsedBeforeIdx() {
+    var t = 0;
+    for (var i = 0; i < idx; i++) t += SCENES[i].ms;
+    return t;
+  }
+
+  function nowForProgress() {
+    return pauseAt ? pauseAt : Date.now();
+  }
+
+  function overallProgressRatio() {
+    var inScene = Math.min(SCENES[idx].ms, Math.max(0, nowForProgress() - sceneStart));
+    return (elapsedBeforeIdx() + inScene) / totalMs;
+  }
+
+  function buildDots() {
+    dotNav.innerHTML = "";
+    SCENES.forEach(function (_, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", "Scene " + (i + 1));
+      if (i === idx) b.classList.add("is-active");
+      b.addEventListener("click", function () { goTo(i); });
+      dotNav.appendChild(b);
+    });
+  }
+
+  function renderScenes() {
+    stage.innerHTML = "";
+    SCENES.forEach(function (scene, i) {
+      var el = document.createElement("div");
+      el.className = "scene" + (i === idx ? " is-on" : "");
+      el.setAttribute("role", "group");
+      el.setAttribute("aria-hidden", i === idx ? "false" : "true");
+      el.innerHTML = scene.html;
+      stage.appendChild(el);
+    });
+  }
+
+  function updateDots() {
+    var btns = dotNav.querySelectorAll("button");
+    btns.forEach(function (b, i) {
+      b.classList.toggle("is-active", i === idx);
+    });
+  }
+
+  function clearSceneTimer() {
+    if (sceneTimer) clearTimeout(sceneTimer);
+    sceneTimer = null;
+  }
+
+  function clearProgressRaf() {
+    if (progressRaf) cancelAnimationFrame(progressRaf);
+    progressRaf = null;
+  }
+
+  function tickProgress() {
+    progFill.style.width = overallProgressRatio() * 100 + "%";
+    if (!paused) progressRaf = requestAnimationFrame(tickProgress);
+  }
+
+  function scheduleNext() {
+    clearSceneTimer();
+    if (paused) return;
+    sceneStart = Date.now();
+    var dur = SCENES[idx].ms;
+    sceneTimer = setTimeout(function advance() {
+      idx = (idx + 1) % SCENES.length;
+      sceneStart = Date.now();
+      show();
+      scheduleNext();
+    }, dur);
+  }
+
+  function show() {
+    renderScenes();
+    updateDots();
+    progFill.style.width = overallProgressRatio() * 100 + "%";
+  }
+
+  function goTo(i) {
+    idx = i % SCENES.length;
+    clearSceneTimer();
+    sceneStart = Date.now();
+    show();
+    if (!paused) {
+      clearProgressRaf();
+      progressRaf = requestAnimationFrame(tickProgress);
+      scheduleNext();
+    }
+  }
+
+  function replay() {
+    paused = false;
+    pauseAt = 0;
+    btnPause.textContent = "Pause";
+    idx = 0;
+    clearSceneTimer();
+    sceneStart = Date.now();
+    show();
+    clearProgressRaf();
+    progressRaf = requestAnimationFrame(tickProgress);
+    scheduleNext();
+  }
+
+  btnPause.addEventListener("click", function () {
+    if (!paused) {
+      paused = true;
+      btnPause.textContent = "Play";
+      pauseAt = Date.now();
+      clearSceneTimer();
+      clearProgressRaf();
+      progFill.style.width = overallProgressRatio() * 100 + "%";
+    } else {
+      var frozenDur = Date.now() - pauseAt;
+      pauseAt = 0;
+      sceneStart += frozenDur;
+      paused = false;
+      btnPause.textContent = "Pause";
+      var elapsed = Date.now() - sceneStart;
+      var remain = SCENES[idx].ms - elapsed;
+      if (remain <= 0) {
+        idx = (idx + 1) % SCENES.length;
+        sceneStart = Date.now();
+        show();
+        scheduleNext();
+      } else {
+        progressRaf = requestAnimationFrame(tickProgress);
+        sceneTimer = setTimeout(function () {
+          idx = (idx + 1) % SCENES.length;
+          sceneStart = Date.now();
+          show();
+          scheduleNext();
+        }, remain);
+      }
+    }
+  });
+
+  btnReplay.addEventListener("click", replay);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.code === "Space") {
+      e.preventDefault();
+      btnPause.click();
+    }
+  });
+
+  buildDots();
+  replay();
+})();
+  </script>
+</body>
+</html>

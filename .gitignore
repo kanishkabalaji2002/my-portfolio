@@ -24,6 +24,12 @@
 .DS_Store
 *.pem
 
+# local tooling (PDF extraction)
+public/.venv-pdf/
+
+# one-off video render temp
+.tmp-scout-video/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

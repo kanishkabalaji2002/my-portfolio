@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subtle: Surfacing What Users Don’t Say | Kanishka Balaji</title>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111827;
+  --ink2:#374151;
+  --muted:#6b7280;
+  --muted2:#9ca3af;
+  --border:#e5e7eb;
+  --border-hair:#ececec;
+  --bg:#fafafa;
+  --surface-soft:#f5f5f5;
+  --white:#fff;
+  --accent:#000000;
+  --accent-soft:#e8eaf4;
+  --sidebar-w:260px;
+  --font:'General Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --nav-scroll-gap:20px;
+}
+html{scroll-behavior:smooth;font-family:var(--font);scroll-padding-top:var(--nav-scroll-gap)}
+@media(max-width:960px){html{scroll-padding-top:72px}}
+body{font-family:var(--font);font-weight:400;background:var(--bg);color:var(--ink);line-height:1.6;margin-left:var(--sidebar-w)}
+html.embed body{margin-left:0}
+html.embed .sidebar{display:none!important}
+main section[id]{scroll-margin-top:var(--nav-scroll-gap)}
+@media(max-width:960px){main section[id]{scroll-margin-top:72px}}
+
+.sidebar{
+  position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;padding:24px 16px 28px;
+  display:flex;flex-direction:column;align-items:stretch;background:var(--white);z-index:100;overflow-y:auto;
+}
+.sidebar-back{
+  flex-shrink:0;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:400;color:var(--muted2);text-decoration:none;padding:6px 0;margin-bottom:6px;
+  transition:color .15s;letter-spacing:.01em;
+}
+.sidebar-back:hover{color:var(--ink)}
+.sidebar-nav-links{flex:1;display:flex;flex-direction:column;gap:2px;width:100%;min-height:0;padding:8px 0;overflow-y:auto}
+.sidebar-nav-links a{
+  font-size:13px;font-weight:400;color:#aaa;text-decoration:none;padding:5px 0;display:block;width:100%;
+  text-align:left;line-height:1.35;transition:color .15s;
+}
+.sidebar-nav-links a:hover{color:var(--ink)}
+.sidebar-nav-links a.active{color:var(--ink);font-weight:600}
+
+main{max-width:1100px;margin:0 auto;padding:48px 40px 120px}
+.story-section{margin-top:56px;padding-top:48px;border-top:1px solid var(--border-hair)}
+.story-section:first-of-type{margin-top:0;padding-top:0;border-top:none}
+
+.intro-hero-wrap{
+  position:relative;width:100%;aspect-ratio:16/10;min-height:280px;max-height:min(82vh,720px);
+  margin-bottom:40px;border-radius:16px;overflow:hidden;background:var(--accent-soft);line-height:0;
+}
+.intro-hero-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;
+  border:0;outline:none;display:block;background:#0f1419;
+}
+.intro-hero-placeholder{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(155deg,#eef1f4 0%,#e4e8ee 100%);
+  border:1px dashed #c5cad3;border-radius:16px;
+}
+.intro-hero-placeholder span{
+  font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);
+  text-align:center;padding:0 16px;line-height:1.45;
+}
+@media(max-width:640px){
+  .intro-hero-wrap{min-height:220px;max-height:min(70vh,520px)}
+}
+
+.intro h1{font-size:clamp(28px,3.6vw,42px);font-weight:600;letter-spacing:-.03em;color:var(--ink);line-height:1.12;margin-bottom:0;max-width:24ch}
+.intro-meta-grid{
+  margin:28px 0 36px;
+  padding-top:28px;
+  border-top:1px solid var(--border-hair);
+  max-width:720px;
+}
+.intro-meta-top{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:28px 32px;
+  margin-bottom:28px;
+}
+@media(max-width:680px){
+  .intro-meta-top{grid-template-columns:1fr;gap:22px}
+}
+.intro-meta-block{margin-bottom:28px}
+.intro-meta-block:last-child{margin-bottom:0}
+.intro-meta-label{
+  display:block;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted2);
+  margin-bottom:8px;
+}
+.intro-meta-value{
+  font-size:clamp(16px,1.35vw,17px);
+  font-weight:600;
+  color:var(--ink);
+  line-height:1.5;
+  margin:0;
+}
+.intro-meta-prose{
+  font-size:16px;
+  font-weight:400;
+  color:#525252;
+  line-height:1.65;
+  margin:0;
+}
+.intro-meta-prose strong{font-weight:600;color:var(--ink)}
+.intro-meta-lead{
+  font-size:16px;
+  font-weight:400;
+  color:#525252;
+  line-height:1.65;
+  margin:0 0 14px;
+}
+.intro-meta-did ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.intro-meta-did li{
+  position:relative;
+  padding-left:1.15em;
+  margin-bottom:10px;
+  font-size:16px;
+  font-weight:400;
+  color:#525252;
+  line-height:1.55;
+}
+.intro-meta-did li:last-child{margin-bottom:0}
+.intro-meta-did li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:.58em;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#c5cad3;
+}
+.intro-meta-live .intro-live-demo{margin-top:0}
+.intro-meta-live-url{display:block;margin-top:8px;font-size:13px;font-weight:500;color:var(--muted);letter-spacing:.01em}
+.intro-deck{font-size:clamp(17px,1.45vw,20px);color:#525252;line-height:1.65;max-width:40rem;margin-bottom:0}
+.intro-deck strong{font-weight:600;color:#111827}
+.intro-live-demo{margin-top:1rem}
+.intro-live-demo a{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.intro-live-demo a:hover{color:#000000}
+.story-bridge{font-size:15px;color:#6b7280;font-style:italic;margin:1.25rem 0 0;max-width:720px;line-height:1.65}
+.story-kicker{
+  font-size:clamp(18px,1.55vw,20px);font-weight:600;color:var(--ink);line-height:1.5;letter-spacing:-.025em;
+  margin:1.5rem 0 1rem;max-width:40rem;
+}
+
+.story-head{max-width:720px;margin-bottom:1.25rem}
+.story-title{font-size:clamp(22px,3vw,28px);font-weight:600;letter-spacing:-.03em;color:var(--ink);line-height:1.15;margin-bottom:0}
+.story-prose{font-size:16px;color:#525252;line-height:1.75;max-width:720px}
+.story-prose p{margin-bottom:1rem}
+.story-prose p:last-child{margin-bottom:0}
+.story-prose strong{font-weight:600;color:var(--ink)}
+.story-prose h3{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;margin:28px 0 10px}
+.story-prose h3:first-child{margin-top:0}
+.product-section{margin-top:40px;padding-top:36px;border-top:1px solid var(--border-hair)}
+.product-section__title{
+  font-size:clamp(20px,2.2vw,24px);font-weight:600;letter-spacing:-.03em;color:var(--ink);
+  margin:0 0 10px;line-height:1.2;
+}
+.product-section__lead{font-size:15px;color:#525252;line-height:1.65;margin:0 0 18px;max-width:720px}
+.product-walkthrough-label{
+  font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);margin:0 0 10px;
+}
+.product-walkthrough{margin-bottom:8px}
+/* Same surface as intro placeholder (not accent-soft green); align left with main column like #intro hero */
+.intro-hero-wrap.product-walkthrough{
+  background:linear-gradient(155deg,#eef1f4 0%,#e4e8ee 100%);
+  border:1px dashed #c5cad3;
+}
+/* Walkthrough sits in .story-prose (720px); span full main column width, flush left with intro hero */
+@media (min-width:961px){
+  .story-prose .intro-hero-wrap.product-walkthrough{
+    --walkthrough-w:min(1020px,calc(100vw - var(--sidebar-w) - 80px));
+    width:var(--walkthrough-w);
+    max-width:var(--walkthrough-w);
+    margin-left:0;
+  }
+  html.embed .story-prose .intro-hero-wrap.product-walkthrough{
+    --walkthrough-w:min(1020px,calc(100vw - 80px));
+  }
+}
+@media (max-width:960px){
+  .story-prose .intro-hero-wrap.product-walkthrough{
+    --walkthrough-w:min(1020px,calc(100vw - 40px));
+    width:var(--walkthrough-w);
+    max-width:var(--walkthrough-w);
+    margin-left:0;
+  }
+}
+.story-prose ul,.story-prose ol{margin:0 0 1rem;padding-left:1.25rem;max-width:720px}
+.story-prose ul li,.story-prose ol li{margin:8px 0}
+
+.story-subheading{
+  font-size:clamp(15px,1.4vw,17px);font-weight:600;color:var(--ink);margin:28px 0 12px;letter-spacing:-.02em;text-transform:none;
+}
+.story-subheading:first-of-type{margin-top:8px}
+.story-prose h3.story-subheading,.story-prose h4.story-subheading{
+  text-transform:none;
+  font-size:clamp(15px,1.4vw,17px);
+  letter-spacing:-.02em;
+  color:var(--ink);
+}
+.decision-item h4{
+  font-size:clamp(17px,1.5vw,19px);
+  font-weight:600;
+  color:var(--ink);
+  margin:0 0 10px;
+  letter-spacing:-.02em;
+  text-transform:none;
+}
+
+.story-blockquote{
+  margin:20px 0;padding:18px 22px;background:var(--surface-soft);border-left:3px solid var(--accent);
+  border-radius:0 12px 12px 0;font-size:clamp(16px,1.45vw,18px);font-weight:600;color:var(--ink);line-height:1.55;
+}
+.story-blockquote--soft{border-left-color:#c5cad3;font-weight:500}
+
+.insight-callout{
+  margin:24px 0;
+  padding:26px 28px 26px 32px;
+  border-left:5px solid var(--accent);
+  background:linear-gradient(165deg,#f4f5f8 0%,#e9ecf4 55%,#e4e8f0 100%);
+  border-radius:0 12px 12px 0;
+  max-width:720px;
+  box-shadow:0 1px 0 rgba(27, 42, 107,0.07),0 8px 24px rgba(17,24,39,0.04);
+}
+.insight-callout p{margin:0;font-size:clamp(17px,1.5vw,19px);font-weight:700;color:var(--ink);line-height:1.55;letter-spacing:-.02em}
+.insight-callout .insight-callout__support{
+  margin-top:16px;
+  font-size:15px;
+  font-weight:500;
+  color:#4b5563;
+  line-height:1.65;
+  letter-spacing:0;
+}
+.intro-problem{margin-top:4px}
+.intro-problem__head{
+  margin:0 0 14px;
+  font-size:clamp(17px,1.5vw,19px);
+  font-weight:600;
+  letter-spacing:-.02em;
+  color:var(--ink);
+  line-height:1.25;
+}
+.intro-problem__pull{
+  margin:0 0 18px;
+  padding:2px 0 4px 20px;
+  border-left:3px solid var(--accent);
+  font-size:clamp(16px,1.4vw,17px);
+  font-weight:600;
+  color:var(--ink);
+  line-height:1.55;
+  letter-spacing:-.012em;
+}
+.intro-problem .intro-meta-prose{margin:0}
+.story-insight{margin:24px 0 6px}
+.story-insight .intro-problem__head{margin-bottom:12px;font-size:clamp(16px,1.45vw,18px)}
+.story-insight .intro-problem__pull{margin-bottom:0}
+
+.how-layer{
+  margin-bottom:20px;padding:18px 20px;background:#fff;border:1px solid var(--border-hair);border-radius:12px;max-width:720px;
+}
+.how-layer h4{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 10px;text-transform:none;letter-spacing:-.02em}
+
+.feature-media{
+  width:100%;aspect-ratio:16/9;max-height:min(300px,48vw);border-radius:12px;margin:16px 0;
+  background:linear-gradient(155deg,#eef1f4 0%,#e4e8ee 100%);border:1px dashed #c5cad3;
+  display:flex;align-items:center;justify-content:center;
+}
+.feature-media span{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);text-align:center;padding:0 16px;line-height:1.45}
+.story-shot{
+  display:block;width:100%;max-width:100%;height:auto;margin:14px 0;border-radius:12px;
+  border:1px solid var(--border-hair);vertical-align:middle;background:#0f1419;
+}
+
+/* Before / after iteration toggle (Telefónica-style segmented control) */
+.su-toggle-toolbar{display:flex;justify-content:flex-start;margin:14px 0 10px}
+.su-toggle{width:100%;max-width:340px}
+.su-toggle-track{position:relative;display:flex;width:100%;padding:4px;border-radius:999px;background:#e8e8e8;box-sizing:border-box}
+.su-toggle-thumb{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px) / 2);border-radius:999px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1),0 0 0 1px rgba(0,0,0,.05);transition:left .22s ease;z-index:0;pointer-events:none}
+.su-toggle--before .su-toggle-thumb{left:4px}
+.su-toggle--after .su-toggle-thumb{left:calc(4px + (100% - 8px) / 2)}
+.su-toggle-track .su-toggle-btn{position:relative;z-index:1;flex:1;font-family:var(--font);font-size:13px;font-weight:500;padding:10px 12px;border:none;border-radius:999px;background:transparent;color:#9ca3af;cursor:pointer;transition:color .2s ease,font-weight .2s ease}
+.su-toggle-track .su-toggle-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.su-toggle--before .su-toggle-btn[data-panel="before"],
+.su-toggle--after .su-toggle-btn[data-panel="after"]{color:var(--ink);font-weight:600}
+.su-toggle--before .su-toggle-btn[data-panel="after"],
+.su-toggle--after .su-toggle-btn[data-panel="before"]{color:#9ca3af;font-weight:400}
+.su-iterate-panel{margin-top:4px}
+.su-iterate-panel--hidden{display:none!important}
+.su-iterate-note{font-size:15px;color:#525252;line-height:1.7;margin:0 0 12px;max-width:720px}
+.su-iterate-after{background:var(--surface-soft);border:1px solid var(--border-hair);border-radius:12px;padding:18px 20px;max-width:720px}
+.su-iterate-after ul{margin:10px 0 0;padding-left:1.2rem;font-size:15px;color:#525252;line-height:1.65}
+.su-iterate-after li{margin:6px 0}
+
+.example-box{margin:16px 0;padding:16px 18px;background:var(--surface-soft);border-radius:10px;border:1px solid var(--border-hair);font-size:15px;line-height:1.65}
+.example-box p{margin-bottom:.6rem}
+.example-box p:last-child{margin-bottom:0}
+
+.decision-item{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--border-hair);max-width:720px}
+.decision-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.decision-item h4{margin-top:0}
+
+.flow-steps{list-style:decimal;padding-left:1.35rem;max-width:720px;font-size:16px;color:#525252;line-height:1.75}
+.flow-steps li{margin:10px 0}
+
+.mvp-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;margin-top:8px}
+@media(max-width:640px){.mvp-columns{grid-template-columns:1fr}}
+.mvp-col{padding:18px;border-radius:12px;border:1px solid var(--border-hair);background:#fff}
+.mvp-col h4{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin:0 0 12px;color:#9ca3af}
+.mvp-col--yes h4{color:#000000}
+.mvp-col ul{margin:0;padding-left:1.1rem;font-size:14px}
+.mvp-col li{margin:6px 0}
+
+.impact-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;margin-bottom:20px}
+@media(max-width:640px){.impact-columns{grid-template-columns:1fr}}
+.impact-col{padding:18px;border-radius:12px;border:1px solid var(--border-hair);background:#fff}
+.impact-col h4{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 12px;text-transform:none}
+.impact-col ul{margin:0;padding-left:1.1rem;font-size:14px}
+
+/* At a glance: vertical loop diagram (editorial card, minimal motion) */
+.signal-flow{
+  margin-top:16px;max-width:720px;padding:28px 28px 26px;background:#fff;border:1px solid var(--border-hair);
+  border-radius:20px;position:relative;overflow:hidden;
+  box-shadow:0 1px 0 rgba(17,24,39,0.04),0 12px 40px rgba(17,24,39,0.05);
+}
+.signal-flow__heading{
+  margin:0 0 26px;font-size:clamp(17px,1.55vw,19px);font-weight:700;color:var(--ink);
+  letter-spacing:-.02em;line-height:1.2;text-transform:none;
+}
+.signal-flow__inner{
+  position:relative;display:flex;flex-direction:column;align-items:center;gap:0;padding:8px 0 4px;
+}
+.signal-flow__node{
+  position:relative;z-index:2;display:flex;align-items:center;justify-content:center;min-width:10.5rem;padding:14px 24px;
+  border-radius:999px;font-size:15px;font-weight:600;color:var(--ink);
+  background:linear-gradient(180deg,#f4f5f8 0%,#e8eaf4 100%);
+  border:1px solid rgba(27, 42, 107,0.22);
+  box-shadow:0 1px 0 rgba(255,255,255,0.85) inset,0 2px 8px rgba(27, 42, 107,0.06);
+}
+.signal-flow__node--insight{
+  min-width:11.5rem;padding:15px 28px;font-size:15px;font-weight:600;
+  background:linear-gradient(180deg,#1e293b 0%,#0f172a 100%);color:#fff;border-color:#0f172a;
+  box-shadow:0 4px 20px rgba(15,23,42,0.25),0 1px 0 rgba(255,255,255,0.08) inset;
+}
+.signal-flow__merge{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 12px;padding:4px 0;margin:0;
+  background:transparent;border:none;box-shadow:none;max-width:100%;
+}
+.signal-flow__merge span{display:inline-flex;align-items:center;padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;
+  background:linear-gradient(180deg,#f4f5f8 0%,#e8eaf4 100%);border:1px solid rgba(27, 42, 107,0.2);color:var(--ink);
+  box-shadow:0 1px 0 rgba(255,255,255,0.8) inset;
+}
+.signal-flow__merge .signal-flow__ai{background:linear-gradient(180deg,#f4f5f8 0%,#e8eaf4 100%)}
+.signal-flow__merge .signal-flow__join{
+  font-size:15px;font-weight:600;color:#9ca3af;padding:0 2px;background:transparent;border:none;line-height:1;
+  font-family:system-ui,sans-serif;
+}
+.signal-flow__link{
+  position:relative;width:2px;height:44px;margin:2px 0;flex-shrink:0;border-radius:1px;
+  background:linear-gradient(180deg,#e2e8f0 0%,#cbd5e1 50%,#e2e8f0 100%);
+}
+.signal-flow__link::after{
+  content:'';position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;
+  background:var(--accent);border:2px solid #fff;box-shadow:0 0 0 1px rgba(27, 42, 107,0.25),0 2px 6px rgba(27, 42, 107,0.2);
+}
+.signal-flow__caption{
+  margin:28px 0 0;padding-top:22px;border-top:1px solid var(--border-hair);
+  font-size:14px;font-weight:400;color:#6b7280;text-align:left;letter-spacing:0;max-width:38rem;line-height:1.65;
+}
+.signal-flow__caption em{font-style:italic;font-weight:600;color:#4b5563}
+@media(max-width:480px){
+  .signal-flow{padding:22px 18px 20px}
+  .signal-flow__merge{gap:8px}
+  .signal-flow__merge span{padding:10px 14px;font-size:13px}
+}
+
+footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-size:13px;color:var(--muted)}
+
+@media(max-width:960px){
+  body{margin-left:0;padding-top:56px}
+  html.embed body{padding-top:0}
+  .sidebar{position:fixed;top:0;left:0;right:0;width:100%;height:auto;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:4px 8px;padding:12px 14px;border-bottom:1px solid var(--border)}
+  .sidebar-back{margin-bottom:0}
+  .sidebar-nav-links{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:4px 10px;padding:0;max-height:none}
+  .sidebar-nav-links a{width:auto;padding:4px 6px;font-size:12px;white-space:nowrap}
+  main{padding:32px 20px 80px}
+}
+</style>
+</head>
+<body>
+<script>
+(function(){
+  if(/\bembed=1\b/.test(location.search))document.documentElement.classList.add("embed");
+})();
+</script>
+
+<nav class="sidebar" id="sidebar" aria-label="Case study sections">
+  <a href="/" target="_top" rel="noopener noreferrer" class="sidebar-back" aria-label="Back to portfolio">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    Back
+  </a>
+  <div class="sidebar-nav-links">
+    <a href="#intro" class="active">Introduction</a>
+    <a href="#setup">Why &amp; insight</a>
+    <a href="#product">Product</a>
+    <a href="#craft">Scope &amp; craft</a>
+    <a href="#outcomes">Reflection &amp; next steps</a>
+  </div>
+</nav>
+
+<main>
+  <section id="intro" class="intro story-section">
+    <div class="intro-hero-wrap product-walkthrough">
+      <video class="intro-hero-video" controls playsinline loop autoplay muted preload="auto"
+        aria-label="Subtle: hero product video">
+        <source src="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/My_Movie_f5qk2h.mp4" type="video/mp4" />
+        <p style="padding:24px;color:#9ca3af;font-size:14px">Your browser can’t play this video inline. <a href="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/My_Movie_f5qk2h.mp4" style="color:#9ca3af">Open the video</a>.</p>
+      </video>
+    </div>
+
+    <h1>Subtle: Surfacing What Users Don’t Say</h1>
+
+    <div class="intro-meta-grid">
+      <div class="intro-meta-top">
+        <div>
+          <span class="intro-meta-label">My role</span>
+          <p class="intro-meta-value">Product designer &amp; builder</p>
+        </div>
+        <div>
+          <span class="intro-meta-label">Timeline</span>
+          <p class="intro-meta-value">2025-ongoing</p>
+        </div>
+        <div>
+          <span class="intro-meta-label">Team</span>
+          <p class="intro-meta-value">Solo, self-led</p>
+        </div>
+      </div>
+
+      <div class="intro-meta-block">
+        <span class="intro-meta-label">Platform</span>
+        <p class="intro-meta-value">Web (responsive), Next.js</p>
+      </div>
+
+      <div class="intro-meta-block">
+        <span class="intro-meta-label">Overview</span>
+        <p class="intro-meta-prose">Subtle is a multimodal UX research assistant for moderated user tests and interviews. It adds a second read on <strong>timing and behavior</strong> next to what people say out loud (cursor rhythm, pauses and repeats, voice and session flow, and a light face layer for stillness and timing), then turns that into interpreted lines, a replayable timeline, and clips for stakeholders who were not in the room.</p>
+      </div>
+
+      <div class="intro-meta-block intro-problem">
+        <h2 class="intro-problem__head">The problem</h2>
+        <p class="intro-problem__pull">The insight I could not shake: the hardest evidence is often behavioral and time-based, yet our default workflow still lets the transcript win by default.</p>
+        <p class="intro-meta-prose">In practice, spoken answers carry synthesis first, while hesitation, idle stretches, and repeated passes through the same UI rarely make it into the deck. The most convincing stretch of a session often surfaced for me after the participant had left, after the team had aligned, and after the transcript had already won the argument. I wanted that layer legible while the session was still open, not only in the rewatch.</p>
+      </div>
+
+      <div class="intro-meta-block intro-meta-did">
+        <span class="intro-meta-label">What I did</span>
+        <p class="intro-meta-lead">From research framing through working software: multimodal capture, interpreted readouts, and review flows I could stress with real moderated sessions.</p>
+        <ul>
+          <li>Built and shipped the prototype in Next.js, including capture paths and timeline replay I could run end to end</li>
+          <li>Designed interaction and UI for user testing and interview modes, dashboard readouts, clip export, and iteration toggles between early and later directions</li>
+          <li>Named scope and limits (what I did not build) so the work stayed defensible as a research instrument, not an analytics platform</li>
+        </ul>
+      </div>
+
+      <div class="intro-meta-block intro-meta-live">
+        <span class="intro-meta-label">Live demo</span>
+        <p class="intro-deck intro-live-demo" style="max-width:none">
+          <a href="http://localhost:3001" target="_blank" rel="noopener noreferrer">Live demo</a>
+          <span class="intro-meta-live-url">http://localhost:3001 · opens in a new tab</span>
+        </p>
+      </div>
+    </div>
+
+    <p class="intro-deck" style="margin-top:28px">
+      Subtle sits beside what people <em>say</em>: I pull hesitation, timing, and light behavioral context from cursor, voice, and session flow, and surface friction that rarely becomes a tidy quote. I am not trying to automate judgment; I am trying to <strong>notice</strong> in time to ask one more question before the room closes.
+    </p>
+  </section>
+
+  <section id="setup" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">Why I kept circling this problem, and the insight that stuck</h2>
+    </header>
+    <div class="story-prose">
+      <p><strong>Why it mattered to me.</strong> In my tests and interviews I kept seeing the same split: on the record, <em>fine</em>; off the record, pauses, retraces, and stuttered movement through the flow. I felt the cost immediately, but the evidence thinned the second I tried to write it down, or it lost to cleaner quotes when I synthesized later.</p>
+      <p>I still build decks from quotes, completion, and obvious errors. I also know how much lives under that: the pause before a confident click, the third pass over the same corner, the answer that lands late. That stack is real load <strong>even when language smooths it</strong>. I wanted to treat that layer with the same seriousness I give a screenshot people can see.</p>
+      <div class="story-insight">
+        <h3 class="intro-problem__head">What locked in</h3>
+        <p class="intro-problem__pull">Once I named the pattern, the tension was obvious: I could feel behavioral load in the moment, but the record that traveled was still biased toward what people said and what the transcript highlighted.</p>
+      </div>
+      <p class="story-kicker">What if those signals lived in the session while I could still probe, not only in the rewatch?</p>
+      <p>That question became the spine of Subtle. It is not a replacement for me as a researcher. It is a deliberate second read on <strong>timing and behavior</strong> while the session is still warm enough to interrogate, before the story hardens.</p>
+    </div>
+  </section>
+
+  <section id="product" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">What I built: from signals to something I can show</h2>
+    </header>
+    <div class="story-prose">
+      <p>I did not want another methodology deck. I wanted a loop I could run: modalities I trust, interpretations my team can disagree with kindly, then a timeline and clips that survive the handoff. That is the spine of what I shipped in this slice.</p>
+      <ul>
+        <li><strong>Capture:</strong> I record cursor rhythm, pauses, repeats; I add a minimal face read for timing and stillness, not mood labels.</li>
+        <li><strong>Interpret:</strong> I fold cues into hesitation, friction, uncertainty, and load; every flag carries confidence, a short reason, and visible ambiguity.</li>
+        <li><strong>Deliver:</strong> I give myself live readouts, a post-session timeline with replay, and exports for people who were not in the room.</li>
+      </ul>
+
+      <div class="signal-flow" role="region" aria-labelledby="signal-flow-heading" aria-describedby="signal-flow-caption">
+        <h4 class="signal-flow__heading" id="signal-flow-heading">At a glance</h4>
+        <div class="signal-flow__inner" role="presentation">
+          <div class="signal-flow__node signal-flow__node--user">User</div>
+          <div class="signal-flow__link" aria-hidden="true"></div>
+          <div class="signal-flow__merge">
+            <span>Signals</span><span class="signal-flow__join" aria-hidden="true">→</span><span class="signal-flow__ai">AI layer</span>
+          </div>
+          <div class="signal-flow__link" aria-hidden="true"></div>
+          <div class="signal-flow__node signal-flow__node--researcher">Researcher</div>
+          <div class="signal-flow__link" aria-hidden="true"></div>
+          <div class="signal-flow__node signal-flow__node--insight">Insight</div>
+        </div>
+        <p class="signal-flow__caption" id="signal-flow-caption">I draw it this way on purpose: the session feeds interpreted signals, then <em>I</em> synthesize. I did not want a fake linear “pipeline” I would never actually follow.</p>
+      </div>
+
+      <div class="product-section" id="product-user-testing" aria-labelledby="title-user-testing">
+        <h3 class="product-section__title" id="title-user-testing">User testing</h3>
+        <p class="product-section__lead">I run task flows in a contained surface, then I walk signals, timeline, and clips in one pass while the session is still vivid.</p>
+
+        <p class="product-walkthrough-label">Walkthrough</p>
+        <div class="intro-hero-wrap product-walkthrough">
+          <video class="intro-hero-video" controls playsinline loop autoplay muted preload="auto"
+            aria-label="Subtle walkthrough: user testing flow">
+            <source src="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/herosectionsignal_zmrx19.mov" type="video/quicktime" />
+            <p style="padding:24px;color:#9ca3af;font-size:14px">Your browser can’t play this video inline. <a href="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/herosectionsignal_zmrx19.mov" style="color:#9ca3af">Download the walkthrough</a>.</p>
+          </video>
+        </div>
+
+      <p>Eventually I want to <strong>paste prototype links</strong> and run everything in one testbed. Right now I proved the loop on a <strong>standalone mockup</strong> so I could control capture before I fight iframe edge cases.</p>
+
+      <div class="su-iterate-block">
+      <h4 class="story-subheading">Insight dashboard, timeline replay &amp; clip export</h4>
+      <p>I started from plain-language lines: &ldquo;hesitated before acting,&rdquo; &ldquo;repeated interactions suggest friction&rdquo;, because raw charts alone did not survive a critique. Then I obsessed over how much context I get <em>at each moment</em> (toggle below). Clips became my bridge for stakeholders who never sat in the session.</p>
+
+      <div class="su-toggle-toolbar">
+        <div class="su-toggle su-toggle--after" role="group" aria-label="User testing: compare first iteration of review UI with later direction">
+          <div class="su-toggle-track">
+            <span class="su-toggle-thumb" aria-hidden="true"></span>
+            <button type="button" class="su-toggle-btn" data-panel="before" aria-pressed="false">First iteration</button>
+            <button type="button" class="su-toggle-btn" data-panel="after" aria-pressed="true">Later direction</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="su-iterate-panel su-iterate-panel--hidden" data-panel="before" id="timeline-panel-before">
+        <div class="intro-hero-wrap product-walkthrough su-iterate-replay-video">
+          <img
+            src="/signalux-timeline-v1-session-insights.png"
+            alt="First iteration: Session insights screen with insight summary paragraph, timeline bar with hesitation and friction markers, and legend."
+            class="intro-hero-video"
+            loading="lazy"
+            decoding="async"
+            width="2212"
+            height="1058"
+          />
+        </div>
+        <p class="su-iterate-note">My first pass: one session summary and a single timeline of ticks. It proved the idea, but it felt thin for how I actually reason: I was still doing too much inference in my head.</p>
+      </div>
+
+      <div class="su-iterate-panel" data-panel="after" id="timeline-panel-after">
+        <div class="intro-hero-wrap product-walkthrough su-iterate-replay-video">
+          <video
+            class="intro-hero-video"
+            controls
+            playsinline
+            loop
+            muted
+            autoplay
+            preload="auto"
+            aria-label="Later direction: session insights and timeline replay screen recording"
+          >
+            <source src="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/insightsboard_xausph.mov" type="video/quicktime" />
+            <p style="padding:24px;color:#9ca3af;font-size:14px">Your browser can&rsquo;t play this video inline. <a href="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/insightsboard_xausph.mov" style="color:#9ca3af">Download the clip</a>.</p>
+          </video>
+        </div>
+        <div class="su-iterate-after" style="margin-top:14px">
+          <p class="su-iterate-note" style="margin-bottom:10px">I pushed toward <strong>per-finding depth</strong>: a frame or capture context next to each flag, so I read &ldquo;why&rdquo; beside &ldquo;when&rdquo; before I commit to a rewatch.</p>
+          <ul>
+            <li>Each signal gets a visual anchor, not only a tick on a bar.</li>
+            <li>I can challenge an interpretation without losing the moment it came from.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p>I still tie every signal to time and interaction context; what I have not settled is how dense that bundle should feel during synthesis versus when I hand it off.</p>
+
+      <h4 class="story-subheading">How I use it</h4>
+      <ol class="flow-steps">
+        <li>I run the session in the testbed.</li>
+        <li>I scan the interpreted timeline right after.</li>
+        <li>I replay and clip the moments that actually persuade, not the whole recording.</li>
+      </ol>
+      </div>
+      </div>
+
+      <div class="product-section" id="product-user-interviews" aria-labelledby="title-user-interviews">
+        <h3 class="product-section__title" id="title-user-interviews">User interviews</h3>
+        <p class="product-section__lead">In live interviews I keep the same bargain: multimodal cues sit next to what we say out loud, so I can notice hesitation and probe before the conversation moves on.</p>
+
+      <h4 class="story-subheading">Interview mode</h4>
+      <p>When a flag fires, I force myself to see a <strong>screen grab from that instant</strong>: what was on screen when hesitation or idle time showed up, so I probe with the same context I would lean on in a rewatch. Same rule as testing: the <strong>precise moment</strong>, not only the headline.</p>
+
+      <p class="product-walkthrough-label">Walkthrough</p>
+      <div class="intro-hero-wrap product-walkthrough">
+        <video class="intro-hero-video" controls playsinline loop autoplay muted preload="auto"
+          aria-label="Subtle walkthrough: user interview session flow">
+          <source src="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/interview_nmtlyw.mov" type="video/quicktime" />
+          <p style="padding:24px;color:#9ca3af;font-size:14px">Your browser can&rsquo;t play this video inline. <a href="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/interview_nmtlyw.mov" style="color:#9ca3af">Download the walkthrough</a>.</p>
+        </video>
+      </div>
+      <p>I lean on it for response delays and hesitation beats: the places where I used to trust my gut and lose the receipt.</p>
+
+      <div class="su-iterate-block">
+      <h4 class="story-subheading">Insight dashboard, timeline replay &amp; clip export</h4>
+      <p>Interviews need the same legibility I demanded in tests: readable lines, a timeline I can scan after the room clears, clips for people who were not there. The weighting shifts: transcript and probes share the stage with multimodal cues, so I still anchor every flag to <strong>time and a visual moment</strong>, not a lonely row in a log.</p>
+
+      <div class="su-toggle-toolbar">
+        <div class="su-toggle su-toggle--after" role="group" aria-label="User interviews: compare first iteration of review UI with later direction">
+          <div class="su-toggle-track">
+            <span class="su-toggle-thumb" aria-hidden="true"></span>
+            <button type="button" class="su-toggle-btn" data-panel="before" aria-pressed="false">First iteration</button>
+            <button type="button" class="su-toggle-btn" data-panel="after" aria-pressed="true">Later direction</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="su-iterate-panel su-iterate-panel--hidden" data-panel="before">
+        <div class="intro-hero-wrap product-walkthrough su-iterate-replay-video">
+          <img
+            src="/signalux-interview-first-iteration.png"
+            alt="First iteration: Interview session UI with webcam and MediaPipe face landmarks, live signal readout, transcript placeholder, and AI prompt area."
+            class="intro-hero-video"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <p class="su-iterate-note">My first interview pass stacked <strong>Webcam</strong> (presence + landmarks), <strong>Transcript</strong>, and <strong>AI prompt</strong> in one column: enough to moderate live, before the board and timeline caught up to the depth I wanted from testing.</p>
+      </div>
+
+      <div class="su-iterate-panel" data-panel="after">
+        <div class="intro-hero-wrap product-walkthrough su-iterate-replay-video">
+          <video
+            class="intro-hero-video"
+            controls
+            playsinline
+            loop
+            muted
+            autoplay
+            preload="auto"
+            aria-label="Later direction: interview review after iteration (screen recording)"
+          >
+            <source src="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/afterinterview_ccmzwq.mov" type="video/quicktime" />
+            <p style="padding:24px;color:#9ca3af;font-size:14px">Your browser can&rsquo;t play this video inline. <a href="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/afterinterview_ccmzwq.mov" style="color:#9ca3af">Download the clip</a>.</p>
+          </video>
+        </div>
+        <div class="su-iterate-after" style="margin-top:14px">
+          <p class="su-iterate-note" style="margin-bottom:10px">The later direction keeps <strong>per-finding depth</strong> beside transcript-friendly summaries: each beat can carry a frame, the interpreted line, and export, so what I synthesize and what I send out stay the same object.</p>
+          <ul>
+            <li>I keep probes and transcript in the same mental lane as hesitation and idle cues.</li>
+            <li>I export the moment that persuaded me, not a generic highlight reel.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p>Every flag still ties to timing and multimodal context; what I am still calibrating is density for <strong>live moderation</strong> versus what I hand off async.</p>
+
+      <h4 class="story-subheading">How I use it</h4>
+      <ol class="flow-steps">
+        <li>I run the interview with capture on: speech, a light face proxy, pointer.</li>
+        <li>I review timeline and detail as soon as we wrap.</li>
+        <li>I export the clips that carried the argument: same muscle as testing, different default weighting.</li>
+      </ol>
+      </div>
+
+      <h4 class="story-subheading">Example</h4>
+      <div class="example-box">
+        <p><strong>They said:</strong> &ldquo;Yeah, it was fine.&rdquo; <strong>I saw:</strong> delay + stillness. <strong>I did:</strong> slowed down, named the pause, and probed uncertainty before I moved on.</p>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="craft" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">How I scoped it, and where I refused to pretend</h2>
+    </header>
+    <div class="story-prose">
+      <p><strong>I drew a hard line on emotions.</strong> I stuck to observable timing and movement; synthetic mood labels felt brittle and impossible to defend in a critique.</p>
+      <p><strong>I favored interpretation over raw metrics.</strong> I wanted speed and path to become sentences my team could actually argue about.</p>
+      <p><strong>I treated outputs as hypotheses.</strong> I combined modalities, kept the signal set small, and left ambiguity visible so sessions stayed legible.</p>
+
+      <h4 class="story-subheading">What I put in, and what I cut</h4>
+      <p>My goal was to prove behavioral signals change how I research, not to ship an analytics platform. <strong>I built:</strong> cursor tracking, hesitation and friction reads, a light face layer, timeline with replay, dashboard, clips. <strong>I deferred:</strong> full recording, heavy ML, real backend scale. Naming what I did not build matters: it is where policy, engineering, and ethics work would land next.</p>
+
+      <h4 class="story-subheading">Honest limits</h4>
+      <ul>
+        <li>Signals stay probabilistic; I read them as prompts, not proof.</li>
+        <li>Iframes still cap what I can capture in some setups.</li>
+        <li>The face layer is timing context, not mood detection.</li>
+        <li>I explored this at small scale: enough to learn, not enough to claim universal truth.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="outcomes" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">What changed for me, and what I would tackle next</h2>
+    </header>
+    <div class="story-prose">
+      <p>This work changed how fast I trust my own memory after a session. I synthesize with fewer “I think something was off there” gaps, I probe live with a little more courage, and I walk into stakeholder conversations with clips tied to the same objects I used privately.</p>
+      <div class="insight-callout">
+        <p>The shift I care about: I am designing for what people struggle to say out loud, not only what prints cleanly on a transcript.</p>
+      </div>
+      <p>If I pushed this into a real program, I would chase honest recording and replay, voice detail where policy allows, tighter Figma and prototype ingestion, and collaboration primitives, then I would revisit every capture default with a privacy engineer in the room.</p>
+      <p>Subtle stays a sketch on purpose: humble interpretation, me still in charge. I built it to shrink blind spots, not to crown a model as the researcher.</p>
+      <blockquote class="story-blockquote" style="margin-top:20px">I am not trying to detect truth; I am trying to notice sooner.</blockquote>
+      <p style="margin-top:1rem">If AI helps here, it should sharpen what I see, not replace the question I ask next.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Subtle · Kanishka Balaji</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var nav = document.querySelector('.sidebar-nav-links');
+  if(!nav) return;
+  var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+
+  function setActive(id){
+    links.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  function scrollOffset(){
+    return window.matchMedia('(max-width:960px)').matches ? 72 : 24;
+  }
+
+  function currentSectionId(){
+    var y = window.scrollY + scrollOffset();
+    var id = sections.length ? sections[0].id : 'intro';
+    sections.forEach(function(sec){
+      var top = sec.getBoundingClientRect().top + window.scrollY;
+      if(top <= y + 2) id = sec.id;
+    });
+    return id;
+  }
+
+  function onScroll(){
+    setActive(currentSectionId());
+  }
+
+  function scrollToSectionId(id, smooth){
+    var target = document.getElementById(id);
+    if(!target) return false;
+    var top = target.getBoundingClientRect().top + window.scrollY - scrollOffset();
+    window.scrollTo({ top: Math.max(0, top), behavior: smooth ? 'smooth' : 'auto' });
+    setActive(id);
+    return true;
+  }
+
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var hash = a.getAttribute('href');
+      if(!hash || hash.length < 2) return;
+      var id = hash.slice(1);
+      if(!document.getElementById(id)) return;
+      e.preventDefault();
+      scrollToSectionId(id, true);
+      if(window.history && window.history.replaceState){
+        window.history.replaceState(null, '', hash);
+      }
+    });
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  window.addEventListener('hashchange', function(){
+    if(location.hash && location.hash.length > 1){
+      scrollToSectionId(location.hash.slice(1), true);
+    }
+  });
+
+  if(location.hash && location.hash.length > 1){
+    requestAnimationFrame(function(){
+      scrollToSectionId(location.hash.slice(1), false);
+      onScroll();
+    });
+  } else {
+    onScroll();
+  }
+})();
+
+(function(){
+  document.querySelectorAll('.su-iterate-block').forEach(function(block){
+    var toggle = block.querySelector('.su-toggle');
+    if (!toggle) return;
+    var panels = block.querySelectorAll('.su-iterate-panel');
+    toggle.querySelectorAll('.su-toggle-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var pid = btn.getAttribute('data-panel');
+        var isAfter = pid === 'after';
+        if (toggle.classList.contains(isAfter ? 'su-toggle--after' : 'su-toggle--before')) return;
+        toggle.classList.remove('su-toggle--before', 'su-toggle--after');
+        toggle.classList.add(isAfter ? 'su-toggle--after' : 'su-toggle--before');
+        toggle.querySelectorAll('.su-toggle-btn').forEach(function(b){
+          b.setAttribute('aria-pressed', b.getAttribute('data-panel') === pid ? 'true' : 'false');
+        });
+        panels.forEach(function(p){
+          var show = p.getAttribute('data-panel') === pid;
+          p.classList.toggle('su-iterate-panel--hidden', !show);
+        });
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

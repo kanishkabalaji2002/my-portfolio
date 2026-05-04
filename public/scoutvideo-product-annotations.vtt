@@ -1,0 +1,35 @@
+WEBVTT
+Kind: captions
+Language: en-US
+NOTE
+Reference timeline ~59.551s. scout-case-study.html scales cues to clip duration. Nine on-video captions (1–9); no duplicate list on the page. No captions for ref ~14.5–17, ~20.5–27 (those moments stay unlabeled in the player).
+
+00:00.000 --> 00:04.000
+(9/9) Any public site in Chrome—no extra setup step before you run an analysis.
+
+00:04.000 --> 00:08.000
+(1/9) One-click competitive analysis: open Scout from the toolbar and hit “Scout this page.”
+
+00:08.000 --> 00:11.500
+(3/9) Strength score (0–100) lands in the panel as soon as the readout starts—here alongside the first structured findings.
+
+00:11.500 --> 00:14.500
+(2/9) AI-powered insights (Gemini under the hood): free to the user, no API key in the UI—this is the generated “Infrastructure / Payments / …” style breakdown.
+
+00:17.000 --> 00:20.500
+(4/9) Top 3 strategic takeaways: three ranked cards with risk/health signals.
+
+00:27.000 --> 00:33.500
+(5/9) Full competitive framework in the Analysis tab—Product, UX, UI, Features, Content & copy—ten-point-style coverage as you scan the panel.
+
+00:33.500 --> 00:40.500
+(6/9) Visual annotations: numbered badges sit on real DOM elements on the live page—not a static mock.
+
+00:40.500 --> 00:46.500
+(7/9) Hover a badge: Observation → Impact → Opportunity on the tooltip.
+
+00:46.500 --> 00:51.000
+(8/9) Downloadable PNG report: “Download report” kicks off a `scout-report-…` file in Chrome’s download bar.
+
+00:51.000 --> 00:59.551
+(4/9) The opened export still foregrounds the three strategic takeaways, then the long-form analysis—same story as the panel, now in a hand-off format.

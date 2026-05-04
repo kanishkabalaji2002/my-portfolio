@@ -1,34 +1,35 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { pickRandomJoke } from "@/lib/jokes";
 export default function Footer() {
   return (
-    <footer className="py-12 bg-white border-t border-gray-100">
+    <footer className="bg-white py-12">
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-gray-500 text-sm">
-          © 2026 Kanishka Balaji. Designed & built with care.
+          © 2026 Kanishka Balaji. Designed, coded, and built with care.
         </p>
         <div className="flex items-center gap-6">
           <a
-            href="https://linkedin.com"
+            href="https://linkedin.com/in/kanishkabalaji"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-400 hover:text-[#5f9e7f] transition-colors text-sm"
+            className="text-gray-400 transition-colors hover:text-gray-900 text-sm"
           >
             LinkedIn
           </a>
           <a
-            href="https://medium.com"
+            href="https://medium.com/@kanishkabalaji2002"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-400 hover:text-[#5f9e7f] transition-colors text-sm"
+            className="text-gray-400 transition-colors hover:text-gray-900 text-sm"
           >
             Medium
           </a>
           <a
             href="mailto:kanishkabalaji2002@gmail.com"
-            className="text-gray-400 hover:text-[#5f9e7f] transition-colors text-sm"
+            className="text-gray-400 transition-colors hover:text-gray-900 text-sm"
           >
             Email
           </a>
@@ -40,18 +41,18 @@ export default function Footer() {
 
 export function ContactSection() {
   return (
-    <section style={{ background: "#f9f9f7", padding: "80px 0", borderTop: "1px solid #e5e7eb" }}>
-      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "0 40px" }}>
-        <h2 style={{ fontFamily: "'General Sans', sans-serif", fontSize: "clamp(28px, 3vw, 42px)", fontWeight: 600, color: "#111827", letterSpacing: "-0.03em", marginBottom: "40px" }}>Let&apos;s have matcha?</h2>
-        <div style={{ background: "#fff", borderRadius: "16px", padding: "32px", border: "1px solid #e5e7eb" }}>
+    <section className="bg-white px-4 py-14 sm:px-6 sm:py-16 md:py-20">
+      <div className="mx-auto max-w-[680px] px-0">
+        <h2 style={{ fontFamily: "'General Sans', sans-serif", fontSize: "clamp(22px, 5vw, 42px)", fontWeight: 600, color: "#111827", letterSpacing: "-0.03em", marginBottom: "clamp(24px, 6vw, 40px)" }}>Let&apos;s talk design. Or food. Preferably both.</h2>
+        <div style={{ background: "#fff", borderRadius: "16px", padding: "clamp(20px, 5vw, 32px)" }}>
           <ChatAnimation />
         </div>
         <div style={{ marginTop: "32px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 0", borderBottom: "1px solid #e5e7eb" }}>
+          <div className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
             <span style={{ fontFamily: "'General Sans', sans-serif", fontSize: "14px", color: "#9ca3af" }}>Mail</span>
-            <a href="mailto:kanishkabalaji2002@gmail.com" style={{ fontFamily: "'General Sans', sans-serif", fontSize: "14px", color: "#111827", textDecoration: "none" }}>kanishkabalaji2002@gmail.com</a>
+            <a href="mailto:kanishkabalaji2002@gmail.com" className="break-all text-right sm:text-left" style={{ fontFamily: "'General Sans', sans-serif", fontSize: "14px", color: "#111827", textDecoration: "none" }}>kanishkabalaji2002@gmail.com</a>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 0", borderBottom: "1px solid #e5e7eb" }}>
+          <div className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
             <span style={{ fontFamily: "'General Sans', sans-serif", fontSize: "14px", color: "#9ca3af" }}>Socials</span>
             <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
               <a href="https://linkedin.com/in/kanishkabalaji" target="_blank" rel="noopener" style={{ fontFamily: "'General Sans', sans-serif", fontSize: "14px", color: "#111827", fontWeight: 600, textDecoration: "underline" }}>LinkedIn</a>
@@ -71,8 +72,24 @@ export function ContactSection() {
 
 function Avatar() {
   return (
-    <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#d4e8d2", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <span style={{ fontSize: "14px", fontWeight: 600, color: "#2d6a4f", fontFamily: "'General Sans', sans-serif" }}>K</span>
+    <div
+      style={{
+        width: 36,
+        height: 36,
+        borderRadius: "50%",
+        flexShrink: 0,
+        overflow: "hidden",
+        position: "relative",
+        border: "1px solid rgba(15, 23, 42, 0.08)",
+      }}
+    >
+      <Image
+        src="/photo.png"
+        alt="Kanishka Balaji"
+        width={72}
+        height={72}
+        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 25%" }}
+      />
     </div>
   );
 }

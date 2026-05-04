@@ -1,11 +1,5 @@
+import { SiteNavIframeShell } from "@/components/SiteNavIframeShell";
+
 export default function NotelifyPage() {
-  return (
-    <div style={{ position: "relative", width: "100%", height: "100vh" }}>
-      <iframe
-        src="/notelify-case-study.html"
-        style={{ width: "100%", height: "100vh", border: "none", display: "block" }}
-        title="Notelify case study"
-      />
-    </div>
-  );
+  return <SiteNavIframeShell title="Notelify case study" src="/notelify-case-study.html" />;
 }

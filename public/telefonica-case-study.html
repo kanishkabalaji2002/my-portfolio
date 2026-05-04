@@ -129,9 +129,9 @@ main{max-width:1100px;margin:0 auto;padding:48px 40px 120px}
 /* Flows: larger type; lead is body weight (not full-paragraph bold from .story-lead) */
 #flows .story-lead{font-size:18px;line-height:1.62;font-weight:400;color:#525252}
 #flows .story-prose{font-size:18px;line-height:1.72}
-.tf-gate-inner .flow-figma-title{font-size:clamp(18px,2.35vw,22px)}
-.tf-gate-inner .flow-figma-lead{font-size:15px;line-height:1.58}
-.tf-gate-inner .flow-figma-foot{font-size:14px}
+.flow-figma-block .flow-figma-title{font-size:clamp(18px,2.35vw,22px)}
+.flow-figma-block .flow-figma-lead{font-size:15px;line-height:1.58}
+.flow-figma-block .flow-figma-foot{font-size:14px}
 
 /* Solution: larger type; lead is body weight */
 #solution .story-lead{font-size:18px;line-height:1.62;font-weight:400;color:#525252}
@@ -287,86 +287,7 @@ main{max-width:1100px;margin:0 auto;padding:48px 40px 120px}
 
 footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-size:13px;color:var(--muted)}
 
-/* Password gate: everything from Annotated user flow onward */
-.tf-gate{
-  position:relative;
-  margin-top:40px;
-  isolation:isolate;
-  z-index:1;
-}
-.tf-gate-inner{position:relative;z-index:0}
-.tf-gate.tf-gate--locked .tf-gate-inner{
-  filter:blur(10px);
-  pointer-events:none;
-  user-select:none;
-  max-height:min(68vh,600px);
-  overflow:hidden;
-}
-.tf-gate.tf-gate--locked .tf-gate-inner iframe,
-.tf-gate.tf-gate--locked .tf-gate-inner video{
-  pointer-events:none!important;
-}
-.tf-gate.tf-gate--unlocked .tf-gate-inner{
-  filter:none;
-  pointer-events:auto;
-  user-select:auto;
-  max-height:none;
-  overflow:visible;
-}
-.tf-gate-overlay{
-  position:absolute;
-  inset:0;
-  z-index:100;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:32px 20px;
-  min-height:min(68vh,600px);
-  background:rgba(250,250,250,0.94);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-}
-.tf-gate.tf-gate--unlocked .tf-gate-overlay{display:none!important}
-.tf-gate-panel{
-  width:100%;
-  max-width:400px;
-  padding:28px 26px;
-  background:var(--white);
-  border:1px solid var(--border-hair);
-  border-radius:14px;
-  box-shadow:0 16px 48px rgba(0,0,0,.08);
-}
-.tf-gate-panel h2{font-size:17px;font-weight:600;margin-bottom:8px;color:var(--ink);letter-spacing:-.02em}
-.tf-gate-panel > p{font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.55}
-.tf-gate-panel label{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:8px}
-.tf-gate-panel input[type="password"]{
-  width:100%;
-  padding:12px 14px;
-  font-size:15px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  font-family:var(--font);
-  margin-bottom:14px;
-  box-sizing:border-box;
-}
-.tf-gate-panel input[type="password"]:focus{outline:2px solid var(--tf-blue);outline-offset:1px;border-color:transparent}
-.tf-gate-panel button[type="submit"]{
-  width:100%;
-  padding:12px 16px;
-  font-size:15px;
-  font-weight:600;
-  color:#fff;
-  background:var(--tf-blue);
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-family:var(--font);
-}
-.tf-gate-panel button[type="submit"]:hover{filter:brightness(1.06)}
-.tf-gate-panel button[type="submit"]:disabled{opacity:.55;cursor:not-allowed}
-.tf-gate-error{font-size:13px;color:#b91c1c;margin-top:12px;line-height:1.4}
-.tf-gate.tf-gate--pulse .tf-gate-panel{animation:tfGatePulse .5s ease}
-@keyframes tfGatePulse{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}60%{transform:translateX(5px)}}
+.flow-figma-block{margin-top:40px}
 @media(max-width:960px){
   body{margin-left:0;padding-top:56px}
   .sidebar{
@@ -427,7 +348,7 @@ footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-
     <div class="intro-hero-wrap">
       <video
         class="intro-hero-video"
-        src="https://res.cloudinary.com/drajdxssq/video/upload/v1775548236/addpayment_r0dhz6.mov"
+        src="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/addpayment_r0dhz6.mov"
         autoplay
         muted
         loop
@@ -435,7 +356,7 @@ footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-
         preload="auto"
         aria-label="Telefónica · Google Pay case study overview"
       >
-        <p>Your browser does not support embedded video. <a href="https://res.cloudinary.com/drajdxssq/video/upload/v1775548236/addpayment_r0dhz6.mov" target="_blank" rel="noopener noreferrer">Download the clip</a>.</p>
+        <p>Your browser does not support embedded video. <a href="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/addpayment_r0dhz6.mov" target="_blank" rel="noopener noreferrer">Download the clip</a>.</p>
       </video>
     </div>
     <p class="intro-eyebrow">Case study</p>
@@ -566,8 +487,6 @@ footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-
     </div>
   </section>
 
-  <div class="tf-gate tf-gate--locked" id="tfGate">
-    <div class="tf-gate-inner" id="tfGateInner">
     <div class="flow-figma-block">
       <h3 class="flow-figma-title">Annotated user flow (Figma)</h3>
       <p class="flow-figma-lead">Embedded on this single frame (not the whole file). Pan and zoom inside the board as needed. If it doesn&rsquo;t load, open the link below.</p>
@@ -614,10 +533,10 @@ footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-
         disablePictureInPicture
         controlsList="nodownload noplaybackrate"
         data-src-hifi="/addpaymentad.mov"
-        data-src-lofi="https://res.cloudinary.com/drajdxssq/video/upload/v1775548072/herotele_cwwcpy.mov"
+        data-src-lofi="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/herotele_cwwcpy.mov"
         aria-label="Desktop walkthrough: add payment method (hi-fi recording)"
       >
-        <p>Your browser does not support embedded video. <a href="/addpaymentad.mov">Download hi-fi</a> · <a href="https://res.cloudinary.com/drajdxssq/video/upload/v1775548072/herotele_cwwcpy.mov" target="_blank" rel="noopener noreferrer">Download low-fi</a></p>
+        <p>Your browser does not support embedded video. <a href="/addpaymentad.mov">Download hi-fi</a> · <a href="https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/herotele_cwwcpy.mov" target="_blank" rel="noopener noreferrer">Download low-fi</a></p>
       </video>
     </div>
     <div class="wire-video-toolbar">
@@ -652,19 +571,6 @@ footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-
   <footer>
     Telefónica · Google Pay · Payment methods · Kanishka Balaji
   </footer>
-
-    </div>
-    <div class="tf-gate-overlay" id="tfGateOverlay" role="region" aria-label="Password required">
-      <form class="tf-gate-panel" id="tfGateForm" autocomplete="off">
-        <h2 id="tfGateHeading">Password required</h2>
-        <p id="tfGateDesc">Enter the password to view the annotated Figma flow, solution walkthrough, and outcome.</p>
-        <label for="tfGatePassword">Password</label>
-        <input type="password" id="tfGatePassword" name="telefonica-gate" required autocomplete="current-password" />
-        <button type="submit" id="tfGateSubmit">Unlock</button>
-        <p class="tf-gate-error" id="tfGateError" hidden></p>
-      </form>
-    </div>
-  </div>
 
 </main>
 
@@ -708,20 +614,6 @@ footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-
     return true;
   }
 
-  function scrollToGateIfLocked(id, smooth){
-    var gate = document.getElementById('tfGate');
-    if(!gate || !gate.classList.contains('tf-gate--locked')) return false;
-    if(id !== 'solution' && id !== 'reflection') return false;
-    var gtop = gate.getBoundingClientRect().top + window.scrollY - scrollOffset();
-    window.scrollTo({ top: Math.max(0, gtop), behavior: smooth ? 'smooth' : 'auto' });
-    gate.classList.remove('tf-gate--pulse');
-    void gate.offsetWidth;
-    gate.classList.add('tf-gate--pulse');
-    setTimeout(function(){ gate.classList.remove('tf-gate--pulse'); }, 600);
-    setActive(id);
-    return true;
-  }
-
   links.forEach(function(a){
     a.addEventListener('click', function(e){
       var hash = a.getAttribute('href');
@@ -729,12 +621,6 @@ footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-
       var id = hash.slice(1);
       if(!document.getElementById(id)) return;
       e.preventDefault();
-      if(scrollToGateIfLocked(id, true)){
-        if(window.history && window.history.replaceState){
-          window.history.replaceState(null, '', hash);
-        }
-        return;
-      }
       scrollToSectionId(id, true);
       if(window.history && window.history.replaceState){
         window.history.replaceState(null, '', hash);
@@ -746,19 +632,13 @@ footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-
   window.addEventListener('resize', onScroll);
   window.addEventListener('hashchange', function(){
     if(location.hash && location.hash.length > 1){
-      var hid = location.hash.slice(1);
-      if(!scrollToGateIfLocked(hid, true)){
-        scrollToSectionId(hid, true);
-      }
+      scrollToSectionId(location.hash.slice(1), true);
     }
   });
 
   if(location.hash && location.hash.length > 1){
     requestAnimationFrame(function(){
-      var hid = location.hash.slice(1);
-      if(!scrollToGateIfLocked(hid, false)){
-        scrollToSectionId(hid, false);
-      }
+      scrollToSectionId(location.hash.slice(1), false);
       onScroll();
     });
   } else {
@@ -771,7 +651,7 @@ footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-
   var toggle = document.getElementById('wire-fidelity-toggle');
   if (!v || !toggle) return;
   var hifi = v.getAttribute('data-src-hifi') || '/addpaymentad.mov';
-  var lofi = v.getAttribute('data-src-lofi') || 'https://res.cloudinary.com/drajdxssq/video/upload/v1775548072/herotele_cwwcpy.mov';
+  var lofi = v.getAttribute('data-src-lofi') || 'https://dp03rp1jubcqskjz.public.blob.vercel-storage.com/cloudinary-migrate/herotele_cwwcpy.mov';
   toggle.querySelectorAll('.wire-toggle-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
       var fid = btn.getAttribute('data-fidelity');
@@ -788,105 +668,6 @@ footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);font-
         : 'Desktop walkthrough: add payment method (hi-fi recording)');
       v.load();
       v.play().catch(function(){});
-    });
-  });
-})();
-
-(function(){
-  var gate = document.getElementById('tfGate');
-  var form = document.getElementById('tfGateForm');
-  var input = document.getElementById('tfGatePassword');
-  var errEl = document.getElementById('tfGateError');
-  var submitBtn = document.getElementById('tfGateSubmit');
-  if(!gate || !form || !input) return;
-
-  /* Force gate visible again: add ?lock=1 to the case study URL and reload. */
-  try{
-    var sp = new URLSearchParams(window.location.search);
-    if(sp.get('lock') === '1'){
-      sessionStorage.removeItem('telefonicaCsGate_ok_v2');
-      sessionStorage.removeItem('telefonicaCaseStudyUnlocked');
-      sp.delete('lock');
-      var q = sp.toString();
-      window.location.replace(window.location.pathname + (q ? ('?' + q) : '') + window.location.hash);
-      return;
-    }
-  }catch(e){}
-
-  /* Bumped when gate behavior changes so old “unlocked” tabs show the form again. */
-  var STORAGE_KEY = 'telefonicaCsGate_ok_v2';
-  /* No password here — verification runs only on your server. Empty keeps the gate from being bypassed via view source. */
-  var LOCAL_PREVIEW_PASSWORD = '';
-
-  var unlockApiUrl = '/api/telefonica-unlock';
-  try{
-    if(window.location && window.location.origin && window.location.origin !== 'null'){
-      unlockApiUrl = window.location.origin + '/api/telefonica-unlock';
-    }
-  }catch(e){}
-
-  try{
-    sessionStorage.removeItem('telefonicaCaseStudyUnlocked');
-  }catch(x){}
-
-  function showErr(msg){
-    if(!errEl) return;
-    errEl.hidden = !msg;
-    errEl.textContent = msg || '';
-  }
-
-  function unlock(){
-    gate.classList.remove('tf-gate--locked');
-    gate.classList.add('tf-gate--unlocked');
-    try{ sessionStorage.setItem(STORAGE_KEY, '1'); }catch(x){}
-    input.value = '';
-    showErr('');
-    if(submitBtn) submitBtn.disabled = false;
-  }
-
-  if(sessionStorage.getItem(STORAGE_KEY) === '1'){
-    unlock();
-  }
-
-  function tryLocal(pw){
-    if(LOCAL_PREVIEW_PASSWORD && pw === LOCAL_PREVIEW_PASSWORD){
-      unlock();
-      return true;
-    }
-    return false;
-  }
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    var pw = (input.value || '').trim();
-    if(!pw) return;
-    showErr('');
-    if(submitBtn) submitBtn.disabled = true;
-    fetch(unlockApiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: pw }),
-      credentials: 'same-origin'
-    }).then(function(r){
-      if(r.ok){
-        unlock();
-        return;
-      }
-      if(r.status === 503){
-        if(tryLocal(pw)) return;
-        showErr('Server has no password set. In Vercel: Settings → Environment Variables → TELEFONICA_CASE_STUDY_PASSWORD for Production, then Redeploy. Open ' + unlockApiUrl + ' in a new tab — JSON should show passwordEnvConfigured:true.');
-        return;
-      }
-      if(r.status === 401){
-        showErr('Incorrect password.');
-        return;
-      }
-      showErr('Could not verify. Try again.');
-    }).catch(function(){
-      if(tryLocal(pw)) return;
-      showErr('Could not reach the API at ' + unlockApiUrl + '. Use your live site (not file://), and confirm /api/telefonica-unlock exists after deploy.');
-    }).finally(function(){
-      if(submitBtn && gate.classList.contains('tf-gate--locked')) submitBtn.disabled = false;
     });
   });
 })();

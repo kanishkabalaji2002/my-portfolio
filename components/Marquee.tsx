@@ -18,7 +18,7 @@ export default function Marquee() {
   const items = [...ITEMS, ...ITEMS];
 
   return (
-    <div className="w-full overflow-hidden bg-white py-3 border-y border-gray-300">
+    <div className="w-full overflow-hidden bg-white py-3">
       <div className="flex animate-marquee whitespace-nowrap">
         {items.map((item, i) => (
           <span
@@ -26,7 +26,7 @@ export default function Marquee() {
             className="inline-flex items-center gap-4 text-[11px] font-semibold tracking-[0.15em] uppercase text-gray-500 px-4"
           >
             {item}
-            <span className="text-[#5f9e7f] text-xs">·</span>
+            <span className="text-[#000000] text-xs">·</span>
           </span>
         ))}
       </div>

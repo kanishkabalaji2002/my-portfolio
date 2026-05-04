@@ -1,17 +1,13 @@
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Projects from "@/components/Projects";
+import PortfolioHome from "@/components/PortfolioHome";
 import Footer from "@/components/Footer";
 import { ContactSection } from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="bg-white min-h-screen">
+    <main className="min-h-screen bg-white pt-14 sm:pt-16">
       <Navbar />
-      <Hero />
-      <div style={{ marginTop: "-60px" }}>
-        <Projects />
-      </div>
+      <PortfolioHome />
       <ContactSection />
       <Footer />
     </main>

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grab A Seat! — Turning Whispers into Conversations | Kanishka Balaji</title>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111827;
+  --muted:#6b7280;
+  --muted2:#9ca3af;
+  --border:#e5e7eb;
+  --border-hair:#ececec;
+  --bg:#ffffff;
+  --surface-soft:#f3ebe6;
+  --white:#fff;
+  --accent:#5c4334;
+  --accent-soft:#efe4db;
+  --accent-mid:#8b6f5c;
+  --sidebar-w:260px;
+  --font:'General Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --nav-scroll-gap:20px;
+}
+html{scroll-behavior:smooth;font-family:var(--font);scroll-padding-top:var(--nav-scroll-gap)}
+@media(max-width:960px){html{scroll-padding-top:72px}}
+body{font-family:var(--font);font-weight:400;background:var(--bg);color:var(--ink);line-height:1.6;margin-left:var(--sidebar-w)}
+html.embed body{margin-left:0}
+html.embed .sidebar{display:none!important}
+main section[id]{scroll-margin-top:var(--nav-scroll-gap)}
+@media(max-width:960px){main section[id]{scroll-margin-top:72px}}
+
+.sidebar{
+  position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;padding:24px 16px 28px;
+  display:flex;flex-direction:column;align-items:stretch;background:var(--white);z-index:100;overflow-y:auto;
+}
+.sidebar-back{
+  flex-shrink:0;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:400;color:var(--muted2);text-decoration:none;padding:6px 0;margin-bottom:6px;
+  transition:color .15s;
+}
+.sidebar-back:hover{color:var(--ink)}
+.sidebar-nav-links{flex:1;display:flex;flex-direction:column;gap:2px;width:100%;min-height:0;padding:8px 0;overflow-y:auto}
+.sidebar-nav-links a{
+  font-size:13px;font-weight:400;color:#aaa;text-decoration:none;padding:5px 0;display:block;width:100%;
+  line-height:1.35;transition:color .15s;
+}
+.sidebar-nav-links a:hover{color:var(--ink)}
+.sidebar-nav-links a.active{color:var(--ink);font-weight:600}
+
+main{max-width:1100px;margin:0 auto;padding:48px 40px 120px}
+.story-section{margin-top:56px;padding-top:48px;border-top:1px solid var(--border-hair)}
+.story-section:first-of-type{margin-top:0;padding-top:0;border-top:none}
+
+.intro-hero-wrap{
+  position:relative;width:100%;aspect-ratio:16/10;min-height:280px;max-height:min(82vh,680px);
+  margin-bottom:36px;border-radius:20px;overflow:hidden;background:#f4f1ec;line-height:0;
+  border:1px solid var(--border-hair);
+}
+.intro-hero-image{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;
+  background:#f4f1ec;
+}
+@media(max-width:640px){
+  .intro-hero-wrap{min-height:220px;max-height:min(70vh,520px)}
+}
+
+.intro h1{font-size:clamp(28px,3.6vw,42px);font-weight:600;letter-spacing:-.03em;line-height:1.12;margin:0 0 14px;max-width:22ch}
+.intro-meta-grid{
+  margin:28px 0 0;padding-top:28px;border-top:1px solid var(--border-hair);max-width:720px;
+}
+.intro-meta-top{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 32px;margin-bottom:28px;
+}
+@media(max-width:680px){.intro-meta-top{grid-template-columns:1fr;gap:22px}}
+.intro-meta-block{margin-bottom:28px}
+.intro-meta-block:last-child{margin-bottom:0}
+.intro-meta-label{
+  display:block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px;
+}
+.intro-meta-value{font-size:clamp(16px,1.35vw,17px);font-weight:600;color:var(--ink);line-height:1.5;margin:0}
+.intro-meta-did ul{list-style:none;padding:0;margin:0}
+.intro-meta-did li{
+  position:relative;padding-left:1.15em;margin-bottom:10px;font-size:16px;color:#525252;line-height:1.55;
+}
+.intro-meta-did li::before{
+  content:"";position:absolute;left:0;top:.58em;width:5px;height:5px;border-radius:50%;background:#c5cad3;
+}
+.intro-deck{font-size:clamp(17px,1.45vw,19px);color:#525252;line-height:1.65;max-width:40rem;margin:0 0 1rem}
+.intro-deck strong{font-weight:600;color:#111827}
+
+.story-head{max-width:720px;margin-bottom:1.25rem}
+.story-title{font-size:clamp(22px,3vw,28px);font-weight:600;letter-spacing:-.03em;line-height:1.15;margin:0}
+.story-prose{font-size:16px;color:#525252;line-height:1.75;max-width:720px}
+.story-prose p{margin-bottom:1rem}
+.story-prose p:last-child{margin-bottom:0}
+.story-prose strong{font-weight:600;color:var(--ink)}
+.story-prose ul,.story-prose ol{margin:0 0 1rem;padding-left:1.25rem;max-width:720px}
+.story-prose li{margin:8px 0}
+
+.story-blockquote{
+  margin:20px 0;padding:18px 22px;background:var(--surface-soft);border-left:3px solid var(--accent);
+  border-radius:0 12px 12px 0;font-size:clamp(16px,1.45vw,18px);font-weight:600;color:var(--ink);line-height:1.55;
+}
+
+.insight-callout{
+  margin:24px 0;padding:26px 28px 26px 32px;border-left:5px solid var(--accent);
+  background:linear-gradient(165deg,#faf6f2 0%,#efe4db 55%,#e9ddd3 100%);
+  border-radius:0 12px 12px 0;max-width:720px;
+  box-shadow:0 1px 0 rgba(92,67,52,0.07),0 8px 24px rgba(17,24,39,0.04);
+}
+.insight-callout p{margin:0;font-size:clamp(17px,1.5vw,19px);font-weight:700;color:var(--ink);line-height:1.55;letter-spacing:-.02em}
+.insight-callout .insight-callout__support{
+  margin-top:16px;font-size:15px;font-weight:500;color:#4b5563;line-height:1.65;
+}
+
+.stat-pill-row{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 6px;max-width:720px}
+.stat-pill{
+  display:inline-flex;flex-direction:column;align-items:flex-start;padding:12px 16px;border-radius:12px;
+  background:var(--white);border:1px solid var(--border-hair);min-width:min(100%,240px);
+}
+.stat-pill b{font-size:22px;font-weight:600;color:var(--ink);letter-spacing:-.02em}
+.stat-pill span{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.4}
+
+.quote-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0;max-width:720px;
+}
+@media(max-width:720px){.quote-grid{grid-template-columns:1fr}}
+.quote-card{
+  padding:16px 18px;border-radius:12px;background:var(--white);border:1px solid var(--border-hair);
+  font-size:15px;color:#4b5563;line-height:1.6;
+}
+.quote-card cite{display:block;margin-top:10px;font-size:12px;font-style:normal;font-weight:600;color:var(--accent-mid);letter-spacing:.04em;text-transform:uppercase}
+
+.process-steps{list-style:none;padding:0;margin:20px 0;max-width:720px;counter-reset:st}
+.process-steps li{
+  counter-increment:st;position:relative;padding:16px 18px 16px 52px;margin:0 0 10px;border-radius:12px;
+  border:1px solid var(--border-hair);background:var(--white);font-size:15px;color:#525252;line-height:1.55;
+}
+.process-steps li::before{
+  content:counter(st);position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;border-radius:8px;background:var(--accent-soft);color:var(--accent);
+  font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;
+}
+.process-steps li strong{display:block;color:var(--ink);margin-bottom:4px;font-size:15px}
+
+.challenge-list{list-style:none;padding:0;margin:16px 0;max-width:720px}
+.challenge-list li{
+  margin:12px 0;padding:14px 16px;border-radius:12px;border:1px solid var(--border-hair);background:var(--white);
+  font-size:15px;color:#525252;line-height:1.55;
+}
+.challenge-list li strong{display:block;color:var(--ink);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+
+.findings-grid{display:grid;gap:10px;margin:18px 0;max-width:720px;counter-reset:fd}
+.finding{
+  display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:10px;background:#fff;border:1px solid var(--border-hair);
+  font-size:15px;color:#525252;line-height:1.55;
+}
+.finding::before{
+  counter-increment:fd;content:counter(fd);flex-shrink:0;width:28px;height:28px;border-radius:8px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;
+}
+
+.reflection-columns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;max-width:720px}
+@media(max-width:680px){.reflection-columns{grid-template-columns:1fr}}
+.reflection-col{padding:16px;border-radius:12px;border:1px solid var(--border-hair);background:var(--white);font-size:14px;color:#525252;line-height:1.6}
+.reflection-col h4{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin:0 0 8px}
+
+.su-toggle-toolbar{display:flex;justify-content:flex-start;margin:14px 0 10px}
+.su-toggle{width:100%;max-width:360px}
+.su-toggle-track{position:relative;display:flex;width:100%;padding:4px;border-radius:999px;background:#e8e4e0;box-sizing:border-box}
+.su-toggle-thumb{
+  position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px) / 2);border-radius:999px;background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.1),0 0 0 1px rgba(0,0,0,.05);transition:left .22s ease;z-index:0;pointer-events:none;
+}
+.su-toggle--before .su-toggle-thumb{left:4px}
+.su-toggle--after .su-toggle-thumb{left:calc(4px + (100% - 8px) / 2)}
+.su-toggle-track .su-toggle-btn{
+  position:relative;z-index:1;flex:1;font-family:var(--font);font-size:13px;font-weight:500;padding:10px 12px;border:none;border-radius:999px;
+  background:transparent;color:#9ca3af;cursor:pointer;transition:color .2s ease,font-weight .2s ease;
+}
+.su-toggle-track .su-toggle-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.su-toggle--before .su-toggle-btn[data-panel="before"],
+.su-toggle--after .su-toggle-btn[data-panel="after"]{color:var(--ink);font-weight:600}
+.su-toggle--before .su-toggle-btn[data-panel="after"],
+.su-toggle--after .su-toggle-btn[data-panel="before"]{color:#9ca3af;font-weight:400}
+.su-iterate-panel{margin-top:12px}
+.su-iterate-panel--hidden{display:none!important}
+.rules-panel{
+  padding:18px 20px;border-radius:12px;border:1px solid var(--border-hair);background:var(--white);max-width:720px;font-size:15px;color:#525252;line-height:1.65;
+}
+.rules-panel ul{margin:10px 0 0;padding-left:1.2rem}
+.rules-panel li{margin:6px 0}
+
+@media(max-width:960px){
+  body{margin-left:0;padding-top:56px}
+  html.embed body{padding-top:0}
+  .sidebar{position:fixed;top:0;left:0;right:0;width:100%;height:auto;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:4px 8px;padding:12px 14px;border-bottom:1px solid var(--border)}
+  .sidebar-back{margin-bottom:0}
+  .sidebar-nav-links{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:4px 10px;padding:0;max-height:none}
+  .sidebar-nav-links a{width:auto;padding:4px 6px;font-size:12px;white-space:nowrap}
+  main{padding:32px 20px 80px}
+}
+</style>
+</head>
+<body>
+<script>
+(function(){
+  if(/\bembed=1\b/.test(location.search))document.documentElement.classList.add("embed");
+})();
+</script>
+
+<nav class="sidebar" id="sidebar" aria-label="Case study sections">
+  <a href="/" target="_top" rel="noopener noreferrer" class="sidebar-back" aria-label="Back to portfolio">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    Back
+  </a>
+  <div class="sidebar-nav-links">
+    <a href="#intro" class="active">Introduction</a>
+    <a href="#context">Context</a>
+    <a href="#research">Research</a>
+    <a href="#goals">Goals</a>
+    <a href="#concept">Concept</a>
+    <a href="#gameplay">Gameplay</a>
+    <a href="#build">Build &amp; challenges</a>
+    <a href="#testing">Testing</a>
+    <a href="#reflection">Reflection</a>
+    <a href="#next">Next steps</a>
+  </div>
+</nav>
+
+<main>
+  <section id="intro" class="intro story-section">
+    <div class="intro-hero-wrap" aria-label="Grab A Seat game box">
+      <img
+        class="intro-hero-image"
+        src="/grabaseat-hero-box.png"
+        alt="Grab A Seat board game box, front and back: navy packaging with title, tagline, and board illustration."
+        width="1024"
+        height="707"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+    <h1>Grab A Seat</h1>
+
+    <p class="intro-deck">From a board game — <strong>Grab A Seat!</strong> pairs accurate health education with playful mechanics, depersonalized prompts, and room to opt in or out—so curiosity does not have to arrive with shame.</p>
+
+    <div class="intro-meta-grid">
+      <div class="intro-meta-top">
+        <div>
+          <span class="intro-meta-label">My role</span>
+          <p class="intro-meta-value">Product designer and game designer</p>
+        </div>
+        <div>
+          <span class="intro-meta-label">Team</span>
+          <p class="intro-meta-value">Four collaborators, four cultural perspectives</p>
+        </div>
+        <div>
+          <span class="intro-meta-label">Output</span>
+          <p class="intro-meta-value">Playtested board game + roadmap for a companion app</p>
+        </div>
+      </div>
+
+      <div class="intro-meta-block intro-meta-did">
+        <span class="intro-meta-label">What I contributed</span>
+        <ul>
+          <li>Framing and synthesis alongside desk research and participant recruitment</li>
+          <li>Co-designing the game—structure, prompts, rule writing, and table flow with the team—then tightening everything after playtests</li>
+          <li>Advocating for emotional safety mechanics (skips, hypotheticals, pacing) as first-class design</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="context" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">Four people, four cultures, one shared silence</h2>
+    </header>
+    <div class="story-prose">
+      <p>We did not choose women’s health because it was an easy headline. We chose it because we kept seeing the same structural hole: <strong>many women lack safe, judgment-free spaces</strong> to learn about their bodies, and stigma turns that gap into silence. Designing for that reality meant social impact and real craft pressure at once—inclusive language, trustworthy framing, and a format that could carry discomfort without punishing it.</p>
+
+      <p>Before we interviewed strangers, we named our own entry points. Those stories became the moral compass for tone, pacing, and what “safe” had to mean in play.</p>
+
+      <div class="quote-grid">
+        <blockquote class="quote-card">“I grew up in an environment where talking about one’s sexual and reproductive health was considered a taboo and wasn’t openly spoken about.” <cite>Kanishka</cite></blockquote>
+        <blockquote class="quote-card">“In my culture, women’s health wasn’t talked about, only whispered, so I grew up believing these topics were too shameful to talk about.” <cite>Gracia</cite></blockquote>
+        <blockquote class="quote-card">“We didn’t have sex-ed—I learned from classmates and Google searches at midnight, never knowing what information I could actually trust.” <cite>Chan</cite></blockquote>
+        <blockquote class="quote-card">“In my household, talking about sex was considered inappropriate and immoral, so I grew up without ‘the talk’ or any guidance.” <cite>Josephine</cite></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section id="research" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">Research: recruit for discomfort, not only confidence</h2>
+    </header>
+    <div class="story-prose">
+      <p>We paired <strong>desk research</strong> with a <strong>screener survey</strong> to recruit participants across cultural backgrounds and different comfort levels with sexual and reproductive health. The goal was not to cherry-pick people who were already fluent in clinical language—we needed the hesitance in the room so the design could not pretend it away.</p>
+
+      <div class="stat-pill-row" aria-label="Key finding from interviews">
+        <div class="stat-pill"><b>6/6</b><span>Women we interviewed described feeling hesitant or uncomfortable discussing reproductive and sexual health</span></div>
+      </div>
+
+      <p>That number was not a trophy; it was a constraint. It told us the baseline emotional load of the topic and justified why a pamphlet or a linear app tutorial might still fail: the barrier was often <strong>social</strong>, not informational.</p>
+
+      <p>Even inside discomfort, participants surfaced <strong>curiosity</strong> and a desire for safer spaces to learn and ask questions. Emotional responses ran the spectrum—fear and uncertainty, but also motivation and openness. We also heard how systemic barriers—language, stigma, missing culturally relevant resources—compress access to trustworthy care.</p>
+
+      <div class="insight-callout">
+        <p>If we wanted adoption, we had to design for people who might never walk into a workshop labeled “sex ed.”</p>
+        <p class="insight-callout__support">That pushed us toward a social, low-pressure format where the table carries some of the awkwardness so individuals do not have to carry all of it alone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="goals" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">North star and supporting goals</h2>
+    </header>
+    <div class="story-prose">
+      <p><strong>Main goal.</strong> An accessible education experience that provides reliable, culturally sensitive women’s health information and helps people find appropriate healthcare resources—especially where discussing reproductive and sexual health is still taboo.</p>
+      <p><strong>Supporting goals.</strong></p>
+      <ul>
+        <li>Deliver culturally inclusive education tailored to diverse backgrounds and comfort levels.</li>
+        <li>Normalize learning about sexual and reproductive health through interactions that feel stigma-free.</li>
+        <li>Foster community support through peer stories, shared experiences, and anonymous engagement where needed.</li>
+      </ul>
+
+      <p class="story-blockquote">How might we create a culturally inclusive space that empowers individuals—especially women—to learn, discuss, and seek help?</p>
+
+      <p>Our answer was not “more PDFs.” It was <strong>Grab A Seat!</strong>: a learning system centered on a board game that uses myth/fact literacy, storytelling, and depersonalized prompts so a group can build shared language before anyone is asked to disclose private details.</p>
+
+      <p>We articulated the arc plainly: many people lack clear, judgment-free information; stigma and confusing systems create anxiety and inconsistent knowledge. A social game lowers the performance pressure of “being educated,” while a planned digital companion could extend private learning and resources when players are ready for that mode.</p>
+    </div>
+  </section>
+
+  <section id="concept" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">Why a board game—and how we built the concept</h2>
+    </header>
+    <div class="story-prose">
+      <p>A board game made the design commitments visible:</p>
+      <ul>
+        <li>It creates a <strong>judgment-free</strong> container because the “third object” on the table is the game—not any one person’s body or choices.</li>
+        <li>It breaks stigma by making learning <strong>playful, social, and approachable</strong> without trivializing accuracy.</li>
+        <li>It supports people who feel hesitant or under-educated by letting competence build <strong>turn by turn</strong>, not in a single confession.</li>
+        <li>It supports different comfort levels through <strong>anonymous-adjacent</strong> design: hypotheticals, optional depth, and clear exits.</li>
+        <li>It encourages healthier conversations between friends, partners, and communities because the prompts are shared prompts—not interrogations.</li>
+      </ul>
+
+      <p>Methodologically, we moved in a loop we could defend in critique: research and informal interviews, ideation with sketches, prototyping with board flows, peer feedback on clarity, then a final build pass once the rule set stabilized enough to print.</p>
+
+      <ol class="process-steps">
+        <li><strong>Research</strong> Surveys and informal interviews to map pain points and language people actually use.</li>
+        <li><strong>Ideation</strong> Brainstorming and concept sketches to narrow the solution space.</li>
+        <li><strong>Prototyping</strong> Board layouts and mockups to visualize flow and dependencies between spaces and cards.</li>
+        <li><strong>Feedback &amp; revisions</strong> Peer review focused on legibility: what reads instantly vs. what needs a facilitator.</li>
+        <li><strong>Final build</strong> Packaging, card system, and rules tightened for repeat play.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="gameplay" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">What players actually do in Grab A Seat!</h2>
+    </header>
+    <div class="story-prose">
+      <p>At a high level, players roll, move, and draw the card type tied to the space they land on. The mix is deliberate: knowledge checks, myth busting, discussion, regulation, and explicit stigma talk—so the game can teach, but also <strong>catch</strong> people when the topic spikes anxiety.</p>
+
+      <p><strong>Spaces and card types (concept).</strong></p>
+      <ul>
+        <li><strong>Describe It, Mythbuster, Body Basic:</strong> short knowledge moments that reward correct answers with movement (and, in later iterations, tokens).</li>
+        <li><strong>Discuss It:</strong> facilitated discussion prompts—progress comes from participation, not from “winning” a debate.</li>
+        <li><strong>Burnout / Recharge:</strong> a mandatory pause space when overload shows up in play; exit rules evolved once we saw confusion.</li>
+        <li><strong>Self care spot:</strong> guided regulation prompts.</li>
+        <li><strong>Destigmatize It:</strong> stigma-focused discussion with guardrails.</li>
+      </ul>
+
+      <p>The physical prototype included the board, die, cards, pieces, and a sketched direction for a <strong>community app</strong> as the longer arc for resources and continuity outside the room.</p>
+
+      <div class="su-toggle-block su-iterate-block">
+        <p><strong>Rule evolution (what changed after testing).</strong> Toggle between the earlier overview and the tightened summary we ended on.</p>
+        <div class="su-toggle-toolbar">
+          <div class="su-toggle su-toggle--before" role="group" aria-label="Rule version">
+            <div class="su-toggle-track">
+              <span class="su-toggle-thumb" aria-hidden="true"></span>
+              <button type="button" class="su-toggle-btn" data-panel="before" aria-pressed="true">Earlier overview</button>
+              <button type="button" class="su-toggle-btn" data-panel="after" aria-pressed="false">After testing</button>
+            </div>
+          </div>
+        </div>
+        <div class="su-iterate-panel" data-panel="before">
+          <div class="rules-panel">
+            <p><strong>Movement and checks.</strong> Roll, move, pick the card for your space. For Describe It, Mythbuster, and Body Basic: answer correctly to move forward one space; if incorrect, stay. For Discuss It: participate in discussion to move forward; if you opt out, stay.</p>
+            <p><strong>Burnout.</strong> Go to Recharge / Take a Break; stay quiet until you roll a four (or the “mouth” face, depending on the die face set we prototyped) to exit.</p>
+            <p><strong>Self care &amp; Destigmatize It.</strong> Answer or discuss guided prompts tied to those spaces.</p>
+            <p><strong>Winning (early).</strong> First player to reach the last spot wins.</p>
+          </div>
+        </div>
+        <div class="su-iterate-panel su-iterate-panel--hidden" data-panel="after">
+          <div class="rules-panel">
+            <p><strong>Tokens and motivation.</strong> Correct answers and strong participation earn tokens; we moved away from discouraging penalties toward reinforcement.</p>
+            <ul>
+              <li>Describe It / Mythbuster / Body Basic: correct → move forward one space <em>and</em> earn a token; incorrect → stay, no token.</li>
+              <li>Discuss It: participate → move forward and earn a token; pass → stay, no token.</li>
+              <li><strong>Burnout / Recharge:</strong> go to the break space; you can still speak; exit on rolling a four or a six (we aligned the “mouth” rule to reduce ambiguity).</li>
+              <li><strong>New:</strong> Wild cards and +3 / +1 spots to earn extra tokens.</li>
+              <li>Self care and Destigmatize It prompts retained, with gentler wording after content testing.</li>
+              <li><strong>Winning (later).</strong> First to finish the last spot earns five tokens; highest token total wins—so different play styles could still feel fair.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="build" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">Prototype build: where the easy ideas broke</h2>
+    </header>
+    <div class="story-prose">
+      <p>Building the first playable version surfaced tensions we could not resolve with copy alone—especially under time pressure and with four strong creative voices in the room.</p>
+      <ul class="challenge-list">
+        <li><strong>Challenge 1</strong> Translating sensitive topics into playful mechanics without losing accuracy or empathy.</li>
+        <li><strong>Challenge 2</strong> Balancing education and fun so players could learn without feeling weighed down.</li>
+        <li><strong>Challenge 3</strong> Rules that felt obvious to us but read as ambiguous on paper—especially turn boundaries.</li>
+        <li><strong>Challenge 4</strong> Merging four visions into one cohesive tone and system.</li>
+        <li><strong>Challenge 5</strong> Keeping board, cards, and mechanics aligned as the prototype grew.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="testing" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">User testing: the bar for “safe enough” went up</h2>
+    </header>
+    <div class="story-prose">
+      <p>Playtests taught us that “sensitive topic” is not a content problem only—it is a <strong>clarity + visual + pacing + permission</strong> problem. The synthesis we carried forward:</p>
+
+      <div class="insight-callout">
+        <p>To engage with sensitive health topics, the experience must be clear, visually accessible, culturally gentle, emotionally safe, and supported by flexible, low-pressure gameplay.</p>
+      </div>
+
+      <div class="findings-grid" aria-label="Playtest findings">
+        <div class="finding">Turn structure was unclear: players did not always know when to move, hold, or end a turn.</div>
+        <div class="finding">Visual hierarchy failed: small text, too many colors, and unclear icons increased cognitive load.</div>
+        <div class="finding">Tokens and incentives felt half-built—rewards were not motivating and penalties felt mean-spirited.</div>
+        <div class="finding">Some prompts felt too personal or culturally sharp; we needed gentler wording and clearer definitions for clinical terms.</div>
+        <div class="finding">Emotional safety needed explicit support: skip paths, disclaimers, and softer pacing between heavy prompts.</div>
+        <div class="finding">Players asked for multiple modes—quick play versus a longer session—to support repeatability.</div>
+      </div>
+
+      <p>Those findings directly fed the rule changes in the toggle above and the visual simplification pass on cards and board regions.</p>
+
+      <p><strong>Final artifact (as shipped in studio).</strong> A complete physical kit: board, die, token-forward rule set, card types (including front/back/rules/pledge cards), and packaging designed to feel approachable enough to live on a coffee table—not hidden on a top shelf.</p>
+    </div>
+  </section>
+
+  <section id="reflection" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">Reflections: what we would not forget on the next system</h2>
+    </header>
+    <div class="story-prose">
+      <div class="reflection-columns">
+        <div class="reflection-col">
+          <h4>Rules &amp; flow</h4>
+          <p>Small ambiguities in turn endings and unexplained board spaces disrupted play more than we expected.</p>
+        </div>
+        <div class="reflection-col">
+          <h4>Motivation</h4>
+          <p>Reward-based mechanics outperformed penalties for keeping people willing to stay in hard topics.</p>
+        </div>
+        <div class="reflection-col">
+          <h4>Readability</h4>
+          <p>Card size, type size, and contrast changed whether people felt confident engaging—not just whether they could technically read the words.</p>
+        </div>
+        <div class="reflection-col">
+          <h4>Visual consistency</h4>
+          <p>A tighter palette helped players infer card categories and actions without constantly re-reading a rules sheet.</p>
+        </div>
+        <div class="reflection-col">
+          <h4>Trust</h4>
+          <p>Short definitions for unfamiliar terms (for example HPV, cycle phases) built trust instead of embarrassment.</p>
+        </div>
+        <div class="reflection-col">
+          <h4>Depersonalization</h4>
+          <p>Hypothetical framing made disclosure safer while still enabling honest conversation.</p>
+        </div>
+        <div class="reflection-col">
+          <h4>Flexibility</h4>
+          <p>Testers wanted a quick, cards-only mode alongside the full board for repeat play.</p>
+        </div>
+        <div class="reflection-col">
+          <h4>Instructional voice</h4>
+          <p>Feedback from run-throughs reinforced the need for crisp signals and board logic that a facilitator can teach once.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="next" class="story-section">
+    <header class="story-head">
+      <h2 class="story-title">Next steps</h2>
+    </header>
+    <div class="story-prose">
+      <ol>
+        <li><strong>Community app prototype</strong> for continued support, community, and medically grounded resources—scoped in the deck as in development and not yet tested at the time we presented.</li>
+        <li><strong>Hybrid digital access</strong> so the experience can travel outside the physical box.</li>
+        <li><strong>Earlier life stages</strong> by partnering with sex education programs to normalize conversations sooner.</li>
+        <li><strong>Ambient distribution</strong> such as pamphlets in tampon boxes and posters on dispensers and bathroom stalls—meeting people in everyday contexts so the topic feels less exceptional.</li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  var nav = document.querySelector('.sidebar-nav-links');
+  if(!nav) return;
+  var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+
+  function setActive(id){
+    links.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  function scrollOffset(){
+    return window.matchMedia('(max-width:960px)').matches ? 72 : 24;
+  }
+
+  function currentSectionId(){
+    var y = window.scrollY + scrollOffset();
+    var id = sections.length ? sections[0].id : 'intro';
+    sections.forEach(function(sec){
+      var top = sec.getBoundingClientRect().top + window.scrollY;
+      if(top <= y + 2) id = sec.id;
+    });
+    return id;
+  }
+
+  function onScroll(){ setActive(currentSectionId()); }
+
+  function scrollToSectionId(id, smooth){
+    var target = document.getElementById(id);
+    if(!target) return false;
+    var top = target.getBoundingClientRect().top + window.scrollY - scrollOffset();
+    window.scrollTo({ top: Math.max(0, top), behavior: smooth ? 'smooth' : 'auto' });
+    setActive(id);
+    return true;
+  }
+
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var hash = a.getAttribute('href');
+      if(!hash || hash.length < 2) return;
+      var id = hash.slice(1);
+      if(!document.getElementById(id)) return;
+      e.preventDefault();
+      scrollToSectionId(id, true);
+      if(window.history && window.history.replaceState){
+        window.history.replaceState(null, '', hash);
+      }
+    });
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  window.addEventListener('hashchange', function(){
+    if(location.hash && location.hash.length > 1){
+      scrollToSectionId(location.hash.slice(1), true);
+    }
+  });
+
+  if(location.hash && location.hash.length > 1){
+    requestAnimationFrame(function(){
+      scrollToSectionId(location.hash.slice(1), false);
+      onScroll();
+    });
+  } else {
+    onScroll();
+  }
+})();
+
+(function(){
+  document.querySelectorAll('.su-iterate-block').forEach(function(block){
+    var toggle = block.querySelector('.su-toggle');
+    if (!toggle) return;
+    var panels = block.querySelectorAll('.su-iterate-panel');
+    toggle.querySelectorAll('.su-toggle-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var pid = btn.getAttribute('data-panel');
+        var isAfter = pid === 'after';
+        if (toggle.classList.contains(isAfter ? 'su-toggle--after' : 'su-toggle--before')) return;
+        toggle.classList.remove('su-toggle--before', 'su-toggle--after');
+        toggle.classList.add(isAfter ? 'su-toggle--after' : 'su-toggle--before');
+        toggle.querySelectorAll('.su-toggle-btn').forEach(function(b){
+          b.setAttribute('aria-pressed', b.getAttribute('data-panel') === pid ? 'true' : 'false');
+        });
+        panels.forEach(function(p){
+          var show = p.getAttribute('data-panel') === pid;
+          p.classList.toggle('su-iterate-panel--hidden', !show);
+        });
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
